@@ -13,6 +13,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="hRz-Do-Gk8" customClass="TabViewController" customModule="my_tracking_app" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="agd-xz-6xG">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="0.68113227739726023" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="selectedImageTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -153,6 +154,7 @@
                                             <outlet property="calloriesLabel" destination="lgy-0A-z8S" id="Tyu-Oh-KBt"/>
                                             <outlet property="distanceLabel" destination="Gge-SH-PPe" id="veQ-3q-AND"/>
                                             <outlet property="miniMapLabel" destination="xDV-fO-NdI" id="KCw-Lh-rg8"/>
+                                            <outlet property="timeLabel" destination="vJ4-hz-jTy" id="tlk-9f-bSt"/>
                                             <outlet property="timestampLabel" destination="yqG-61-SGr" id="wwK-Ey-HtY"/>
                                         </connections>
                                     </tableViewCell>
@@ -411,17 +413,20 @@
                                         <rect key="frame" x="0.0" y="618" width="414" height="200"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="juf-iK-ta2">
-                                                <rect key="frame" x="132" y="75" width="150" height="50"/>
+                                                <rect key="frame" x="117" y="63.5" width="180" height="73"/>
                                                 <color key="backgroundColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="150" id="PHx-uM-tF8"/>
-                                                    <constraint firstAttribute="height" constant="50" id="W2q-Mt-pjN"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="180" id="PHx-uM-tF8"/>
+                                                    <constraint firstAttribute="height" constant="73" id="W2q-Mt-pjN"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="30"/>
                                                 <color key="tintColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="START">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="startButton:" destination="190-bn-JDy" eventType="touchUpInside" id="y61-v6-gIt"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.28675234249999998" green="0.80955557249999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -444,6 +449,9 @@
                         <viewLayoutGuide key="safeArea" id="AaT-vA-57G"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Route" image="repeat" catalog="system" id="nZi-fN-fI3"/>
+                    <connections>
+                        <outlet property="startButtonLabel" destination="juf-iK-ta2" id="6Ew-mE-skE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uZC-ta-NSF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

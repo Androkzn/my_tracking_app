@@ -18,17 +18,29 @@ class HistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var miniMapLabel: MKMapView!
     @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var averageSpeedLabel: UILabel!
     @IBOutlet weak var calloriesLabel: UILabel!
     
     
     
-    func set () {
-//        timestampLabel.text =  timestamp
- //         miniMapLabel.showsUserLocation = true
-//        distanceLabel.text = "12.3 km"
-//        averageSpeedLabel.text = "4.6 km/h"
-//        calloriesLabel.text = "456 kcal"
- }
+    func set (timestamp: Date, time: Int16, distance: Double, averageSpeed: Double, callories: Int16, latitude: Double, longitude: Double) {
+        timestampLabel.text = dateFormater(date: timestamp)
+        timeLabel.text = secondsFormatter(seconds: time)
+        distanceLabel.text = String(distance)
+        averageSpeedLabel.text = String(averageSpeed)
+        calloriesLabel.text = String(callories)
+    }
     
+    func dateFormater(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm E, d MMM y"
+        return formatter.string(from: date)
+    }
+    
+    func secondsFormatter (seconds : Int16) -> String {
+        let timestampString = "\(seconds / 3600):\((seconds % 3600) / 60):\((seconds % 3600) % 60)"
+        return timestampString
+    }
 }
+
