@@ -8,10 +8,12 @@
 
 import UIKit
 
+
 class HistoryViewController: UIViewController {
     var locations: [Locations] = []
     var workouts: [Workout] = []
-    let tableView = UITableView()
+    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +24,13 @@ class HistoryViewController: UIViewController {
          super.viewWillAppear(true)
          workouts = DataManager.shared.workout()
          print(workouts.count)
-        
+         tableView.reloadData()
+
      }
     
-    
-    
+     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+    }
 
 }
 

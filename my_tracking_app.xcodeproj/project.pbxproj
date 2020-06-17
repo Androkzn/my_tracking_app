@@ -18,7 +18,6 @@
 		DE67A34224988B9B000FFEA5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A34124988B9B000FFEA5 /* MapViewController.swift */; };
 		DE67A34524988DED000FFEA5 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A34424988DED000FFEA5 /* TabViewController.swift */; };
 		DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */; };
-		DE67A34D2499237A000FFEA5 /* TableViewHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A34C2499237A000FFEA5 /* TableViewHistory.swift */; };
 		DE67A3802499C902000FFEA5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A37F2499C902000FFEA5 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +47,6 @@
 		DE67A34124988B9B000FFEA5 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		DE67A34424988DED000FFEA5 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
-		DE67A34C2499237A000FFEA5 /* TableViewHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHistory.swift; sourceTree = "<group>"; };
 		DE67A37F2499C902000FFEA5 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,7 +93,6 @@
 				DE67A31A249889BD000FFEA5 /* SceneDelegate.swift */,
 				DE67A34424988DED000FFEA5 /* TabViewController.swift */,
 				DE67A37F2499C902000FFEA5 /* DataManager.swift */,
-				DE67A34C2499237A000FFEA5 /* TableViewHistory.swift */,
 				DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */,
 				DE67A33D24988B6B000FFEA5 /* HistoryViewController.swift */,
 				DE67A33F24988B90000FFEA5 /* RouteViewController.swift */,
@@ -220,7 +217,6 @@
 			files = (
 				DE67A34524988DED000FFEA5 /* TabViewController.swift in Sources */,
 				DE67A3802499C902000FFEA5 /* DataManager.swift in Sources */,
-				DE67A34D2499237A000FFEA5 /* TableViewHistory.swift in Sources */,
 				DE67A323249889BD000FFEA5 /* my_tracking_app.xcdatamodeld in Sources */,
 				DE67A34024988B90000FFEA5 /* RouteViewController.swift in Sources */,
 				DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */,

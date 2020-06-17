@@ -168,6 +168,9 @@
                         <viewLayoutGuide key="safeArea" id="y3W-Sl-8rw"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="History" image="book" catalog="system" id="3zg-z9-FJq"/>
+                    <connections>
+                        <outlet property="tableView" destination="lev-k0-VKS" id="DMk-dq-OxE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bij-Ns-gV8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

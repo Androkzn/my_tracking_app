@@ -15,6 +15,7 @@ class HistoryTableViewCell: UITableViewCell {
 
     
     
+
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var miniMapLabel: MKMapView!
     @IBOutlet weak var distanceLabel: UILabel!
@@ -30,6 +31,7 @@ class HistoryTableViewCell: UITableViewCell {
         distanceLabel.text = String(distance)
         averageSpeedLabel.text = String(averageSpeed)
         calloriesLabel.text = String(callories)
+         
     }
     
     func dateFormater(date: Date) -> String {
