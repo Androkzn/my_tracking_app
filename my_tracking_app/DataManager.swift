@@ -41,14 +41,16 @@ class DataManager {
     }()
 
   
-    func workout (timestamp: Date, duration: Int16, distance: Double, speed: Double, averageSpeed: Double, callories: Int16, averageCallories: Int16, bloodOxygen: Int16) -> Workout {
+    func workout (timestamp: Date, duration: Int16, distance: Double, speed: Double, averageSpeed: Double, callories: Int16, averageCallories: Int16,heartrate: Int16, bloodOxygen: Int16) -> Workout {
         let workout = Workout(context: persistentContainer.viewContext)
         workout.timestamp = timestamp
         workout.duration = duration
+        workout.distance = distance
         workout.speed = speed
         workout.averageSpeed = averageSpeed
         workout.callories = callories
         workout.averageCallories = averageCallories
+        workout.heartrate = heartrate
         workout.bloodOxygen = bloodOxygen
         return workout
     }

@@ -41,7 +41,7 @@ class RouteViewController: UIViewController {
             startButtonLabel.setTitle("STOP", for: .normal)
              
             //  save new workout
-            let workout = DataManager.shared.workout(timestamp: Date(), duration: 1000, distance: 12.3, speed: 6.1, averageSpeed: 4.6, callories: 456, averageCallories: 304, bloodOxygen: 98)
+            let workout = DataManager.shared.workout(timestamp: Date(), duration: 1000, distance: 12.3, speed: 6.1, averageSpeed: 4.6, callories: 456, averageCallories: 304, heartrate:133, bloodOxygen: 98)
             DataManager.shared.save()
             //save location
             let location1 = DataManager.shared.location(timestamp: Date(), distance: 5.2, latitude: 49.2827, longitude: 123.1207, speed: 4.5, workout: workout)
