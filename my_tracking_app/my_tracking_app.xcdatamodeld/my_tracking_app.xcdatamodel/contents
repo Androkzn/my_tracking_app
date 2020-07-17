@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Locations" representedClassName="Locations" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Location" representedClassName="Location" syncable="YES" codeGenerationType="class">
+        <attribute name="altitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="speed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="workout" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="workoutLocations" inverseEntity="Workout"/>
+        <relationship name="workout" maxCount="1" deletionRule="Cascade" destinationEntity="Workout" inverseName="workoutLocations" inverseEntity="Workout"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES" codeGenerationType="class">
-        <attribute name="averageCallories" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="averageSpeed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="bloodOxygen" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="callories" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="comment" optional="YES" attributeType="String"/>
         <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="duration" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="heartrate" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="speed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="workoutLocations" toMany="YES" deletionRule="Nullify" destinationEntity="Locations" inverseName="workout" inverseEntity="Locations"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="workoutLocations" toMany="YES" deletionRule="Cascade" destinationEntity="Location" inverseName="workout" inverseEntity="Location"/>
     </entity>
     <elements>
-        <element name="Workout" positionX="-413.265625" positionY="155.6640625" width="128" height="193"/>
-        <element name="Locations" positionX="-18" positionY="99" width="128" height="133"/>
+        <element name="Location" positionX="-127.33203125" positionY="49.65234375" width="128" height="148"/>
+        <element name="Workout" positionX="-413.265625" positionY="155.6640625" width="128" height="178"/>
     </elements>
 </model>

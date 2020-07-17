@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE2F8D3424C1620100F85C38 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2F8D3324C1620100F85C38 /* Timer.swift */; };
+		DE2F8D3724C1634A00F85C38 /* my_tracking_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE2F8D3524C1634A00F85C38 /* my_tracking_app.xcdatamodeld */; };
 		DE67A319249889BD000FFEA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A318249889BD000FFEA5 /* AppDelegate.swift */; };
 		DE67A31B249889BD000FFEA5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A31A249889BD000FFEA5 /* SceneDelegate.swift */; };
 		DE67A320249889BD000FFEA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE67A31E249889BD000FFEA5 /* Main.storyboard */; };
-		DE67A323249889BD000FFEA5 /* my_tracking_app.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE67A321249889BD000FFEA5 /* my_tracking_app.xcdatamodeld */; };
 		DE67A325249889BE000FFEA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE67A324249889BE000FFEA5 /* Assets.xcassets */; };
 		DE67A328249889BE000FFEA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE67A326249889BE000FFEA5 /* LaunchScreen.storyboard */; };
 		DE67A33E24988B6B000FFEA5 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A33D24988B6B000FFEA5 /* HistoryViewController.swift */; };
@@ -32,11 +33,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE2F8D3324C1620100F85C38 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		DE2F8D3624C1634A00F85C38 /* my_tracking_app.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = my_tracking_app.xcdatamodel; sourceTree = "<group>"; };
 		DE67A315249889BD000FFEA5 /* my_tracking_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = my_tracking_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE67A318249889BD000FFEA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE67A31A249889BD000FFEA5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DE67A31F249889BD000FFEA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DE67A322249889BD000FFEA5 /* my_tracking_app.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = my_tracking_app.xcdatamodel; sourceTree = "<group>"; };
 		DE67A324249889BE000FFEA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE67A327249889BE000FFEA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE67A329249889BE000FFEA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,13 +97,14 @@
 				DE67A37F2499C902000FFEA5 /* DataManager.swift */,
 				DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */,
 				DE67A33D24988B6B000FFEA5 /* HistoryViewController.swift */,
+				DE2F8D3324C1620100F85C38 /* Timer.swift */,
 				DE67A33F24988B90000FFEA5 /* RouteViewController.swift */,
 				DE67A34124988B9B000FFEA5 /* MapViewController.swift */,
 				DE67A31E249889BD000FFEA5 /* Main.storyboard */,
 				DE67A324249889BE000FFEA5 /* Assets.xcassets */,
+				DE2F8D3524C1634A00F85C38 /* my_tracking_app.xcdatamodeld */,
 				DE67A326249889BE000FFEA5 /* LaunchScreen.storyboard */,
 				DE67A329249889BE000FFEA5 /* Info.plist */,
-				DE67A321249889BD000FFEA5 /* my_tracking_app.xcdatamodeld */,
 			);
 			path = my_tracking_app;
 			sourceTree = "<group>";
@@ -217,12 +220,13 @@
 			files = (
 				DE67A34524988DED000FFEA5 /* TabViewController.swift in Sources */,
 				DE67A3802499C902000FFEA5 /* DataManager.swift in Sources */,
-				DE67A323249889BD000FFEA5 /* my_tracking_app.xcdatamodeld in Sources */,
+				DE2F8D3424C1620100F85C38 /* Timer.swift in Sources */,
 				DE67A34024988B90000FFEA5 /* RouteViewController.swift in Sources */,
 				DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */,
 				DE67A319249889BD000FFEA5 /* AppDelegate.swift in Sources */,
 				DE67A33E24988B6B000FFEA5 /* HistoryViewController.swift in Sources */,
 				DE67A31B249889BD000FFEA5 /* SceneDelegate.swift in Sources */,
+				DE2F8D3724C1634A00F85C38 /* my_tracking_app.xcdatamodeld in Sources */,
 				DE67A34224988B9B000FFEA5 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,12 +495,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		DE67A321249889BD000FFEA5 /* my_tracking_app.xcdatamodeld */ = {
+		DE2F8D3524C1634A00F85C38 /* my_tracking_app.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				DE67A322249889BD000FFEA5 /* my_tracking_app.xcdatamodel */,
+				DE2F8D3624C1634A00F85C38 /* my_tracking_app.xcdatamodel */,
 			);
-			currentVersion = DE67A322249889BD000FFEA5 /* my_tracking_app.xcdatamodel */;
+			currentVersion = DE2F8D3624C1634A00F85C38 /* my_tracking_app.xcdatamodel */;
 			path = my_tracking_app.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
