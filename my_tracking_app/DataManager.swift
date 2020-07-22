@@ -2,7 +2,7 @@
 //  DataManager.swift
 //  my_tracking_app
 //
-//  Created by Andrei Tekhtelev on 2020-06-16.
+//  Created by Andrei Tekhtelev on 2020-07-13.
 //  Copyright © 2020 HomeFoxDev. All rights reserved.
 //
 
@@ -52,7 +52,7 @@ class DataManager {
         do {
             fetchedWorkouts = try persistentContainer.viewContext.fetch(request)
         } catch {
-            print("Error")
+            print("Error \(error)")
         }
         return fetchedWorkouts
     }
@@ -69,7 +69,7 @@ class DataManager {
         do {
             fetchedLocations = try persistentContainer.viewContext.fetch(request)
         } catch {
-            print("Error")
+            print("Error \(error)")
         }
         return fetchedLocations
     }
@@ -95,7 +95,7 @@ class DataManager {
             try context.execute(deleteRequest)
             try context.save()
         } catch {
-            print ("There was an error")
+            print("Error \(error)")
         }
     }
 }

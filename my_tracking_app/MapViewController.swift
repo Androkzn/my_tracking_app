@@ -2,7 +2,7 @@
 //  MapViewController.swift
 //  my_tracking_app
 //
-//  Created by Andrei Tekhtelev on 2020-06-15.
+//  Created by Andrei Tekhtelev on 2020-07-13.
 //  Copyright © 2020 HomeFoxDev. All rights reserved.
 //
 
@@ -45,12 +45,17 @@ class MapViewController: UIViewController {
     var lastLocation: CLLocation?
     var locationManager: CLLocationManager!
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
+    var nextMilestone: Int = 1 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector (startButton))  //Tap function will call when user tap on button
-        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(stopButton))  //Long function will call when user long press on button.
+
+        //Tap function will call when user tap on button
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector (startButton))
+        //Long press function will call when user long presses on button.
+        let longGesture = UILongPressGestureRecognizer(target: self,
+                                                       action: #selector(stopButton))
         tapGesture.numberOfTapsRequired = 1
         button.addGestureRecognizer(tapGesture)
         button.addGestureRecognizer(longGesture)
@@ -62,12 +67,11 @@ class MapViewController: UIViewController {
         setupWorkoutButton(started: isTrackingStarted)
         setupMapView()
         resetLabels()
-
-        WorkoutDataHelper.printAllWorkouts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        nextMilestone = 1
         setMapType()
         centerToCurrentLocation()
         refreshUnitLabels()
@@ -85,7 +89,6 @@ class MapViewController: UIViewController {
         if let destination = segue.destination as? SummaryViewController {
             if let currentWorkout = currentWorkout {
                 destination.currentWorkout = currentWorkout
-                destination.commentingEnabled = false
                 destination.savingSnapshot = true
             }
         } else if let destination = segue.destination as? SettingsViewController {
@@ -109,7 +112,8 @@ class MapViewController: UIViewController {
             }
         } else {
             ToastView.shared.redToast(view,
-            txt_msg: "Your location service is not available, please enable Location on your device", duration: 3)
+            txt_msg: "Your location service is not available, please enable Location on your device",
+            duration: 2)
         }
     }
     
@@ -124,7 +128,6 @@ class MapViewController: UIViewController {
                             return
                         } else {
                             self.setupCounterLabel(started: true)
-                            //self.counterLabel.text = "\(self.counter)"
                         }
                     } else {
                         timer.invalidate()
@@ -182,6 +185,20 @@ class MapViewController: UIViewController {
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
         }
     }
+
+    func speakWhenReachingMilestones() {
+        let distanceString = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+        let convertedDistance: Int = Int(Double(distanceString) ?? 0)
+        if convertedDistance > nextMilestone {
+            nextMilestone = convertedDistance + 1
+        }
+        if convertedDistance == nextMilestone && (convertedDistance > 0) {
+            nextMilestone += 1
+            TextToSpeech.speakWhenReachingMilestones(workoutDistance: currentWorkoutDistance,
+                    workoutTime: GlobalTimer.shared.secondsFormatterToSpokenDuration(
+                                                seconds: GlobalTimer.shared.seconds))
+        }
+    }
 }
 
 // MARK: Delegate for CLLocationManager
@@ -191,10 +208,9 @@ extension MapViewController: CLLocationManagerDelegate {
 
         mapLabel.centerToLocation(locations.last!, regionRadius: 300)
 
-        if (isTrackingStarted) {
+        if isTrackingStarted {
             addWorkoutLocations(locations: locations)
 
-            print("currentLocations.count: \(currentLocations.count)")
             if self.currentLocations.count > 0 {
                 locations.forEach { location in
                     let speed = location.speed >= 0.0 ? location.speed : 0.0
@@ -284,6 +300,9 @@ extension MapViewController {
                                             workout: workout)
             currentLocations.append(workoutLocation)
             currentWorkoutDistance += distance
+
+            // Update milesone and speak when milestone is met
+            speakWhenReachingMilestones()
         }
     }
 
@@ -327,8 +346,8 @@ extension MapViewController {
     }
 
     func refreshUnitLabels() {
-        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceFormat())"
-        let speedFormat = WorkoutDataHelper.getSpeedFormat()
+        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+        let speedFormat = WorkoutDataHelper.getSpeedUnit()
         speedUnitLabel.text = "SPEED, \(speedFormat)"
         averageSpeedUnitLabel.text = "AVG SPEED, \(speedFormat)"
         var altitude = 0.0
@@ -426,7 +445,7 @@ extension MapViewController {
             }
             
             // here to speak final distance
-            TextToSpeech.speakCompleteString(workoutDistance: currentWorkout.distance)
+            TextToSpeech.speakWhenWorkoutStops(workoutDistance: currentWorkout.distance)
         }
 
         currentLocations.removeAll(keepingCapacity: false)
