@@ -2,9 +2,10 @@
 //  SceneDelegate.swift
 //  my_tracking_app
 //
-//  Created by Andrei Tekhtelev on 2020-06-15.
+//  Created by Andrei Tekhtelev on 2020-07-13.
 //  Copyright © 2020 HomeFoxDev. All rights reserved.
 //
+
 
 import UIKit
 

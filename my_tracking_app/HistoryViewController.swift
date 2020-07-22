@@ -1,10 +1,10 @@
 //
 //  HistoryViewController.swift
 //  my_tracking_app
-//
-//  Created by Andrei Tekhtelev on 2020-06-15.
-//  Copyright © 2020 HomeFoxDev. All rights reserved.
-//
+ //
+ //  Created by Andrei Tekhtelev on 2020-07-13.
+ //  Copyright © 2020 HomeFoxDev. All rights reserved.
+ //
 
 import UIKit
 
@@ -20,7 +20,6 @@ class HistoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.tableFooterView = UIView()
         emptyTableLabel.text = "Let's go out and have some fun!"
     }
     
@@ -29,20 +28,23 @@ class HistoryViewController: UIViewController {
         super.viewWillAppear(true)
         //refresh workouts every time when the view will appear
         workouts = DataManager.shared.workouts()
-        //for debugging
-        print(workouts.count)
+        self.tableView.tableFooterView = UIView()
+        emptyTableLabel.isHidden = !workouts.isEmpty
+
+        SummaryViewController.isSaved = false
+     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         //reloads the TableView
         tableView.reloadData()
-        SummaryViewController.isSaved = false
-        emptyTableLabel.isHidden = !tableView.visibleCells.isEmpty
-     }
+    }
     
     @IBSegueAction func summary(_ coder: NSCoder) -> UIViewController? {
         let summaryVC = SummaryViewController(coder: coder)
         let selectedWorkout = tableView.indexPathForSelectedRow!.row
         summaryVC?.currentWorkout = workouts[selectedWorkout]
         ChartViewController.currentWorkout = workouts[selectedWorkout]
-        summaryVC?.commentingEnabled = true
         summaryVC?.savingSnapshot = false
         return summaryVC
     }
@@ -98,5 +100,4 @@ extension HistoryViewController: UITableViewDataSource {
         }
     }
 }
-
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="K1r-cS-5oW">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Chart View Controller-->
+        <scene sceneID="Xjh-TB-vWW">
+            <objects>
+                <viewController storyboardIdentifier="chartView" modalPresentationStyle="fullScreen" id="K1r-cS-5oW" userLabel="Chart View Controller" customClass="ChartViewController" customModule="my_tracking_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rJU-my-Evd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rkf-U0-j8c">
+                                <rect key="frame" x="20" y="64" width="41" height="33"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="arrow.left" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="35"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton:" destination="K1r-cS-5oW" eventType="touchUpInside" id="eAM-RV-sKL"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcd-kb-4hi">
+                                <rect key="frame" x="10" y="104" width="394" height="571"/>
+                                <color key="backgroundColor" red="0.80476719139999997" green="0.93354827169999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="pcd-kb-4hi" secondAttribute="height" multiplier="318:461" id="PSn-kn-wQP"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="63" translatesAutoresizingMaskIntoConstraints="NO" id="K8v-4a-uMI">
+                                <rect key="frame" x="51" y="806" width="312" height="31"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALTITUDE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoA-ZO-D82">
+                                        <rect key="frame" x="0.0" y="0.0" width="82" height="31"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="527-Xh-iMp">
+                                        <rect key="frame" x="145" y="0.0" width="51" height="31"/>
+                                        <color key="onTintColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="switchChartValue:" destination="K1r-cS-5oW" eventType="valueChanged" id="kbY-0e-b4V"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPEED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctf-T6-fKV">
+                                        <rect key="frame" x="257" y="0.0" width="55" height="31"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALTITUDE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7Q-q3-OtA">
+                                <rect key="frame" x="166" y="64.5" width="82" height="20.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.85851770640000002" green="0.56265991930000003" blue="0.2478595972" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="T7Q-q3-OtA" firstAttribute="centerX" secondItem="pcd-kb-4hi" secondAttribute="centerX" id="6Yp-VN-8EB"/>
+                            <constraint firstItem="pcd-kb-4hi" firstAttribute="top" secondItem="T7Q-q3-OtA" secondAttribute="bottom" constant="19" id="8yd-1t-rlS"/>
+                            <constraint firstItem="Rfn-H1-KPm" firstAttribute="bottom" secondItem="K8v-4a-uMI" secondAttribute="bottom" constant="25" id="D7W-eP-dIc"/>
+                            <constraint firstItem="pcd-kb-4hi" firstAttribute="centerX" secondItem="Rfn-H1-KPm" secondAttribute="centerX" id="LBU-D8-FHN"/>
+                            <constraint firstItem="rkf-U0-j8c" firstAttribute="leading" secondItem="Rfn-H1-KPm" secondAttribute="leading" constant="20" id="Vpq-w1-wfM"/>
+                            <constraint firstItem="K8v-4a-uMI" firstAttribute="centerX" secondItem="Rfn-H1-KPm" secondAttribute="centerX" id="Z9o-yj-ZSG"/>
+                            <constraint firstItem="pcd-kb-4hi" firstAttribute="top" secondItem="Rfn-H1-KPm" secondAttribute="top" constant="60" id="gL3-Ou-tgk"/>
+                            <constraint firstItem="rkf-U0-j8c" firstAttribute="top" secondItem="Rfn-H1-KPm" secondAttribute="top" constant="20" id="jM3-6b-nqc"/>
+                            <constraint firstItem="Rfn-H1-KPm" firstAttribute="trailing" secondItem="pcd-kb-4hi" secondAttribute="trailing" constant="10" id="sAU-QB-tUG"/>
+                            <constraint firstItem="pcd-kb-4hi" firstAttribute="leading" secondItem="Rfn-H1-KPm" secondAttribute="leading" constant="10" id="wJL-db-m3v"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Rfn-H1-KPm"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hD6-FX-xia"/>
+                    <connections>
+                        <outlet property="altLabelSwitch" destination="aoA-ZO-D82" id="HWY-Du-yfm"/>
+                        <outlet property="chartLabel" destination="T7Q-q3-OtA" id="ouM-zF-Gfp"/>
+                        <outlet property="chartView" destination="pcd-kb-4hi" id="pn2-tN-cDg"/>
+                        <outlet property="speedLabelSwitch" destination="ctf-T6-fKV" id="4Mf-hn-gaf"/>
+                        <outlet property="switchLabel" destination="527-Xh-iMp" id="dYy-RO-8DX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="24w-Ea-mNW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1631.8840579710147" y="49.553571428571423"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="arrow.left" catalog="system" width="128" height="98"/>
+    </resources>
+</document>
