@@ -70,6 +70,7 @@ extension SettingsViewController: UITableViewDataSource {
         var cell: UITableViewCell
         cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel!.text = settingTitle(atIndex: indexPath.section)
+        cell.textLabel!.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
         return cell
     }
 
@@ -99,6 +100,7 @@ extension SettingsViewController: SettingSelectionViewControllerDelegate {
         if sectionTitle(atIndex: selectedRow) == settingTitle {
             let cell = settingsTableView.cellForRow(at: IndexPath(row: 0, section: selectedRow))
             cell?.textLabel?.text = selectedValue
+            cell?.textLabel?.font = UIFont.systemFont(ofSize: 40, weight: UIFont.Weight.bold)
             let key = sectionTitle(atIndex: selectedRow)
             settings[key] = selectedIndex
             saveSetting(key: sectionTitle(atIndex: selectedRow))
@@ -116,7 +118,7 @@ extension SettingsViewController {
         case 2:
             return keyMap
         default:
-            return "Other"
+            return "OTHER"
         }
     }
 

@@ -22,6 +22,10 @@ class SettingSelectionViewController: UIViewController, CheckTableViewDelegate {
     var selectedValue = 0
     var delegate: SettingSelectionViewControllerDelegate?
 
+    @IBAction func backButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.settingTableView.tableFooterView = UIView()

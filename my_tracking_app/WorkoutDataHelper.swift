@@ -26,9 +26,9 @@ enum Map: Int {
     case satellite
 }
 
-let keyUnit = "Units"
-let keyWorkout = "Workout"
-let keyMap = "Map"
+let keyUnit = "UNITS"
+let keyWorkout = "WORKOUT"
+let keyMap = "MAP"
 
 class WorkoutDataHelper {
 
