@@ -332,7 +332,7 @@ extension MapViewController {
     }
 
     func setMapType() {
-        let mapType = UserDefaults.standard.integer(forKey: "Map")
+        let mapType = UserDefaults.standard.integer(forKey: "MAP")
         switch mapType {
         case Map.satellite.rawValue:
             mapLabel.mapType = .satellite
