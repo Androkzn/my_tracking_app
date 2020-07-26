@@ -176,7 +176,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldZ-GE-gzT" userLabel="Center">
-                                <rect key="frame" x="305" y="64" width="50" height="50"/>
+                                <rect key="frame" x="304.66666666666669" y="64" width="50" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="0.74507705479452058" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="EDN-la-UKz"/>
@@ -191,7 +191,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xa3-au-3KY">
-                                <rect key="frame" x="285" y="472.33333333333331" width="70" height="69.999999999999943"/>
+                                <rect key="frame" x="152.66666666666666" y="622.33333333333337" width="70" height="70"/>
                                 <color key="backgroundColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -225,7 +225,8 @@
                         <constraints>
                             <constraint firstItem="deh-zn-pSH" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="4si-oW-E8c"/>
                             <constraint firstItem="2oi-Em-MKy" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="7IC-hC-pYy"/>
-                            <constraint firstItem="xa3-au-3KY" firstAttribute="trailing" secondItem="ldZ-GE-gzT" secondAttribute="trailing" id="9ef-PJ-lzQ"/>
+                            <constraint firstItem="xa3-au-3KY" firstAttribute="trailing" secondItem="ldZ-GE-gzT" secondAttribute="trailing" constant="-132" id="9ef-PJ-lzQ"/>
+                            <constraint firstItem="xa3-au-3KY" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="AW7-GY-hpY"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="leading" secondItem="f5O-xC-hCQ" secondAttribute="leadingMargin" constant="3.3333333333333428" id="FL1-d0-fMJ"/>
                             <constraint firstItem="ldZ-GE-gzT" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="NMd-Zx-TXt"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerY" secondItem="Zsl-v5-xCU" secondAttribute="centerY" id="O9Z-pa-K08"/>
@@ -234,12 +235,11 @@
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="centerX" secondItem="f5O-xC-hCQ" secondAttribute="centerX" id="Yfx-4G-fXA"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="cVa-ZU-Sbl"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="top" secondItem="f5O-xC-hCQ" secondAttribute="bottom" constant="-10" id="dmc-gh-45E"/>
-                            <constraint firstItem="xa3-au-3KY" firstAttribute="top" secondItem="z3U-gV-IkQ" secondAttribute="bottom" constant="-87" id="kiM-bR-nEs"/>
+                            <constraint firstItem="xa3-au-3KY" firstAttribute="top" secondItem="z3U-gV-IkQ" secondAttribute="bottom" constant="62.999999999999886" id="kiM-bR-nEs"/>
                             <constraint firstItem="deh-zn-pSH" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="25" id="qGB-eD-hX4"/>
                             <constraint firstItem="UfD-CY-Zmq" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" id="sQe-sT-E1x"/>
                             <constraint firstItem="2oi-Em-MKy" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" constant="20" id="tMy-BT-4gN"/>
                             <constraint firstItem="UfD-CY-Zmq" firstAttribute="bottom" secondItem="Zsl-v5-xCU" secondAttribute="bottom" id="yCR-LB-o0m"/>
-                            <constraint firstItem="xa3-au-3KY" firstAttribute="leading" secondItem="z3U-gV-IkQ" secondAttribute="trailing" constant="-90" id="yHG-0A-KyE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zsl-v5-xCU"/>
                     </view>
@@ -294,7 +294,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8yi-L3-CpD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3035" y="156"/>
+            <point key="canvasLocation" x="2513" y="234"/>
         </scene>
         <!--Summary-->
         <scene sceneID="bWs-dI-ISl">
@@ -304,7 +304,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cpg-rY-va2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2781" y="359"/>
+            <point key="canvasLocation" x="2530" y="468"/>
         </scene>
     </scenes>
     <resources>
