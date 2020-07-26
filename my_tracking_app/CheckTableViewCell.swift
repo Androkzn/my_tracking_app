@@ -19,12 +19,29 @@ class CheckTableViewCell: UITableViewCell {
 
     var cellDelegate: CheckTableViewDelegate?
 
+
     func set(title: String, checked: Bool) {
         titleLabel.text = title
         check.isChecked = checked
+        setupLabelTap()
     }
-
-    @IBAction func checkboxValueChanged(_ sender: Checkbox) {
+    //Set up gesture recognizer for the label
+    func setupLabelTap() {
+        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
+        self.titleLabel.isUserInteractionEnabled = true
+        self.titleLabel.addGestureRecognizer(labelTap)
+        
+    }
+    //conects the label to checkbox
+    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
         cellDelegate?.checkboxSelected(checkbox: self, settingValue: titleLabel.text!)
     }
+    
+    @IBAction func checkboxTapped(_ sender: Checkbox) {
+        cellDelegate?.checkboxSelected(checkbox: self, settingValue: titleLabel.text!)
+    }
+    
+
+
+    
 }

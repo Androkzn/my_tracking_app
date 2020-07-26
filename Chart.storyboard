@@ -57,8 +57,8 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALTITUDE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7Q-q3-OtA">
-                                <rect key="frame" x="166" y="64.5" width="82" height="20.5"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <rect key="frame" x="159.5" y="68" width="95" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -66,7 +66,7 @@
                         <color key="backgroundColor" red="0.85851770640000002" green="0.56265991930000003" blue="0.2478595972" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="T7Q-q3-OtA" firstAttribute="centerX" secondItem="pcd-kb-4hi" secondAttribute="centerX" id="6Yp-VN-8EB"/>
-                            <constraint firstItem="pcd-kb-4hi" firstAttribute="top" secondItem="T7Q-q3-OtA" secondAttribute="bottom" constant="19" id="8yd-1t-rlS"/>
+                            <constraint firstItem="pcd-kb-4hi" firstAttribute="top" secondItem="T7Q-q3-OtA" secondAttribute="bottom" constant="12" id="8yd-1t-rlS"/>
                             <constraint firstItem="Rfn-H1-KPm" firstAttribute="bottom" secondItem="K8v-4a-uMI" secondAttribute="bottom" constant="25" id="D7W-eP-dIc"/>
                             <constraint firstItem="pcd-kb-4hi" firstAttribute="centerX" secondItem="Rfn-H1-KPm" secondAttribute="centerX" id="LBU-D8-FHN"/>
                             <constraint firstItem="rkf-U0-j8c" firstAttribute="leading" secondItem="Rfn-H1-KPm" secondAttribute="leading" constant="20" id="Vpq-w1-wfM"/>
