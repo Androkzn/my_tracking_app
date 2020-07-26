@@ -45,15 +45,25 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var distanceContainer: UIView!
     @IBOutlet weak var timeContainer: UIView!
     @IBOutlet weak var shareButtonLabel: UIButton!
+    @IBOutlet weak var commentsLabel: UILabel!
     
     @IBAction func backButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
         delegate?.showToast(_vc:self)
     }
     
-    @IBAction func startWritingComment(_ sender: UIButton) {
+    func setupTextFieldTapGesture() {
+        let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(self.textFieldTapped(_:)))
+        self.commentsTextView.isUserInteractionEnabled = true
+        self.commentsTextView.addGestureRecognizer(textFieldTap)
+    }
+    
+    
+    @objc func textFieldTapped(_ sender: UITapGestureRecognizer) {
+        commentsTextView.text = currentWorkout?.comment
         commentsTextView.isEditable = true
         commentsTextView.becomeFirstResponder()
+        commentsLabel.text = "COMMENTS (tap outside the field to save)"
     }
     
     @IBAction func shareToMedia(_ sender: UIButton) {
@@ -93,6 +103,7 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupContainersTap()
+        setupTextFieldTapGesture()
         mapLabel.delegate = self
 
         // Init rectWorkout to a valid value as it is not an optional variable
@@ -133,7 +144,6 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecognizer)
-        
         updateLabels()
         refreshUnitLabels()
         if workoutLocations.count > 1 {
@@ -194,7 +204,12 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
             locations: workoutLocations)
         averageSpeedLabel.text = WorkoutDataHelper.getDisplayedSpeed(
             from: currentWorkout!.averageSpeed)
-        commentsTextView.text = currentWorkout!.comment
+        if (currentWorkout!.comment == "") {
+            commentsTextView.text = "Tap to add a comment"
+            commentsTextView.textAlignment = .center
+        } else {
+            commentsTextView.text = currentWorkout!.comment
+        }
     }
 
     func refreshUnitLabels() {
@@ -256,9 +271,16 @@ extension SummaryViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if let currentWorkout = self.currentWorkout {
-            currentWorkout.comment = textView.text
-            DataManager.shared.save()
+            let currentText = textView.text
+            if (currentText == "") {
+                         commentsTextView.text = "Tap to add a comment"
+                currentWorkout.comment = ""
+            } else {
+                currentWorkout.comment = textView.text
+                DataManager.shared.save()
+            }
         }
+        commentsLabel.text = "COMMENTS"
     }
 }
 
