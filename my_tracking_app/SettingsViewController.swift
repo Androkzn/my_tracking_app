@@ -76,21 +76,53 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     //set up section title
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitle(atIndex: section)
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return sectionTitle(atIndex: section)
+//    }
     //set up cell header height
     func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
     
-    //set up cell header font and alignment
+    //set up cell header
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
-        header.textLabel?.textAlignment = NSTextAlignment.left
+
+        //set up image
+        let imageName = "icons8-mountain-100.png"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        imageView.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        //set up label
+        let title = UILabel()
+        title.text = sectionTitle(atIndex: section)
+        title.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
+    
+        //set up header constraints
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        title.translatesAutoresizingMaskIntoConstraints = false
+        
+        header.addSubview(imageView)
+        header.addSubview(title)
+    
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(equalTo: header.layoutMarginsGuide.leadingAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 30),
+            imageView.heightAnchor.constraint(equalToConstant: 30),
+            imageView.centerYAnchor.constraint(equalTo: header.centerYAnchor),
+        
+            // Center the label vertically, and use it to fill the remaining space in the header view.
+            title.heightAnchor.constraint(equalToConstant: 30),
+            title.leadingAnchor.constraint(equalTo: imageView.trailingAnchor,
+                   constant: 8),
+            title.trailingAnchor.constraint(equalTo:
+                   header.layoutMarginsGuide.trailingAnchor),
+            title.centerYAnchor.constraint(equalTo: header.centerYAnchor)
+        ])
     }
+    
 }
 
 // MARK: UITableViewDelegate
