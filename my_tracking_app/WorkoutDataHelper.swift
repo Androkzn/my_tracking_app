@@ -146,7 +146,7 @@ class WorkoutDataHelper {
     // E.g. "3 km" or "3 miles"
     // Will return "300 m" instead of "0.3 km"
     static func getCompleteSpokenDistance(from distance: Double) -> String {
-        getCompleteDisplayedDistance(from: distance, withFormat: "%.0f",
+        getCompleteDisplayedDistance(from: distance, withFormat: "%.1f",
                                      isAltitude: false, withUnit: true,
                                      smallDistances: true)
     }

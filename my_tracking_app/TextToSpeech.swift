@@ -29,7 +29,6 @@ class TextToSpeech {
     static func speakWhenReachingMilestones(workoutDistance: Double, workoutTime: String) {
         let spokenDistance = WorkoutDataHelper.getCompleteSpokenDistance(from: workoutDistance)
         let spokenString = "You have \(WorkoutDataHelper.getWorkoutTypeSpokenString()) \(spokenDistance) in \(workoutTime)"
-        
         let utterance = AVSpeechUtterance(string: spokenString)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = 0.5
