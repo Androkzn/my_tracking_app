@@ -33,6 +33,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var counterTextLabel: UILabel!
     @IBOutlet weak var progressBarLabel: UIProgressView!
+    @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     
     //Variables
@@ -75,12 +76,28 @@ class MapViewController: UIViewController {
         setMapType()
         centerToCurrentLocation()
         refreshUnitLabels()
-        //temporarly solution, should be implemented through delegate
+        showSavedWorkoutToast()
+        setUpAltitudeLaberl ()
+    }
+    
+    //shows toast if workout just saved
+    func showSavedWorkoutToast () {
         if SummaryViewController.isSaved {
             ToastView.shared.blueToast(view,
                                        txt_msg: "Your workout has been saved successfully",
                                        duration: 4)
             SummaryViewController.isSaved = !SummaryViewController.isSaved
+        }
+    }
+    
+    //set up altitude label and icon depends on map type
+    func setUpAltitudeLaberl () {
+        if  mapLabel.mapType == .standard {
+            altitudeLabel.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            iconAltitudeLabel.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        } else {
+            altitudeLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            iconAltitudeLabel.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
     }
 
