@@ -46,7 +46,8 @@ class MapViewController: UIViewController {
     var lastLocation: CLLocation?
     var locationManager: CLLocationManager!
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
-    var nextMilestone: Double = 0.5 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
+    var nextMilestone: Double = 0.0 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
+    var milestone: Double = 0.0 //Milstone from settings
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +62,7 @@ class MapViewController: UIViewController {
         button.addGestureRecognizer(tapGesture)
         button.addGestureRecognizer(longGesture)
         longGesture.minimumPressDuration = 0.5
-
+        setMilestones()
         setupCenterButton()
         setupSettingsButton()
         setupLocationManager()
@@ -204,18 +205,20 @@ class MapViewController: UIViewController {
     }
 
     func speakWhenReachingMilestones() {
-        if (nextMilestone != 0) {
+        if (milestone != 0) {
             let distanceString = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
             let convertedDistance = Double(distanceString)!
             if (convertedDistance > nextMilestone) {
-                nextMilestone = convertedDistance + nextMilestone
+                nextMilestone = convertedDistance + milestone
             }
             if (convertedDistance == nextMilestone) && (convertedDistance > 0) {
-                nextMilestone += nextMilestone
+                nextMilestone += milestone
+                print(nextMilestone)
                 TextToSpeech.speakWhenReachingMilestones(workoutDistance: currentWorkoutDistance,
                         workoutTime: GlobalTimer.shared.secondsFormatterToSpokenDuration(
                                                     seconds: GlobalTimer.shared.seconds))
             }
+            
         }
 
     }
@@ -408,7 +411,7 @@ extension MapViewController {
     }
 
     func setupWorkoutButton(started: Bool) {
-        startButtonLabel.layer.borderWidth = 1
+        startButtonLabel.layer.borderWidth = 3
         startButtonLabel.layer.cornerRadius = 10
 
         if !started {
@@ -428,6 +431,10 @@ extension MapViewController {
         locationManager.distanceFilter = 5
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
 
+        //set up milestone
+        
+        nextMilestone = milestone
+        
         // Start timer
         GlobalTimer.shared.startTimer(self)
 
@@ -478,28 +485,28 @@ extension MapViewController {
     }
     
     func setMilestones() {
-           let milestone = UserDefaults.standard.integer(forKey: "VOICE MILESTONES")
-           switch milestone {
+           let milestoneKey = UserDefaults.standard.integer(forKey: "VOICE MILESTONES")
+           switch milestoneKey {
            case Milestones.off.rawValue:
-                 nextMilestone = 0
+                 milestone = 0
            case Milestones.half.rawValue:
-                nextMilestone = 0.5
+                milestone = 0.5
            case Milestones.half.rawValue:
-                nextMilestone = 1
+                milestone = 1
            case Milestones.half.rawValue:
-                nextMilestone = 2
+                milestone = 2
            case Milestones.half.rawValue:
-                nextMilestone = 3
+                milestone = 3
            case Milestones.half.rawValue:
-                nextMilestone = 4
+                milestone = 4
            case Milestones.half.rawValue:
-                nextMilestone = 5
+                milestone = 5
            case Milestones.half.rawValue:
-                nextMilestone = 10
+                milestone = 10
            case Map.standard.rawValue:
                fallthrough
            default:
-               nextMilestone = 1
+               milestone = 1
            }
        }
     
