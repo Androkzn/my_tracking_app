@@ -177,7 +177,6 @@
                                                 <constraint firstItem="44H-gB-mr2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YzO-wo-9Xv" secondAttribute="top" constant="5" id="BxV-gO-zdm"/>
                                                 <constraint firstItem="Cuj-HD-eYl" firstAttribute="leading" secondItem="44H-gB-mr2" secondAttribute="trailing" constant="20" id="HKa-wq-dsp"/>
                                                 <constraint firstAttribute="trailing" secondItem="Cuj-HD-eYl" secondAttribute="trailing" id="KJa-vg-7EK"/>
-
                                                 <constraint firstItem="Cuj-HD-eYl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YzO-wo-9Xv" secondAttribute="leading" constant="60" id="Tze-5Q-dOc"/>
                                                 <constraint firstItem="44H-gB-mr2" firstAttribute="centerY" secondItem="YzO-wo-9Xv" secondAttribute="centerY" id="UUb-rO-ahP"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="44H-gB-mr2" secondAttribute="bottom" constant="5" id="dOg-q5-f9L"/>
@@ -220,7 +219,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HbE-8e-lQg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5253.6231884057979" y="293.97321428571428"/>
+            <point key="canvasLocation" x="5006" y="287"/>
         </scene>
     </scenes>
     <resources>

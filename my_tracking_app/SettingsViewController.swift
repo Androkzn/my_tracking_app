@@ -9,10 +9,12 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
+    
+    var headerSetUp = false
 
     @IBOutlet weak var settingsTableView: UITableView!
     
-    let settingsValue = [["Metric (meters, kilometers)", "Imperial UK (yards, miles)",
+    var settingsValue = [["Metric (meters, kilometers)", "Imperial UK (yards, miles)",
                           "Imperial US (feet, miles)"],
                          [String(describing: WorkoutType.run).capitalized,
                           String(describing: WorkoutType.bike).capitalized,
@@ -20,7 +22,7 @@ class SettingsViewController: UIViewController {
                          [String(describing: Map.standard).capitalized,
                           String(describing: Map.hybrid).capitalized,
                           String(describing: Map.satellite).capitalized],
-                         ["Clear history"]]
+                         ["Off", "On"], ["Off", "0.5 \(WorkoutDataHelper.getDistanceUnit())", "1 \(WorkoutDataHelper.getDistanceUnit())", "2 \(WorkoutDataHelper.getDistanceUnit())", "3 \(WorkoutDataHelper.getDistanceUnit())", "4 \(WorkoutDataHelper.getDistanceUnit())", "5 \(WorkoutDataHelper.getDistanceUnit())", "10 \(WorkoutDataHelper.getDistanceUnit())"], ["Clear history"]]
     var settings: [String: Int]!
     var selectedRow = 0
     
@@ -28,15 +30,28 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         settings = [keyUnit:Units.metric.rawValue,
                     keyWorkout:WorkoutType.run.rawValue,
-                    keyMap:Map.standard.rawValue,
+                    keyMap:Map.standard.rawValue, keyVoice: Voice.off.rawValue,keyMilestones: Milestones.one.rawValue,
                     "Other":0]
         retrieveSettings()
         self.settingsTableView.tableFooterView = UIView()
         self.view.backgroundColor = #colorLiteral(red: 0.3285953999, green: 0.7346485257, blue: 0.918245554, alpha: 1)
+        
+        //prints path to settings data
+        let library_path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
+        print("library path is \(library_path)")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        settingsValue = [["Metric (meters, kilometers)", "Imperial UK (yards, miles)",
+         "Imperial US (feet, miles)"],
+        [String(describing: WorkoutType.run).capitalized,
+         String(describing: WorkoutType.bike).capitalized,
+         String(describing: WorkoutType.walk).capitalized],
+        [String(describing: Map.standard).capitalized,
+         String(describing: Map.hybrid).capitalized,
+         String(describing: Map.satellite).capitalized],
+        ["Off", "On"], ["Off", "0.5 \(WorkoutDataHelper.getDistanceUnit())", "1 \(WorkoutDataHelper.getDistanceUnit())", "2 \(WorkoutDataHelper.getDistanceUnit())", "3 \(WorkoutDataHelper.getDistanceUnit())", "4 \(WorkoutDataHelper.getDistanceUnit())", "5 \(WorkoutDataHelper.getDistanceUnit())", "10 \(WorkoutDataHelper.getDistanceUnit())"], ["Clear history"]]
         //reloads the TableView
         self.settingsTableView.reloadData()
     }
@@ -70,58 +85,61 @@ extension SettingsViewController: UITableViewDataSource {
         var cell: UITableViewCell
         cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel!.text = settingTitle(atIndex: indexPath.section)
+//        print("settingTitle \(settingTitle(atIndex: indexPath.section))")
         cell.textLabel!.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
-        tableView.rowHeight = 60.0
+        tableView.rowHeight = 50.0
         return cell
     }
     
     //set up section title
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return sectionTitle(atIndex: section)
-//    }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitle(atIndex: section)
+    }
+    
     //set up cell header height
     func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 35
     }
     
-    //set up cell header
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-
-        //set up image
-        let imageName = "icons8-mountain-100.png"
-        let image = UIImage(named: imageName)
-        let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        imageView.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-        //set up label
-        let title = UILabel()
-        title.text = sectionTitle(atIndex: section)
-        title.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
-    
-        //set up header constraints
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        title.translatesAutoresizingMaskIntoConstraints = false
-        
-        header.addSubview(imageView)
-        header.addSubview(title)
-    
-        NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: header.layoutMarginsGuide.leadingAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 30),
-            imageView.heightAnchor.constraint(equalToConstant: 30),
-            imageView.centerYAnchor.constraint(equalTo: header.centerYAnchor),
-        
-            // Center the label vertically, and use it to fill the remaining space in the header view.
-            title.heightAnchor.constraint(equalToConstant: 30),
-            title.leadingAnchor.constraint(equalTo: imageView.trailingAnchor,
-                   constant: 8),
-            title.trailingAnchor.constraint(equalTo:
-                   header.layoutMarginsGuide.trailingAnchor),
-            title.centerYAnchor.constraint(equalTo: header.centerYAnchor)
-        ])
-    }
+    //set up cell header with icon
+//        func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+//        if !headerSetUp {
+//            let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+//            //set up image
+//            let imageName = "icons8-mountain-100.png"
+//            let image = UIImage(named: imageName)
+//            let imageView = UIImageView(image: image!)
+//            imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+//            imageView.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+//            //set up label
+//            let title = UILabel()
+//            title.text = sectionTitle(atIndex: section)
+//            title.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
+//
+//            //set up header constraints
+//            imageView.translatesAutoresizingMaskIntoConstraints = false
+//            title.translatesAutoresizingMaskIntoConstraints = false
+//
+//            header.addSubview(imageView)
+//            header.addSubview(title)
+//            NSLayoutConstraint.activate([
+//                imageView.leadingAnchor.constraint(equalTo: header.layoutMarginsGuide.leadingAnchor),
+//                imageView.widthAnchor.constraint(equalToConstant: 30),
+//                imageView.heightAnchor.constraint(equalToConstant: 30),
+//                imageView.centerYAnchor.constraint(equalTo: header.centerYAnchor),
+//
+//                // Center the label vertically, and use it to fill the remaining space in the header view.
+//                title.heightAnchor.constraint(equalToConstant: 30),
+//                title.leadingAnchor.constraint(equalTo: imageView.trailingAnchor,
+//                       constant: 8),
+//                title.trailingAnchor.constraint(equalTo:
+//                       header.layoutMarginsGuide.trailingAnchor),
+//                title.centerYAnchor.constraint(equalTo: header.centerYAnchor)
+//            ])
+//
+//        }
+//    }
     
 }
 
@@ -132,6 +150,7 @@ extension SettingsViewController: UITableViewDelegate {
         if indexPath.section != settings.count - 1 {
             // Segue to the second view controller
             self.performSegue(withIdentifier: "settingSelection", sender: self)
+            headerSetUp = true
         } else {
             // Show a confirmation dialog to delete all workouts.
             clearHistory()
@@ -143,9 +162,9 @@ extension SettingsViewController: UITableViewDelegate {
 extension SettingsViewController: SettingSelectionViewControllerDelegate {
     func settingChanged(settingTitle: String, selectedValue: String, selectedIndex: Int) {
         if sectionTitle(atIndex: selectedRow) == settingTitle {
-            let cell = settingsTableView.cellForRow(at: IndexPath(row: 0, section: selectedRow))
-            cell?.textLabel?.text = selectedValue
-            cell?.textLabel?.font = UIFont.systemFont(ofSize: 40, weight: UIFont.Weight.bold)
+            //let cell = settingsTableView.cellForRow(at: IndexPath(row: 0, section: selectedRow))
+            //cell?.textLabel?.text = selectedValue
+            //cell?.textLabel?.font = UIFont.systemFont(ofSize: 40, weight: UIFont.Weight.bold)
             let key = sectionTitle(atIndex: selectedRow)
             settings[key] = selectedIndex
             saveSetting(key: sectionTitle(atIndex: selectedRow))
@@ -155,13 +174,19 @@ extension SettingsViewController: SettingSelectionViewControllerDelegate {
 
 extension SettingsViewController {
     func sectionTitle(atIndex: Int) -> String {
+        print(atIndex)
         switch atIndex {
         case 0:
+            print(keyUnit)
             return keyUnit
         case 1:
             return keyWorkout
         case 2:
             return keyMap
+        case 3:
+            return keyVoice
+        case 4:
+            return keyMilestones
         default:
             return "OTHER"
         }
@@ -175,6 +200,10 @@ extension SettingsViewController {
             return settingsValue[atIndex][settings[keyWorkout] ?? 0]
         case 2:
             return settingsValue[atIndex][settings[keyMap] ?? 0]
+        case 3:
+            return settingsValue[atIndex][settings[keyVoice] ?? 0]
+        case 4:
+            return settingsValue[atIndex][settings[keyMilestones] ?? 0]
         default:
             return settingsValue[atIndex][0]
         }
@@ -188,8 +217,12 @@ extension SettingsViewController {
             return settings[keyWorkout] ?? 0
         case 2:
             return settings[keyMap] ?? 0
+        case 3:
+            return settings[keyVoice] ?? 0
+        case 4:
+            return settings[keyMilestones] ?? 0
         default:
-            return settings["Other"] ?? 0
+            return settings["OTHER"] ?? 0
         }
     }
 
@@ -206,6 +239,16 @@ extension SettingsViewController {
         settings[keyMap] = defaults.integer(forKey: keyMap)
         if settings[keyMap] == 0 {
             defaults.set(settings[keyMap], forKey: keyMap)
+        }
+        settings[keyVoice] = defaults.integer(forKey: keyVoice)
+        if settings[keyVoice] == 0 {
+            defaults.set(settings[keyVoice], forKey: keyVoice)
+        }
+        print(UserDefaults.standard.integer(forKey: keyMilestones))
+        //
+        settings[keyMilestones] = defaults.integer(forKey: keyMilestones)
+        if settings[keyMilestones] == 0 {
+            defaults.set(settings[keyMilestones], forKey: keyMilestones)
         }
     }
 
