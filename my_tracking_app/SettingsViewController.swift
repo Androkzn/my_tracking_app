@@ -174,10 +174,8 @@ extension SettingsViewController: SettingSelectionViewControllerDelegate {
 
 extension SettingsViewController {
     func sectionTitle(atIndex: Int) -> String {
-        print(atIndex)
         switch atIndex {
         case 0:
-            print(keyUnit)
             return keyUnit
         case 1:
             return keyWorkout
@@ -244,8 +242,6 @@ extension SettingsViewController {
         if settings[keyVoice] == 0 {
             defaults.set(settings[keyVoice], forKey: keyVoice)
         }
-        print(UserDefaults.standard.integer(forKey: keyMilestones))
-        //
         settings[keyMilestones] = defaults.integer(forKey: keyMilestones)
         if settings[keyMilestones] == 0 {
             defaults.set(settings[keyMilestones], forKey: keyMilestones)
