@@ -26,35 +26,21 @@
                                         <rect key="frame" x="0.0" y="557" width="414" height="85"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="COMMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHf-5o-DOL">
-                                                <rect key="frame" x="0.0" y="5" width="414" height="13.5"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
+                                                <rect key="frame" x="0.0" y="5" width="414" height="14.5"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                 <color key="textColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SYR-rQ-mX1">
-                                                <rect key="frame" x="0.0" y="18.5" width="414" height="66.5"/>
+                                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SYR-rQ-mX1">
+                                                <rect key="frame" x="0.0" y="19.5" width="414" height="65.5"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="YEQ-2C-Uik" id="dk4-07-L8a"/>
                                                 </connections>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gnm-fx-l3C">
-                                                <rect key="frame" x="288" y="2.5" width="32" height="25.5"/>
-                                                <rect key="frame" x="382" y="2.5" width="32" height="25.5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="7y3-mR-Rxz"/>
-                                                    <constraint firstAttribute="width" constant="32" id="HAZ-hg-ic0"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <state key="normal" backgroundImage="pencil" catalog="system"/>
-                                                <connections>
-                                                    <action selector="startWritingComment:" destination="YEQ-2C-Uik" eventType="touchUpInside" id="IxN-LJ-HvS"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
@@ -62,9 +48,7 @@
                                             <constraint firstItem="LHf-5o-DOL" firstAttribute="top" secondItem="DbK-zU-P4T" secondAttribute="top" constant="5" id="Ccr-pJ-4mZ"/>
                                             <constraint firstItem="SYR-rQ-mX1" firstAttribute="leading" secondItem="DbK-zU-P4T" secondAttribute="leading" id="Ctd-Vc-ONX"/>
                                             <constraint firstItem="SYR-rQ-mX1" firstAttribute="top" secondItem="LHf-5o-DOL" secondAttribute="bottom" id="U6Z-fZ-tFa"/>
-                                            <constraint firstItem="Gnm-fx-l3C" firstAttribute="trailing" secondItem="LHf-5o-DOL" secondAttribute="trailing" id="VIq-Yh-OnC"/>
                                             <constraint firstAttribute="height" constant="85" id="XLx-4w-BOh"/>
-                                            <constraint firstItem="Gnm-fx-l3C" firstAttribute="top" secondItem="DbK-zU-P4T" secondAttribute="top" constant="1.7763568394002505e-15" id="eN5-L7-cjH"/>
                                             <constraint firstAttribute="trailing" secondItem="SYR-rQ-mX1" secondAttribute="trailing" id="nxH-do-0S9"/>
                                             <constraint firstItem="LHf-5o-DOL" firstAttribute="leading" secondItem="DbK-zU-P4T" secondAttribute="leading" id="ool-zQ-o6g"/>
                                             <constraint firstAttribute="trailing" secondItem="LHf-5o-DOL" secondAttribute="trailing" id="upd-mY-awl"/>
@@ -253,6 +237,7 @@
                         <outlet property="averageSpeedUnitLabel" destination="T2J-l0-GwQ" id="eq4-Cg-TLQ"/>
                         <outlet property="backButtonLabel" destination="1gl-pj-Ioc" id="15P-FA-wbW"/>
                         <outlet property="commentView" destination="DbK-zU-P4T" id="V2u-Fp-d0X"/>
+                        <outlet property="commentsLabel" destination="LHf-5o-DOL" id="FXy-Ez-8H6"/>
                         <outlet property="commentsTextView" destination="SYR-rQ-mX1" id="W8c-Y9-URp"/>
                         <outlet property="distanceContainer" destination="bOg-ai-A3A" id="mfE-Q1-LFf"/>
                         <outlet property="distanceLabel" destination="7al-yL-SOo" id="5Qz-nx-yCo"/>
@@ -263,13 +248,12 @@
                         <outlet property="speedUnitLabel" destination="7Zw-XZ-OM2" id="ECv-00-up4"/>
                         <outlet property="timeContainer" destination="PQA-BQ-pMA" id="uht-tf-uVM"/>
                         <outlet property="timeLabel" destination="BlE-YD-sEa" id="GD8-UX-ruO"/>
-                        <outlet property="writeCommentLabel" destination="Gnm-fx-l3C" id="LwT-0y-05f"/>
                         <segue destination="vV5-Ph-0Ms" kind="show" identifier="chartView" id="FVe-jc-nu2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Wp-bC-Deo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="871.875" y="47.535211267605632"/>
+            <point key="canvasLocation" x="871.01449275362324" y="46.875"/>
         </scene>
         <!--chartView-->
         <scene sceneID="6m9-XV-3Wx">
@@ -287,6 +271,5 @@
         <image name="arrow_left_black" width="32" height="32"/>
         <image name="chart.bar" catalog="system" width="128" height="90"/>
         <image name="map" catalog="system" width="128" height="113"/>
-        <image name="pencil" catalog="system" width="128" height="113"/>
     </resources>
 </document>
