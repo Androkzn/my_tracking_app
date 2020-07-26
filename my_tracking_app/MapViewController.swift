@@ -46,7 +46,7 @@ class MapViewController: UIViewController {
     var lastLocation: CLLocation?
     var locationManager: CLLocationManager!
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
-    var nextMilestone: Int = 1 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
+    var nextMilestone: Double = 0.5 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +72,7 @@ class MapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        nextMilestone = 1
+        setMilestones()
         setMapType()
         centerToCurrentLocation()
         refreshUnitLabels()
@@ -204,17 +204,20 @@ class MapViewController: UIViewController {
     }
 
     func speakWhenReachingMilestones() {
-        let distanceString = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
-        let convertedDistance: Int = Int(Double(distanceString) ?? 0)
-        if convertedDistance > nextMilestone {
-            nextMilestone = convertedDistance + 1
+        if (nextMilestone != 0) {
+            let distanceString = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            let convertedDistance = Double(distanceString)!
+            if (convertedDistance > nextMilestone) {
+                nextMilestone = convertedDistance + nextMilestone
+            }
+            if (convertedDistance == nextMilestone) && (convertedDistance > 0) {
+                nextMilestone += nextMilestone
+                TextToSpeech.speakWhenReachingMilestones(workoutDistance: currentWorkoutDistance,
+                        workoutTime: GlobalTimer.shared.secondsFormatterToSpokenDuration(
+                                                    seconds: GlobalTimer.shared.seconds))
+            }
         }
-        if convertedDistance == nextMilestone && (convertedDistance > 0) {
-            nextMilestone += 1
-            TextToSpeech.speakWhenReachingMilestones(workoutDistance: currentWorkoutDistance,
-                    workoutTime: GlobalTimer.shared.secondsFormatterToSpokenDuration(
-                                                seconds: GlobalTimer.shared.seconds))
-        }
+
     }
 }
 
@@ -462,7 +465,8 @@ extension MapViewController {
             }
             
             // here to speak final distance
-            TextToSpeech.speakWhenWorkoutStops(workoutDistance: currentWorkout.distance)
+            if (UserDefaults.standard.integer(forKey: "VOICE") == 1) {
+                TextToSpeech.speakWhenWorkoutStops(workoutDistance: currentWorkout.distance)}
         }
 
         currentLocations.removeAll(keepingCapacity: false)
@@ -472,7 +476,33 @@ extension MapViewController {
         deleteRoute(mapLabel)
         locationManager.allowsBackgroundLocationUpdates = false
     }
-
+    
+    func setMilestones() {
+           let milestone = UserDefaults.standard.integer(forKey: "VOICE MILESTONES")
+           switch milestone {
+           case Milestones.off.rawValue:
+                 nextMilestone = 0
+           case Milestones.half.rawValue:
+                nextMilestone = 0.5
+           case Milestones.half.rawValue:
+                nextMilestone = 1
+           case Milestones.half.rawValue:
+                nextMilestone = 2
+           case Milestones.half.rawValue:
+                nextMilestone = 3
+           case Milestones.half.rawValue:
+                nextMilestone = 4
+           case Milestones.half.rawValue:
+                nextMilestone = 5
+           case Milestones.half.rawValue:
+                nextMilestone = 10
+           case Map.standard.rawValue:
+               fallthrough
+           default:
+               nextMilestone = 1
+           }
+       }
+    
     func updateDistanceLabel() {
         distanceLabel.text = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
     }

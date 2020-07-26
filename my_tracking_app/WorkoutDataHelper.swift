@@ -26,10 +26,27 @@ enum Map: Int {
     case satellite
 }
 
+enum Voice: Int {
+    case off
+    case on
+}
+
+enum Milestones: Int {
+    case off
+    case half
+    case one
+    case two
+    case three
+    case four
+    case five
+    case ten
+}
+
 let keyUnit = "UNITS"
 let keyWorkout = "WORKOUT"
 let keyMap = "MAP"
 let keyVoice = "VOICE"
+let keyMilestones = "VOICE MILESTONES"
 
 class WorkoutDataHelper {
 
