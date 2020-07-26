@@ -40,7 +40,7 @@ class SettingsViewController: UIViewController {
         //reloads the TableView
         self.settingsTableView.reloadData()
     }
-
+    
     @IBAction func backSelected(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -71,11 +71,25 @@ extension SettingsViewController: UITableViewDataSource {
         cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel!.text = settingTitle(atIndex: indexPath.section)
         cell.textLabel!.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
+        tableView.rowHeight = 60.0
         return cell
     }
-
+    
+    //set up section title
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitle(atIndex: section)
+    }
+    //set up cell header height
+    func tableView(_ tableView: UITableView,
+                            heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    //set up cell header font and alignment
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
+        header.textLabel?.textAlignment = NSTextAlignment.left
     }
 }
 
@@ -83,7 +97,6 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRow = indexPath.section
-
         if indexPath.section != settings.count - 1 {
             // Segue to the second view controller
             self.performSegue(withIdentifier: "settingSelection", sender: self)

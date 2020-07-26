@@ -140,7 +140,7 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2oi-Em-MKy" userLabel="Settings">
                                 <rect key="frame" x="20" y="64" width="50" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.74823416095890416" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="HSi-dy-30B"/>
                                     <constraint firstAttribute="height" constant="50" id="olb-LD-5oR"/>
@@ -177,7 +177,7 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldZ-GE-gzT" userLabel="Center">
                                 <rect key="frame" x="305" y="64" width="50" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.74507705479452058" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="EDN-la-UKz"/>
                                     <constraint firstAttribute="height" constant="50" id="WlE-V8-9g3"/>
@@ -252,6 +252,7 @@
                         <outlet property="counterTextLabel" destination="f5O-xC-hCQ" id="gSs-dL-lnL"/>
                         <outlet property="distanceLabel" destination="Ol2-5t-6Bj" id="uJy-GT-d8D"/>
                         <outlet property="distanceUnitLabel" destination="Y6D-yr-Uko" id="ZaC-pm-aud"/>
+                        <outlet property="iconAltitudeLabel" destination="UVH-VO-1a7" id="ETy-W4-f5S"/>
                         <outlet property="mapLabel" destination="z3U-gV-IkQ" id="GuX-2K-wqZ"/>
                         <outlet property="progressBarLabel" destination="Wfj-fa-akl" id="nnh-DR-OAo"/>
                         <outlet property="recenterButton" destination="ldZ-GE-gzT" id="ckv-1b-cBP"/>

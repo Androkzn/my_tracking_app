@@ -63,7 +63,9 @@ extension SettingSelectionViewController: UITableViewDataSource {
         cell.set(title: choicesList[indexPath.row],
                  checked: indexPath.row == selectedValue ? true : false)
         cell.cellDelegate = self
+        tableView.rowHeight = 60.0
         return cell
     }
+    
 }
 
