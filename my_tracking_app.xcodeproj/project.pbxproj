@@ -28,6 +28,7 @@
 		DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F724BE441500364F15 /* CubicChart.swift */; };
 		DEB238FB24BE441500364F15 /* ChartFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F824BE441500364F15 /* ChartFormatter.swift */; };
 		DEB238FC24BE441500364F15 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F924BE441500364F15 /* ChartViewController.swift */; };
+		DEF997B524CD596700408424 /* SettingsVoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF997B424CD596700408424 /* SettingsVoiceViewController.swift */; };
 		DEFCD747249B364D007D7E75 /* History.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEFCD746249B364D007D7E75 /* History.storyboard */; };
 		DEFCD749249B36A0007D7E75 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEFCD748249B36A0007D7E75 /* Map.storyboard */; };
 		E82D14F124A287AA002A0773 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82D14F024A287AA002A0773 /* LocationAnnotation.swift */; };
@@ -83,6 +84,7 @@
 		DEB238F724BE441500364F15 /* CubicChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicChart.swift; sourceTree = "<group>"; };
 		DEB238F824BE441500364F15 /* ChartFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartFormatter.swift; sourceTree = "<group>"; };
 		DEB238F924BE441500364F15 /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		DEF997B424CD596700408424 /* SettingsVoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVoiceViewController.swift; sourceTree = "<group>"; };
 		DEFCD746249B364D007D7E75 /* History.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = History.storyboard; sourceTree = "<group>"; };
 		DEFCD748249B36A0007D7E75 /* Map.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		E82D14F024A287AA002A0773 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				DE67A34124988B9B000FFEA5 /* MapViewController.swift */,
 				F2ACEB8D24A1789500ED9079 /* MapViewDelegate.swift */,
 				F2B350D624B909670029B093 /* SettingSelectionViewController.swift */,
+				DEF997B424CD596700408424 /* SettingsVoiceViewController.swift */,
 				F2AA4B9C24AAB6E500BB00DA /* SettingsViewController.swift */,
 				DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */,
 				DE67A34424988DED000FFEA5 /* TabViewController.swift */,
@@ -415,6 +418,7 @@
 				DE7FCB2024A04915009EC89B /* Timer.swift in Sources */,
 				F2B350DC24B90D6E0029B093 /* CheckTableViewCell.swift in Sources */,
 				DE67A31B249889BD000FFEA5 /* SceneDelegate.swift in Sources */,
+				DEF997B524CD596700408424 /* SettingsVoiceViewController.swift in Sources */,
 				F2B350D724B909670029B093 /* SettingSelectionViewController.swift in Sources */,
 				E8F3BEC124BFDBFD0037AFD8 /* TextToSpeech.swift in Sources */,
 				E82D14F124A287AA002A0773 /* LocationAnnotation.swift in Sources */,

@@ -29,6 +29,7 @@ enum Map: Int {
 let keyUnit = "UNITS"
 let keyWorkout = "WORKOUT"
 let keyMap = "MAP"
+let keyVoice = "VOICE"
 
 class WorkoutDataHelper {
 
