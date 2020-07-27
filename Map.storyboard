@@ -252,15 +252,18 @@
                         <outlet property="counterTextLabel" destination="f5O-xC-hCQ" id="gSs-dL-lnL"/>
                         <outlet property="distanceLabel" destination="Ol2-5t-6Bj" id="uJy-GT-d8D"/>
                         <outlet property="distanceUnitLabel" destination="Y6D-yr-Uko" id="ZaC-pm-aud"/>
+                        <outlet property="firstCardLabel" destination="FTK-eT-EVD" id="8gu-GA-OWp"/>
+                        <outlet property="fourthCardLabel" destination="irg-to-muz" id="iAs-SU-ZcJ"/>
                         <outlet property="iconAltitudeLabel" destination="UVH-VO-1a7" id="ETy-W4-f5S"/>
                         <outlet property="mapLabel" destination="z3U-gV-IkQ" id="GuX-2K-wqZ"/>
                         <outlet property="progressBarLabel" destination="Wfj-fa-akl" id="nnh-DR-OAo"/>
                         <outlet property="recenterButton" destination="ldZ-GE-gzT" id="ckv-1b-cBP"/>
+                        <outlet property="secondCardLabel" destination="Bf1-pV-O94" id="cOa-Q4-m36"/>
                         <outlet property="settingButton" destination="2oi-Em-MKy" id="a4m-56-PT2"/>
                         <outlet property="speedLabel" destination="00T-cp-aCH" id="bVk-ZM-MrY"/>
                         <outlet property="speedUnitLabel" destination="bxo-VE-NGP" id="NOt-he-l9N"/>
                         <outlet property="startButtonLabel" destination="xa3-au-3KY" id="oHa-rV-nRT"/>
-                        <outlet property="timeCardLabel" destination="SJQ-eg-ztk" id="cp5-Ez-z67"/>
+                        <outlet property="thirdCardLabel" destination="Ajh-ZB-iN3" id="cER-7p-ubY"/>
                         <outlet property="timeLabel" destination="SJQ-eg-ztk" id="G1O-aj-HeZ"/>
                         <outlet property="timeUnitLabel" destination="2ng-cD-emt" id="Dqq-dJ-xxG"/>
                         <segue destination="MhB-Pv-Eh9" kind="show" identifier="summaryView" id="Jge-Jg-By2"/>
