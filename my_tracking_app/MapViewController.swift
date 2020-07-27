@@ -227,8 +227,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         var speedMPS: CLLocationSpeed = 0
 
         if let lastLocation = lastLocation {
-            
-            
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
             speedLabel.text = conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)
@@ -271,7 +269,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
         print("TAPPED")
         let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
-        selectedName = ["\(data[editedCard!])"]
+        selectedName = ["\(selectedNames[editedCard!])"]
         // create menu with data source -> here [String]
         let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
             cell.textLabel?.text = name
