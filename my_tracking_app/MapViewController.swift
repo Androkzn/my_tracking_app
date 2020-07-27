@@ -39,8 +39,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     
-    @IBOutlet weak var timeCardLabel: UILabel!
-    
+    @IBOutlet weak var firstCardLabel: UIView!
+    @IBOutlet weak var secondCardLabel: UIView!
+    @IBOutlet weak var thirdCardLabel: UIView!
+    @IBOutlet weak var fourthCardLabel: UIView!
     
     //Variables
     var isTrackingStarted = false
@@ -229,9 +231,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            speedLabel.text = WorkoutDataHelper.getDisplayedSpeed(from: speedMPS)
+            speedLabel.text = conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)
             speedUnitLabel.text = selectedNames[2]
-            averageSpeedLabel.text = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+            averageSpeedLabel.text = conectLabelandCoreData(label: selectedNames[3], speed: speedMPS)
             averageSpeedUnitLabel.text = selectedNames[3]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
@@ -242,7 +244,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             timeUnitLabel.text = selectedNames[0]
             
             // Update distance label
-            distanceLabel.text = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            distanceLabel.text = conectLabelandCoreData(label: selectedNames[1], speed: speedMPS)
             distanceUnitLabel.text = selectedNames[1]
         }
     }
@@ -295,15 +297,37 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 
     func setupContainersTap() {
-       let timeContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       let firstContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       firstContainerTap.delegate = self
+        
+       let secondContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       secondContainerTap.delegate = self
+        
+       let thirdContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       thirdContainerTap.delegate = self
+         
+       let fourthContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       fourthContainerTap.delegate = self
+        
+        
+       firstCardLabel.isUserInteractionEnabled = true
+       firstCardLabel.addGestureRecognizer(firstContainerTap)
+       firstContainerTap.view?.tag = 0
        
-       timeContainerTap.delegate = self
-       let distanceContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
-       
-       distanceContainerTap.delegate = self
-       timeCardLabel.isUserInteractionEnabled = true
-       timeCardLabel.addGestureRecognizer(timeContainerTap)
-       timeContainerTap.view?.tag = 0
+       secondCardLabel.isUserInteractionEnabled = true
+       secondCardLabel.addGestureRecognizer(secondContainerTap)
+       secondContainerTap.view?.tag = 1
+        
+       thirdCardLabel.isUserInteractionEnabled = true
+       thirdCardLabel.addGestureRecognizer(thirdContainerTap)
+       thirdContainerTap.view?.tag = 2
+        
+       fourthCardLabel.isUserInteractionEnabled = true
+       fourthCardLabel.addGestureRecognizer(fourthContainerTap)
+       fourthContainerTap.view?.tag = 3
+        
+        
+        
     }
     
     internal func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
