@@ -260,7 +260,9 @@
                         <outlet property="speedLabel" destination="00T-cp-aCH" id="bVk-ZM-MrY"/>
                         <outlet property="speedUnitLabel" destination="bxo-VE-NGP" id="NOt-he-l9N"/>
                         <outlet property="startButtonLabel" destination="xa3-au-3KY" id="oHa-rV-nRT"/>
+                        <outlet property="timeCardLabel" destination="SJQ-eg-ztk" id="cp5-Ez-z67"/>
                         <outlet property="timeLabel" destination="SJQ-eg-ztk" id="G1O-aj-HeZ"/>
+                        <outlet property="timeUnitLabel" destination="2ng-cD-emt" id="Dqq-dJ-xxG"/>
                         <segue destination="MhB-Pv-Eh9" kind="show" identifier="summaryView" id="Jge-Jg-By2"/>
                     </connections>
                 </viewController>

@@ -42,6 +42,15 @@ enum Milestones: Int {
     case ten
 }
 
+enum Cards: String {
+    case time
+    case distance
+    case speed
+    case avgspeed
+    case heartrate
+    case callories
+}
+
 let keyUnit = "UNITS"
 let keyWorkout = "WORKOUT"
 let keyMap = "MAP"

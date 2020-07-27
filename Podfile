@@ -8,6 +8,7 @@ target 'my_tracking_app' do
   # Pods for my_tracking_app
 
   pod 'Charts', '~> 3.5'
+  pod 'RSSelectionMenu', '~> 7.0.0'
 
   target 'my_tracking_appTests' do
     inherit! :search_paths

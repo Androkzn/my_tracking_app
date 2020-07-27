@@ -2,17 +2,21 @@ PODS:
   - Charts (3.5.0):
     - Charts/Core (= 3.5.0)
   - Charts/Core (3.5.0)
+  - RSSelectionMenu (7.0.0)
 
 DEPENDENCIES:
   - Charts (~> 3.5)
+  - RSSelectionMenu (~> 7.0.0)
 
 SPEC REPOS:
   trunk:
     - Charts
+    - RSSelectionMenu
 
 SPEC CHECKSUMS:
   Charts: 40a08591df1f8ad5c223ddedfb1a06da92f24f7c
+  RSSelectionMenu: 096db1676b37214a2c447383e80733599b74a052
 
-PODFILE CHECKSUM: 02054c1d47a8ed138c8989e04771b14e21b4ea51
+PODFILE CHECKSUM: 8c2e13b17e18315998309e2ef25a1cfa07bbaf43
 
 COCOAPODS: 1.9.3

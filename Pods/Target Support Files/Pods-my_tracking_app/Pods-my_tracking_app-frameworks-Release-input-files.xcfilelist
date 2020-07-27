@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-my_tracking_app/Pods-my_tracking_app-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Charts/Charts.framework
+${BUILT_PRODUCTS_DIR}/RSSelectionMenu/RSSelectionMenu.framework

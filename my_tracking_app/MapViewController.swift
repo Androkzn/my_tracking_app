@@ -11,8 +11,9 @@ import CoreLocation
 import HealthKit
 import MapKit
 import CoreData
+import RSSelectionMenu
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //Outlets
     @IBOutlet weak var recenterButton: UIButton!
@@ -21,6 +22,8 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapLabel: MKMapView!
 
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var timeUnitLabel: UILabel!
+    
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var distanceUnitLabel: UILabel!
 
@@ -36,6 +39,9 @@ class MapViewController: UIViewController {
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     
+    @IBOutlet weak var timeCardLabel: UILabel!
+    
+    
     //Variables
     var isTrackingStarted = false
     var currentLocations: [Location] = [] // Current workout locations
@@ -48,6 +54,9 @@ class MapViewController: UIViewController {
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
     var nextMilestone: Double = 0.0 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
     var milestone: Double = 0.0 //Milstone from settings
+    var editedCard: Int? //Stores value of edited card tag
+    var selectedName: [String] = [] //selected cars name after editing
+    var selectedNames: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED"] //selected cars names
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +78,7 @@ class MapViewController: UIViewController {
         setupWorkoutButton(started: isTrackingStarted)
         setupMapView()
         resetLabels()
+        setupContainersTap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +110,31 @@ class MapViewController: UIViewController {
             altitudeLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             iconAltitudeLabel.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
+    }
+    
+    func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> String {
+        var data: String = ""
+        if label == "TIME" {
+            data = GlobalTimer.shared.getTime()
+        }
+        if label == "DISTANCE" {
+            data = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+        }
+        if label == "SPEED" {
+            print("speed")
+            data = WorkoutDataHelper.getDisplayedSpeed(from: speed)
+        }
+        if label == "AVG SPEED" {
+             data = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+        }
+        if label == "HEART RATE" {
+            
+        }
+        if label == "CALLORIES" {
+            
+        }
+        print(data)
+        return data
     }
 
     // Set the destination view controller's workout property before showing
@@ -183,24 +218,32 @@ class MapViewController: UIViewController {
             self.counter = 3
         }
     }
-
+    
     //updates labels each second
     @objc func eachSecond(timer: Timer) {
         GlobalTimer.shared.seconds += 1
+        var speedMPS: CLLocationSpeed = 0
 
-        // Update timer label
-        timeLabel.text = GlobalTimer.shared.getTime()
-
-        // Update distance label
-        updateDistanceLabel()
-
-        // Update speed labels
         if let lastLocation = lastLocation {
-            let speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
+            
+            
+            // Update speed labels
+            speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
             speedLabel.text = WorkoutDataHelper.getDisplayedSpeed(from: speedMPS)
+            speedUnitLabel.text = selectedNames[2]
             averageSpeedLabel.text = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+            averageSpeedUnitLabel.text = selectedNames[3]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
+            
+            // Update timer label
+            //timeLabel.text = GlobalTimer.shared.getTime()
+            timeLabel.text = conectLabelandCoreData(label: selectedNames[0], speed: speedMPS)
+            timeUnitLabel.text = selectedNames[0]
+            
+            // Update distance label
+            distanceLabel.text = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            distanceUnitLabel.text = selectedNames[1]
         }
     }
 
@@ -222,6 +265,54 @@ class MapViewController: UIViewController {
         }
 
     }
+    
+    @objc func containerTapped(_ sender: UITapGestureRecognizer) {
+        print("TAPPED")
+        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
+        selectedName = ["\(data[editedCard!])"]
+        // create menu with data source -> here [String]
+        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
+            cell.textLabel?.text = name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+        }
+        // provide selected items
+        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
+            self.selectedName = selectedItems
+        }
+
+        // show dropdown alert
+        menu.show(style: .alert(title: "CHANGE CARD NAME", action: "Done", height: 265), from: self)
+       
+        menu.onDismiss = { [weak self] selectedItems in
+            self!.selectedName = selectedItems
+            self!.selectedNames[self!.editedCard!] = self?.selectedName[0] as! String
+        
+            print(self!.selectedNames)
+        
+        }
+        
+    }
+
+    func setupContainersTap() {
+       let timeContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       
+       timeContainerTap.delegate = self
+       let distanceContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       
+       distanceContainerTap.delegate = self
+       timeCardLabel.isUserInteractionEnabled = true
+       timeCardLabel.addGestureRecognizer(timeContainerTap)
+       timeContainerTap.view?.tag = 0
+    }
+    
+    internal func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        editedCard = gestureRecognizer.view?.tag
+        return true
+    }
+    
+    
+    
 }
 
 // MARK: Delegate for CLLocationManager
@@ -268,6 +359,9 @@ extension MapViewController: CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
         print("Error: \(error)")
     }
+    
+    
+    
 }
 
 // MARK: Delegate for MapViewDelegate
@@ -509,8 +603,5 @@ extension MapViewController {
                milestone = 1
            }
        }
-    
-    func updateDistanceLabel() {
-        distanceLabel.text = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
-    }
+
 }
