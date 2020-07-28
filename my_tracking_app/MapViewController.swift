@@ -275,8 +275,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
 
     }
     
+
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
         print("TAPPED")
+
         let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
@@ -288,14 +290,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
             cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
         }
+        
         // provide selected items
         menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
             self.selectedName = selectedItems
         }
 
         // show dropdown alert
-        menu.show(style: .alert(title: "CHANGE CARD NAME", action: "Done", height: 265), from: self)
-       
+        //menu.show(style: .alert(title: "CHANGE CARD NAME", action: "Done", height: 265), from: self)
+        // show dropdown alertpopover
+        let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
+        
+        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
+
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
@@ -360,8 +367,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        fourthCardLabel.isUserInteractionEnabled = true
        fourthCardLabel.addGestureRecognizer(fourthContainerTap)
        fourthContainerTap.view?.tag = 3
-        
-        
         
     }
     
