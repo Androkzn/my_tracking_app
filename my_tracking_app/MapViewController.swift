@@ -288,7 +288,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
             cell.textLabel?.text = name
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
             cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
         }
         
         // provide selected items
@@ -301,7 +303,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // show dropdown alertpopover
         let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
         
-        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
+        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 230, height: 220)), from: self)
 
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
