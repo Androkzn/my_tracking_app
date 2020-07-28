@@ -62,7 +62,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setInitialCardsSettings()
         //Tap function will call when user tap on button
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector (startButton))
@@ -81,7 +81,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupMapView()
         resetLabels()
         setupContainersTap()
-        setInitialCardsSettings()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,13 +131,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "AVG SPEED" {
-             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+            data[0] = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "HEART RATE" {
+            data[0] = "0"
+            data[1] = ", bpm"
             
         }
         if label == "CALLORIES" {
+            data[0] = "0"
+            data[1] = ", cal"
             
         }
         print(data)
@@ -533,14 +537,16 @@ extension MapViewController {
             data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "AVG SPEED" {
-             data[0] = "0.0"
+            data[0] = "0.0"
             data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "HEART RATE" {
-            
+            data[0] = "0"
+            data[1] = "HEART RATE, bpm"
         }
         if label == "CALLORIES" {
-            
+            data[0] = "0"
+            data[1] = "CALLORIES, cal"
         }
         print(data)
         return data
