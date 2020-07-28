@@ -58,7 +58,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var milestone: Double = 0.0 //Milstone from settings
     var editedCard: Int? //Stores value of edited card tag
     var selectedName: [String] = [] //selected cars name after editing
-    var selectedNames: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED"] //selected cars names
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +81,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupMapView()
         resetLabels()
         setupContainersTap()
+        setInitialCardsSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -232,21 +233,22 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         var speedMPS: CLLocationSpeed = 0
 
         if let lastLocation = lastLocation {
+            // Prepare UserDefauld instance
+            let defaults = UserDefaults.standard
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            speedLabel.text = conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)[0]
-            speedUnitLabel.text = selectedNames[2] + conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)[1]
-            averageSpeedLabel.text = conectLabelandCoreData(label: selectedNames[3], speed: speedMPS)[0]
-            averageSpeedUnitLabel.text = selectedNames[3] +  conectLabelandCoreData(label: selectedNames[3], speed: speedMPS)[1]
+            speedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
+            speedUnitLabel.text = defaults.string(forKey: cards(atIndex: 2))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
+            averageSpeedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
+            averageSpeedUnitLabel.text = defaults.string(forKey: cards(atIndex: 3))! +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
             // Update timer label
-            timeLabel.text = conectLabelandCoreData(label: selectedNames[0], speed: speedMPS)[0]
-            timeUnitLabel.text = selectedNames[0] + conectLabelandCoreData(label: selectedNames[0], speed: speedMPS)[1]
-            
+            timeLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
+            timeUnitLabel.text = defaults.string(forKey: cards(atIndex: 0))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
             // Update distance label
-            distanceLabel.text = conectLabelandCoreData(label: selectedNames[1], speed: speedMPS)[0]
-            distanceUnitLabel.text = selectedNames[1] + conectLabelandCoreData(label: selectedNames[1], speed: speedMPS)[1]
+            distanceLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
+            distanceUnitLabel.text = defaults.string(forKey: cards(atIndex: 1))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
         }
     }
 
@@ -272,7 +274,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
         print("TAPPED")
         let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
-        selectedName = ["\(selectedNames[editedCard!])"]
+        // Prepare UserDefauld instance
+        let defaults = UserDefaults.standard
+        selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
+         
         // create menu with data source -> here [String]
         let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
             cell.textLabel?.text = name
@@ -289,14 +294,38 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
-            self.selectedNames[self.editedCard!] = self.selectedName[0] as! String
+            UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
+            
             if self.isTrackingStarted == false {
-                self.updateLabels(arrayCards: self.selectedNames)
+                self.updateLabels()
             }
-            print(self.selectedNames)
         }
         
     }
+    
+    func cards(atIndex: Int) -> String {
+        switch atIndex {
+        case 0:
+            return firstCard
+        case 1:
+            return secondCard
+        case 2:
+            return thirdCard
+        case 3:
+            return fourthCard
+        default:
+             return firstCard
+        }
+    }
+    
+    func setInitialCardsSettings() {
+        UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
+        UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
+        UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
+        UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
+
+    }
+    
 
     func setupContainersTap() {
        let firstContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
@@ -467,23 +496,25 @@ extension MapViewController {
         // Reset distance and averageSpeed
         currentWorkoutDistance = 0.0
         currentWorkoutSpeedSum = 0.0
-        updateLabels(arrayCards:selectedNames)
+        updateLabels()
 
     }
     
-    func updateLabels(arrayCards: [String]) {
+    func updateLabels() {
+        // Prepare UserDefauld instance
+        let defaults = UserDefaults.standard
         // Update timer label
-        timeLabel.text = updateAllLabels(label: selectedNames[0])[0]
-        timeUnitLabel.text = updateAllLabels(label: selectedNames[0])[1]
+        timeLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
+        timeUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
         // Update distance label
-        distanceLabel.text = updateAllLabels(label: selectedNames[1])[0]
-        distanceUnitLabel.text = updateAllLabels(label: selectedNames[1])[1]
+        distanceLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
+        distanceUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
         // Update speed label
-        speedLabel.text = updateAllLabels(label: selectedNames[2])[0]
-        speedUnitLabel.text = updateAllLabels(label: selectedNames[2])[1]
+        speedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
+        speedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
         // Update avg speed label
-        averageSpeedLabel.text = updateAllLabels(label: selectedNames[3])[0]
-        averageSpeedUnitLabel.text = updateAllLabels(label: selectedNames[3])[1]
+        averageSpeedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
+        averageSpeedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
     }
     
     func updateAllLabels (label: String)  -> [String] {

@@ -223,6 +223,7 @@ extension SettingsViewController {
             return settings["OTHER"] ?? 0
         }
     }
+    
 
     func retrieveSettings() {
         let defaults = UserDefaults.standard

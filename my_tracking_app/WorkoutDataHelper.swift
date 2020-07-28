@@ -57,6 +57,11 @@ let keyMap = "MAP"
 let keyVoice = "VOICE"
 let keyMilestones = "VOICE MILESTONES"
 
+let firstCard = "FirstCard"
+let secondCard = "SecondCard"
+let thirdCard = "ThirdCard"
+let fourthCard = "FourthCard"
+
 class WorkoutDataHelper {
 
 
