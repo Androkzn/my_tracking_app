@@ -88,7 +88,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setMilestones()
         setMapType()
         centerToCurrentLocation()
-        refreshUnitLabels()
+        resetLabels()
         showSavedWorkoutToast()
         setUpAltitudeLaberl ()
     }
@@ -114,20 +114,24 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> String {
-        var data: String = ""
+    func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> [String] {
+        var data: [String] = ["",""]
         if label == "TIME" {
-            data = GlobalTimer.shared.getTime()
+            data[0] = GlobalTimer.shared.getTime()
+            data[1] = ""
         }
         if label == "DISTANCE" {
-            data = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            data[0] = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
         }
         if label == "SPEED" {
             print("speed")
-            data = WorkoutDataHelper.getDisplayedSpeed(from: speed)
+            data[0] = WorkoutDataHelper.getDisplayedSpeed(from: speed)
+            data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "AVG SPEED" {
-             data = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+            data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "HEART RATE" {
             
@@ -138,6 +142,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         print(data)
         return data
     }
+    
 
     // Set the destination view controller's workout property before showing
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -229,21 +234,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         if let lastLocation = lastLocation {
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            speedLabel.text = conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)
-            speedUnitLabel.text = selectedNames[2]
-            averageSpeedLabel.text = conectLabelandCoreData(label: selectedNames[3], speed: speedMPS)
-            averageSpeedUnitLabel.text = selectedNames[3]
+            speedLabel.text = conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)[0]
+            speedUnitLabel.text = selectedNames[2] + conectLabelandCoreData(label: selectedNames[2], speed: speedMPS)[1]
+            averageSpeedLabel.text = conectLabelandCoreData(label: selectedNames[3], speed: speedMPS)[0]
+            averageSpeedUnitLabel.text = selectedNames[3] +  conectLabelandCoreData(label: selectedNames[3], speed: speedMPS)[1]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
-            
             // Update timer label
-            //timeLabel.text = GlobalTimer.shared.getTime()
-            timeLabel.text = conectLabelandCoreData(label: selectedNames[0], speed: speedMPS)
-            timeUnitLabel.text = selectedNames[0]
+            timeLabel.text = conectLabelandCoreData(label: selectedNames[0], speed: speedMPS)[0]
+            timeUnitLabel.text = selectedNames[0] + conectLabelandCoreData(label: selectedNames[0], speed: speedMPS)[1]
             
             // Update distance label
-            distanceLabel.text = conectLabelandCoreData(label: selectedNames[1], speed: speedMPS)
-            distanceUnitLabel.text = selectedNames[1]
+            distanceLabel.text = conectLabelandCoreData(label: selectedNames[1], speed: speedMPS)[0]
+            distanceUnitLabel.text = selectedNames[1] + conectLabelandCoreData(label: selectedNames[1], speed: speedMPS)[1]
         }
     }
 
@@ -284,12 +287,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // show dropdown alert
         menu.show(style: .alert(title: "CHANGE CARD NAME", action: "Done", height: 265), from: self)
        
-        menu.onDismiss = { [weak self] selectedItems in
-            self!.selectedName = selectedItems
-            self!.selectedNames[self!.editedCard!] = self?.selectedName[0] as! String
-        
-            print(self!.selectedNames)
-        
+        menu.onDismiss = { [self] selectedItems in
+            self.selectedName = selectedItems
+            self.selectedNames[self.editedCard!] = self.selectedName[0] as! String
+            if self.isTrackingStarted == false {
+                self.updateLabels(arrayCards: self.selectedNames)
+            }
+            print(self.selectedNames)
         }
         
     }
@@ -463,12 +467,54 @@ extension MapViewController {
         // Reset distance and averageSpeed
         currentWorkoutDistance = 0.0
         currentWorkoutSpeedSum = 0.0
+        updateLabels(arrayCards:selectedNames)
 
-        timeLabel.text = "00:00:00"
-        distanceLabel.text = "0.0"
-        speedLabel.text = "0.0"
-        averageSpeedLabel.text = "0.0"
     }
+    
+    func updateLabels(arrayCards: [String]) {
+        // Update timer label
+        timeLabel.text = updateAllLabels(label: selectedNames[0])[0]
+        timeUnitLabel.text = updateAllLabels(label: selectedNames[0])[1]
+        // Update distance label
+        distanceLabel.text = updateAllLabels(label: selectedNames[1])[0]
+        distanceUnitLabel.text = updateAllLabels(label: selectedNames[1])[1]
+        // Update speed label
+        speedLabel.text = updateAllLabels(label: selectedNames[2])[0]
+        speedUnitLabel.text = updateAllLabels(label: selectedNames[2])[1]
+        // Update avg speed label
+        averageSpeedLabel.text = updateAllLabels(label: selectedNames[3])[0]
+        averageSpeedUnitLabel.text = updateAllLabels(label: selectedNames[3])[1]
+    }
+    
+    func updateAllLabels (label: String)  -> [String] {
+        var data: [String] = ["",""]
+        if label == "TIME" {
+            data[0] = "00:00:00"
+            data[1] = "TIME"
+        }
+        if label == "DISTANCE" {
+            data[0] = "0.0"
+            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+        }
+        if label == "SPEED" {
+            print("speed")
+            data[0] = "0.0"
+            data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "AVG SPEED" {
+             data[0] = "0.0"
+            data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "HEART RATE" {
+            
+        }
+        if label == "CALLORIES" {
+            
+        }
+        print(data)
+        return data
+    }
+    
 
     func setMapType() {
         let mapType = UserDefaults.standard.integer(forKey: "MAP")
@@ -484,17 +530,17 @@ extension MapViewController {
         }
     }
 
-    func refreshUnitLabels() {
-        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
-        let speedFormat = WorkoutDataHelper.getSpeedUnit()
-        speedUnitLabel.text = "SPEED, \(speedFormat)"
-        averageSpeedUnitLabel.text = "AVG SPEED, \(speedFormat)"
-        var altitude = 0.0
-        if let lastLocation = lastLocation {
-            altitude = lastLocation.altitude
-        }
-        altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: altitude)
-    }
+//    func refreshUnitLabels() {
+//        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+//        let speedFormat = WorkoutDataHelper.getSpeedUnit()
+//        speedUnitLabel.text = "SPEED, \(speedFormat)"
+//        averageSpeedUnitLabel.text = "AVG SPEED, \(speedFormat)"
+//        var altitude = 0.0
+//        if let lastLocation = lastLocation {
+//            altitude = lastLocation.altitude
+//        }
+//        altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: altitude)
+//    }
 
     func setupCenterButton() {
         recenterButton.layer.cornerRadius = 25.0
