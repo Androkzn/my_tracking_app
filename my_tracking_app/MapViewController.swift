@@ -548,7 +548,7 @@ extension MapViewController {
             data[0] = "0"
             data[1] = "CALLORIES, cal"
         }
-        print(data)
+        //print(data)
         return data
     }
     
