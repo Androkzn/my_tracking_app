@@ -28,14 +28,14 @@ class ProfileViewController: UIViewController {
     @IBAction func ageTextFieldBeginEditing(_ sender: UITextField) {
         print("ageStartEditing")
         let ageRows:[Int] = Array(1...100)
-        textFieldPicker(sender, rows: ageRows,  title: "Select your age")
+        textFieldPicker(sender, rows: ageRows,  title: "Select your age",field: "AGE")
         view.endEditing(true)
     }
 
     @IBAction func genderTextFieldBeginEditing(_ sender: UITextField) {
         print("genderStartEditing")
         let genderRows:[String] = ["Male", "Female", "Other"]
-        textFieldPicker(sender, rows: genderRows,  title: "Select your gender")
+        textFieldPicker(sender, rows: genderRows,  title: "Select your gender",field: "GENDER")
         view.endEditing(true)
         
     }
@@ -43,7 +43,7 @@ class ProfileViewController: UIViewController {
     @IBAction func weightTextFieldBeginEditing(_ sender: UITextField) {
         print("weightStartEditing")
         let ageRows:[Int] = Array(1...200)
-        textFieldPicker(sender, rows: ageRows,  title: "Select your weight")
+        textFieldPicker(sender, rows: ageRows,  title: "Select your weight", field: "WEIGHT")
         view.endEditing(true)
          
     }
@@ -51,12 +51,12 @@ class ProfileViewController: UIViewController {
     @IBAction func heightTextFieldBeginEditing(_ sender: UITextField) {
         print("heightStartEditing")
         let ageRows:[Int] = Array(1...250)
-        textFieldPicker(sender, rows: ageRows,  title: "Select your height")
+        textFieldPicker(sender, rows: ageRows,  title: "Select your height", field: "HEIGHT")
         view.endEditing(true)
         
     }
     
-    func textFieldPicker(_ sender: UITextField, rows: [Any], title: String) {
+    func textFieldPicker(_ sender: UITextField, rows: [Any], title: String, field: String) {
         let picker = ActionSheetStringPicker(title: title,
                                      rows: rows,
                                      initialSelection: rows.count/3,
@@ -65,6 +65,8 @@ class ProfileViewController: UIViewController {
                                         print("picker = \(String(describing: picker))")
                                         print("value = \(value)")
                                         print("index = \(String(describing: index))")
+                                        
+                                        UserDefaults.standard.set("\(index!)", forKey: field)
                                         sender.text = "\(index!)"
                                         return
                                      },
@@ -72,7 +74,6 @@ class ProfileViewController: UIViewController {
                                         return
                                      },
                                      origin: sender)
-     
         // customize appearance of the picker
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
