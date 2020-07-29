@@ -7,24 +7,33 @@
 //
 
 import UIKit
+import CoreActionSheetPicker
 
 class ProfileViewController: UIViewController {
 
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func navigationBarItemPicker(_ sender: UIBarButtonItem) {
+        // example of string picker with done and cancel blocks
+        ActionSheetStringPicker.show(withTitle: "Picker from navigation bar",
+                                     rows: ["One", "Two", "A lot"],
+                                     initialSelection: 1,
+                                     doneBlock: { picker, value, index in
+                                        print("picker = \(String(describing: picker))")
+                                        print("value = \(value)")
+                                        print("index = \(String(describing: index))")
+                                        return
+                                     },
+                                     cancel: { picker in
+                                        return
+                                     },
+                                     origin: sender)
     }
-    */
+    
 
 }
