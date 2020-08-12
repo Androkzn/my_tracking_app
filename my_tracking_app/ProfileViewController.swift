@@ -16,10 +16,35 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var weightTextField: UITextField!
     @IBOutlet weak var heightTextField: UITextField!
     
+    @IBOutlet weak var weightLabel: UILabel!
+    @IBOutlet weak var heightLabel: UILabel!
+    @IBOutlet weak var heightInchesStackLabel: UIStackView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setUpLabels()
+        
+    }
+
+    func setUpLabels() {
+        weightLabel.text = "/ \(WorkoutDataHelper.getWeightUnit())"
+        if WorkoutDataHelper.getHeightUnit().count == 1 {
+            heightLabel.text = "/ \(WorkoutDataHelper.getHeightUnit()[0])"
+            heightInchesStackLabel.isHidden = true
+        } else {
+            heightLabel.text = "/ \(WorkoutDataHelper.getHeightUnit()[0])"
+            heightInchesStackLabel.isHidden = false
+        }
+        
+        
+        
+    }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -56,6 +81,8 @@ class ProfileViewController: UIViewController {
         
     }
     
+    
+    
     func textFieldPicker(_ sender: UITextField, rows: [Any], title: String, field: String) {
         let picker = ActionSheetStringPicker(title: title,
                                      rows: rows,
@@ -68,6 +95,7 @@ class ProfileViewController: UIViewController {
                                         
                                         UserDefaults.standard.set("\(index!)", forKey: field)
                                         sender.text = "\(index!)"
+                        
                                         return
                                      },
                                      cancel: { picker in
