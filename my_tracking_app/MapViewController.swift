@@ -11,8 +11,9 @@ import CoreLocation
 import HealthKit
 import MapKit
 import CoreData
+import RSSelectionMenu
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //Outlets
     @IBOutlet weak var recenterButton: UIButton!
@@ -21,6 +22,8 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapLabel: MKMapView!
 
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var timeUnitLabel: UILabel!
+    
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var distanceUnitLabel: UILabel!
 
@@ -36,6 +39,11 @@ class MapViewController: UIViewController {
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     
+    @IBOutlet weak var firstCardLabel: UIView!
+    @IBOutlet weak var secondCardLabel: UIView!
+    @IBOutlet weak var thirdCardLabel: UIView!
+    @IBOutlet weak var fourthCardLabel: UIView!
+    
     //Variables
     var isTrackingStarted = false
     var currentLocations: [Location] = [] // Current workout locations
@@ -48,10 +56,13 @@ class MapViewController: UIViewController {
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
     var nextMilestone: Double = 0.0 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
     var milestone: Double = 0.0 //Milstone from settings
+    var editedCard: Int? //Stores value of edited card tag
+    var selectedName: [String] = [] //selected cars name after editing
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setInitialCardsSettings()
         //Tap function will call when user tap on button
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector (startButton))
@@ -69,6 +80,7 @@ class MapViewController: UIViewController {
         setupWorkoutButton(started: isTrackingStarted)
         setupMapView()
         resetLabels()
+        setupContainersTap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +88,7 @@ class MapViewController: UIViewController {
         setMilestones()
         setMapType()
         centerToCurrentLocation()
-        refreshUnitLabels()
+        resetLabels()
         showSavedWorkoutToast()
         setUpAltitudeLaberl ()
     }
@@ -101,6 +113,41 @@ class MapViewController: UIViewController {
             iconAltitudeLabel.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
     }
+    
+    //set up labels from Core Data
+    func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> [String] {
+        var data: [String] = ["",""]
+        if label == "TIME" {
+            data[0] = GlobalTimer.shared.getTime()
+            data[1] = ""
+        }
+        if label == "DISTANCE" {
+            data[0] = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
+        }
+        if label == "SPEED" {
+            print("speed")
+            data[0] = WorkoutDataHelper.getDisplayedSpeed(from: speed)
+            data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "AVG SPEED" {
+            data[0] = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+            data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "HEART RATE" {
+            data[0] = "0"
+            data[1] = ", bpm"
+            
+        }
+        if label == "CALLORIES" {
+            data[0] = "0"
+            data[1] = ", cal"
+            
+        }
+        print(data)
+        return data
+    }
+    
 
     // Set the destination view controller's workout property before showing
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -114,10 +161,12 @@ class MapViewController: UIViewController {
        }
     }
 
+    //center map button
     @IBAction func centerMap(_ sender: UIButton) {
         centerToCurrentLocation()
     }
-
+    
+    //start button state
     @objc func startButton(_ sender: UITapGestureRecognizer) {
         // Start new workout button pressed
         if lastLocation != nil {
@@ -135,6 +184,7 @@ class MapViewController: UIViewController {
         }
     }
     
+    //stop button state
     @objc func stopButton(_ sender: UILongPressGestureRecognizer) {
         if isTrackingStarted {
             if sender.state == .began {
@@ -163,6 +213,7 @@ class MapViewController: UIViewController {
         }
     }
     
+    //controls popup behaviour when stop button is long pressed
     func setupCounterLabel (started: Bool) {
         counterTextLabel.layer.backgroundColor = #colorLiteral(red: 0.3249011148, green: 0.7254286438, blue: 0.9069467254, alpha: 0.8043396832)
         counterTextLabel.layer.cornerRadius = 10
@@ -183,27 +234,33 @@ class MapViewController: UIViewController {
             self.counter = 3
         }
     }
-
+    
     //updates labels each second
     @objc func eachSecond(timer: Timer) {
         GlobalTimer.shared.seconds += 1
+        var speedMPS: CLLocationSpeed = 0
 
-        // Update timer label
-        timeLabel.text = GlobalTimer.shared.getTime()
-
-        // Update distance label
-        updateDistanceLabel()
-
-        // Update speed labels
         if let lastLocation = lastLocation {
-            let speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            speedLabel.text = WorkoutDataHelper.getDisplayedSpeed(from: speedMPS)
-            averageSpeedLabel.text = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
+            // Prepare UserDefauld instance
+            let defaults = UserDefaults.standard
+            // Update speed labels
+            speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
+            speedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
+            speedUnitLabel.text = defaults.string(forKey: cards(atIndex: 2))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
+            averageSpeedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
+            averageSpeedUnitLabel.text = defaults.string(forKey: cards(atIndex: 3))! +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
+            // Update timer label
+            timeLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
+            timeUnitLabel.text = defaults.string(forKey: cards(atIndex: 0))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
+            // Update distance label
+            distanceLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
+            distanceUnitLabel.text = defaults.string(forKey: cards(atIndex: 1))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
         }
     }
 
+    //activate text to speach when a milestone is reached
     func speakWhenReachingMilestones() {
         if (milestone != 0) {
             let distanceString = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
@@ -222,7 +279,281 @@ class MapViewController: UIViewController {
         }
 
     }
+    
+    //
+    @objc func containerTapped(_ sender: UITapGestureRecognizer) {
+        print("TAPPED")
+
+        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
+        // Prepare UserDefauld instance
+        let defaults = UserDefaults.standard
+        selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
+         
+        // create menu with data source -> here [String]
+        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
+            cell.textLabel?.text = name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        }
+        
+        // provide selected items
+        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
+            self.selectedName = selectedItems
+        }
+        
+        // show dropdown alertpopover
+        let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
+        
+        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 230, height: 220)), from: self)
+
+        menu.onDismiss = { [self] selectedItems in
+            self.selectedName = selectedItems
+            UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
+            
+            if self.isTrackingStarted == false {
+                self.updateLabels()
+            }
+        }
+        
+    }
+    
+    
+    func cards(atIndex: Int) -> String {
+        switch atIndex {
+        case 0:
+            return firstCard
+        case 1:
+            return secondCard
+        case 2:
+            return thirdCard
+        case 3:
+            return fourthCard
+        default:
+             return firstCard
+        }
+    }
+    
+    func setInitialCardsSettings() {
+        UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
+        UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
+        UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
+        UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
+
+    }
+    
+
+    func setupContainersTap() {
+       let firstContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       firstContainerTap.delegate = self
+        
+       let secondContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       secondContainerTap.delegate = self
+        
+       let thirdContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       thirdContainerTap.delegate = self
+         
+       let fourthContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       fourthContainerTap.delegate = self
+        
+        
+       firstCardLabel.isUserInteractionEnabled = true
+       firstCardLabel.addGestureRecognizer(firstContainerTap)
+       firstContainerTap.view?.tag = 0
+       
+       secondCardLabel.isUserInteractionEnabled = true
+       secondCardLabel.addGestureRecognizer(secondContainerTap)
+       secondContainerTap.view?.tag = 1
+        
+       thirdCardLabel.isUserInteractionEnabled = true
+       thirdCardLabel.addGestureRecognizer(thirdContainerTap)
+       thirdContainerTap.view?.tag = 2
+        
+       fourthCardLabel.isUserInteractionEnabled = true
+       fourthCardLabel.addGestureRecognizer(fourthContainerTap)
+       fourthContainerTap.view?.tag = 3
+        
+    }
+    
+    internal func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        editedCard = gestureRecognizer.view?.tag
+        return true
+    }
+    
+    func setupWorkoutButton(started: Bool) {
+        startButtonLabel.layer.borderWidth = 3
+        startButtonLabel.layer.cornerRadius = 10
+
+        if !started {
+            startButtonLabel.setTitle("START", for: .normal)
+            startButtonLabel.backgroundColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            startButtonLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        } else {
+            startButtonLabel.backgroundColor = #colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1)
+            startButtonLabel.layer.borderColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            startButtonLabel.setTitle("STOP", for: .normal)
+        }
+    }
+
+    func startWorkout() {
+        locationManager.allowsBackgroundLocationUpdates = true
+        centerToCurrentLocation()
+        locationManager.distanceFilter = 5
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        //set up milestone
+        
+        nextMilestone = milestone
+        
+        // Start timer
+        GlobalTimer.shared.startTimer(self)
+
+        // Create new workout
+        currentWorkout = DataManager.shared.workout(timestamp: Date())
+        let workoutType = UserDefaults.standard.integer(forKey: keyWorkout)
+        currentWorkout!.type = Int16(workoutType)
+        if let location = lastLocation {
+            addWorkoutLocations(locations: [location])
+        }
+    }
+
+    func stopWorkout() {
+        // Save workout and locations
+        if let currentWorkout = currentWorkout {
+            currentWorkout.workoutLocations = NSSet(array: currentLocations)
+            currentWorkout.comment = ""
+            currentWorkout.duration = GlobalTimer.shared.seconds
+            currentWorkout.distance = self.currentWorkoutDistance
+            currentWorkout.type = WorkoutDataHelper.getWorkoutType()
+            currentWorkout.averageSpeed = averageSpeed()
+            currentWorkout.speed = WorkoutDataHelper.getMaxSpeed(locations: currentLocations)
+            DataManager.shared.save()
+            GlobalTimer.shared.stopTimer()
+            locationManager.distanceFilter = 50
+            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+
+            if currentLocations.count > 1 {
+                var mapLocations: [CLLocationCoordinate2D] = []
+                for location in currentLocations {
+                    mapLocations.append(CLLocationCoordinate2D(latitude: location.latitude,
+                                                               longitude: location.longitude))
+                }
+                drawRoute(mapLabel, coordinates: mapLocations, animateToRoute: true)
+            }
+            
+            // here to speak final distance
+            if (UserDefaults.standard.integer(forKey: "VOICE") == 1) {
+                TextToSpeech.speakWhenWorkoutStops(workoutDistance: currentWorkout.distance)}
+        }
+
+        currentLocations.removeAll(keepingCapacity: false)
+        //set up initial labels
+        resetLabels()
+        //clean route
+        deleteRoute(mapLabel)
+        locationManager.allowsBackgroundLocationUpdates = false
+    }
+    
+    func setMilestones() {
+           let milestoneKey = UserDefaults.standard.integer(forKey: "VOICE MILESTONES")
+           switch milestoneKey {
+           case Milestones.off.rawValue:
+                 milestone = 0
+           case Milestones.half.rawValue:
+                milestone = 0.5
+           case Milestones.half.rawValue:
+                milestone = 1
+           case Milestones.half.rawValue:
+                milestone = 2
+           case Milestones.half.rawValue:
+                milestone = 3
+           case Milestones.half.rawValue:
+                milestone = 4
+           case Milestones.half.rawValue:
+                milestone = 5
+           case Milestones.half.rawValue:
+                milestone = 10
+           case Map.standard.rawValue:
+               fallthrough
+           default:
+               milestone = 1
+           }
+       }
+    
+    func resetLabels() {
+        // Reset distance and averageSpeed
+        currentWorkoutDistance = 0.0
+        currentWorkoutSpeedSum = 0.0
+        updateLabels()
+
+    }
+    
+    func updateLabels() {
+        // Prepare UserDefauld instance
+        let defaults = UserDefaults.standard
+        // Update timer label
+        timeLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
+        timeUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
+        // Update distance label
+        distanceLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
+        distanceUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
+        // Update speed label
+        speedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
+        speedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
+        // Update avg speed label
+        averageSpeedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
+        averageSpeedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
+    }
+    
+    func updateAllLabels (label: String)  -> [String] {
+        var data: [String] = ["",""]
+        if label == "TIME" {
+            data[0] = "00:00:00"
+            data[1] = "TIME"
+        }
+        if label == "DISTANCE" {
+            data[0] = "0.0"
+            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+        }
+        if label == "SPEED" {
+            print("speed")
+            data[0] = "0.0"
+            data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "AVG SPEED" {
+            data[0] = "0.0"
+            data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "HEART RATE" {
+            data[0] = "0"
+            data[1] = "HEART RATE, bpm"
+        }
+        if label == "CALLORIES" {
+            data[0] = "0"
+            data[1] = "CALLORIES, cal"
+        }
+        //print(data)
+        return data
+    }
+    
+
+    func setupCenterButton() {
+        recenterButton.layer.cornerRadius = 25.0
+        recenterButton.layer.borderWidth = 1.0
+        recenterButton.layer.borderColor = UIColor.black.cgColor
+        recenterButton.alpha = 0.8
+    }
+
+    func setupSettingsButton() {
+        settingButton.layer.cornerRadius = 25.0
+        settingButton.layer.borderWidth = 1.0
+        settingButton.layer.borderColor = UIColor.black.cgColor
+        settingButton.alpha = 0.8
+    }
+
 }
+
 
 // MARK: Delegate for CLLocationManager
 extension MapViewController: CLLocationManagerDelegate {
@@ -343,57 +674,6 @@ extension MapViewController {
         }
     }
 
-    func resetLabels() {
-        // Reset distance and averageSpeed
-        currentWorkoutDistance = 0.0
-        currentWorkoutSpeedSum = 0.0
-
-        timeLabel.text = "00:00:00"
-        distanceLabel.text = "0.0"
-        speedLabel.text = "0.0"
-        averageSpeedLabel.text = "0.0"
-    }
-
-    func setMapType() {
-        let mapType = UserDefaults.standard.integer(forKey: "MAP")
-        switch mapType {
-        case Map.satellite.rawValue:
-            mapLabel.mapType = .satellite
-        case Map.hybrid.rawValue:
-            mapLabel.mapType = .hybrid
-        case Map.standard.rawValue:
-            fallthrough
-        default:
-            mapLabel.mapType = .standard
-        }
-    }
-
-    func refreshUnitLabels() {
-        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
-        let speedFormat = WorkoutDataHelper.getSpeedUnit()
-        speedUnitLabel.text = "SPEED, \(speedFormat)"
-        averageSpeedUnitLabel.text = "AVG SPEED, \(speedFormat)"
-        var altitude = 0.0
-        if let lastLocation = lastLocation {
-            altitude = lastLocation.altitude
-        }
-        altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: altitude)
-    }
-
-    func setupCenterButton() {
-        recenterButton.layer.cornerRadius = 25.0
-        recenterButton.layer.borderWidth = 1.0
-        recenterButton.layer.borderColor = UIColor.black.cgColor
-        recenterButton.alpha = 0.8
-    }
-
-    func setupSettingsButton() {
-        settingButton.layer.cornerRadius = 25.0
-        settingButton.layer.borderWidth = 1.0
-        settingButton.layer.borderColor = UIColor.black.cgColor
-        settingButton.alpha = 0.8
-    }
-
     func setupLocationManager() {
         // Initialize the location manager.
         locationManager = CLLocationManager()
@@ -409,108 +689,19 @@ extension MapViewController {
         mapLabel.showsUserLocation = true
         mapLabel.delegate = self
     }
-
-    func setupWorkoutButton(started: Bool) {
-        startButtonLabel.layer.borderWidth = 3
-        startButtonLabel.layer.cornerRadius = 10
-
-        if !started {
-            startButtonLabel.setTitle("START", for: .normal)
-            startButtonLabel.backgroundColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-            startButtonLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
-        } else {
-            startButtonLabel.backgroundColor = #colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1)
-            startButtonLabel.layer.borderColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-            startButtonLabel.setTitle("STOP", for: .normal)
+    
+    func setMapType() {
+        let mapType = UserDefaults.standard.integer(forKey: "MAP")
+        switch mapType {
+        case Map.satellite.rawValue:
+            mapLabel.mapType = .satellite
+        case Map.hybrid.rawValue:
+            mapLabel.mapType = .hybrid
+        case Map.standard.rawValue:
+            fallthrough
+        default:
+            mapLabel.mapType = .standard
         }
-    }
-
-    func startWorkout() {
-        locationManager.allowsBackgroundLocationUpdates = true
-        centerToCurrentLocation()
-        locationManager.distanceFilter = 5
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-
-        //set up milestone
-        
-        nextMilestone = milestone
-        
-        // Start timer
-        GlobalTimer.shared.startTimer(self)
-
-        // Create new workout
-        currentWorkout = DataManager.shared.workout(timestamp: Date())
-        let workoutType = UserDefaults.standard.integer(forKey: keyWorkout)
-        currentWorkout!.type = Int16(workoutType)
-        if let location = lastLocation {
-            addWorkoutLocations(locations: [location])
-        }
-    }
-
-    func stopWorkout() {
-        // Save workout and locations
-        if let currentWorkout = currentWorkout {
-            currentWorkout.workoutLocations = NSSet(array: currentLocations)
-            currentWorkout.comment = ""
-            currentWorkout.duration = GlobalTimer.shared.seconds
-            currentWorkout.distance = self.currentWorkoutDistance
-            currentWorkout.type = WorkoutDataHelper.getWorkoutType()
-            currentWorkout.averageSpeed = averageSpeed()
-            currentWorkout.speed = WorkoutDataHelper.getMaxSpeed(locations: currentLocations)
-            DataManager.shared.save()
-            GlobalTimer.shared.stopTimer()
-            locationManager.distanceFilter = 50
-            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-
-            if currentLocations.count > 1 {
-                var mapLocations: [CLLocationCoordinate2D] = []
-                for location in currentLocations {
-                    mapLocations.append(CLLocationCoordinate2D(latitude: location.latitude,
-                                                               longitude: location.longitude))
-                }
-                drawRoute(mapLabel, coordinates: mapLocations, animateToRoute: true)
-            }
-            
-            // here to speak final distance
-            if (UserDefaults.standard.integer(forKey: "VOICE") == 1) {
-                TextToSpeech.speakWhenWorkoutStops(workoutDistance: currentWorkout.distance)}
-        }
-
-        currentLocations.removeAll(keepingCapacity: false)
-        //set up initial labels
-        resetLabels()
-        //clean route
-        deleteRoute(mapLabel)
-        locationManager.allowsBackgroundLocationUpdates = false
     }
     
-    func setMilestones() {
-           let milestoneKey = UserDefaults.standard.integer(forKey: "VOICE MILESTONES")
-           switch milestoneKey {
-           case Milestones.off.rawValue:
-                 milestone = 0
-           case Milestones.half.rawValue:
-                milestone = 0.5
-           case Milestones.half.rawValue:
-                milestone = 1
-           case Milestones.half.rawValue:
-                milestone = 2
-           case Milestones.half.rawValue:
-                milestone = 3
-           case Milestones.half.rawValue:
-                milestone = 4
-           case Milestones.half.rawValue:
-                milestone = 5
-           case Milestones.half.rawValue:
-                milestone = 10
-           case Map.standard.rawValue:
-               fallthrough
-           default:
-               milestone = 1
-           }
-       }
-    
-    func updateDistanceLabel() {
-        distanceLabel.text = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
-    }
 }

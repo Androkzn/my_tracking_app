@@ -16,6 +16,10 @@ enum LocalizationKey: String {
     case miles = "mi"
     case yards = "yd"
     case feet = "ft"
+    case cm = "cm"
+    case inches = "in"
+    case kg = "kg"
+    case pound = "lb"
 
     var string: String {
         return rawValue

@@ -42,11 +42,25 @@ enum Milestones: Int {
     case ten
 }
 
+enum Cards: String {
+    case time
+    case distance
+    case speed
+    case avgspeed
+    case heartrate
+    case callories
+}
+
 let keyUnit = "UNITS"
 let keyWorkout = "WORKOUT"
 let keyMap = "MAP"
 let keyVoice = "VOICE"
 let keyMilestones = "VOICE MILESTONES"
+
+let firstCard = "FirstCard"
+let secondCard = "SecondCard"
+let thirdCard = "ThirdCard"
+let fourthCard = "FourthCard"
 
 class WorkoutDataHelper {
 
@@ -172,6 +186,32 @@ class WorkoutDataHelper {
             fallthrough
         default:
             return "\(LocalizationKey.km.string)"
+        }
+    }
+    
+    static func getWeightUnit() -> String {
+        switch retrieveUnitSetting() {
+        case Units.imperialUK.rawValue:
+           fallthrough
+        case Units.imperialUS.rawValue:
+            return "\(LocalizationKey.pound.string)"
+        case Units.metric.rawValue:
+            fallthrough
+        default:
+            return "\(LocalizationKey.kg.string)"
+        }
+    }
+    
+    static func getHeightUnit() -> [String] {
+        switch retrieveUnitSetting() {
+        case Units.imperialUK.rawValue:
+           fallthrough
+        case Units.imperialUS.rawValue:
+            return ["\(LocalizationKey.feet.string)", "\(LocalizationKey.inches.string)"]
+        case Units.metric.rawValue:
+            fallthrough
+        default:
+            return ["\(LocalizationKey.cm.string)"]
         }
     }
 
@@ -382,6 +422,55 @@ extension WorkoutDataHelper {
 
     private static func distanceInYard(from meter: Double) -> Double {
         return meter * 1.09361
+    }
+    
+    private static func heightInFootsAndInches(from cm: Any) -> [Int] {
+        let height: [Int]
+        let cmString = cm as? String
+        let cmDouble = Double("\(String(describing: cmString))")
+        let feet = cmDouble! * 0.0328084
+        let feetShow = Int(floor(feet))
+        let feetRest: Double = ((feet * 100).truncatingRemainder(dividingBy: 100) / 100)
+        let inches = Int(floor(feetRest * 12))
+        height = [feetShow , inches]
+        return height
+    }
+    
+    static func getDisplayedHeight(from cm: Any) -> [String] {
+        var displayedHeight: [String]
+        switch retrieveUnitSetting() {
+        case Units.imperialUK.rawValue:
+             fallthrough
+        case Units.imperialUS.rawValue:
+            displayedHeight = ["\(heightInFootsAndInches(from: cm)[0])", "\(heightInFootsAndInches(from: cm)[1])"]
+        case Units.metric.rawValue:
+            fallthrough
+        default:
+            displayedHeight = ["\(cm)", ""]
+        }
+        return displayedHeight
+    }
+    
+    
+    private static func weightInPounds(from kg: Any) -> Double {
+        let kgString = kg as? String
+        let kgDouble = Double("\(String(describing: kgString))")
+        return kgDouble! / 2.205
+    }
+    
+    static func getDisplayedWeight(from kg: Any) -> String {
+        var displayedWeight: String
+        switch retrieveUnitSetting() {
+        case Units.imperialUK.rawValue:
+             fallthrough
+        case Units.imperialUS.rawValue:
+            displayedWeight = String(format:"%.0f", weightInPounds(from: kg))
+        case Units.metric.rawValue:
+            fallthrough
+        default:
+            displayedWeight = "\(kg)"
+        }
+        return displayedWeight
     }
 
     private static func speedInKmPerHour(from meterPerSecond: Double) -> Double {

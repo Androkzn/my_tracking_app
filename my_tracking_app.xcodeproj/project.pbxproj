@@ -12,6 +12,8 @@
 		DE0801C624A45AFD00E9F873 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */; };
 		DE0801C824A45B0E00E9F873 /* Summary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE0801C724A45B0E00E9F873 /* Summary.storyboard */; };
 		DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F3D6B24A488ED00966B60 /* ToastView.swift */; };
+		DE4FF00A24D0F0F900F980D8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */; };
+		DE4FF00C24D0F11000F980D8 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4FF00B24D0F11000F980D8 /* Profile.storyboard */; };
 		DE67A319249889BD000FFEA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A318249889BD000FFEA5 /* AppDelegate.swift */; };
 		DE67A31B249889BD000FFEA5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A31A249889BD000FFEA5 /* SceneDelegate.swift */; };
 		DE67A320249889BD000FFEA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE67A31E249889BD000FFEA5 /* Main.storyboard */; };
@@ -60,9 +62,12 @@
 		2CADC9C854ED767557D76DB2 /* Pods-my_tracking_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_app.debug.xcconfig"; path = "Target Support Files/Pods-my_tracking_app/Pods-my_tracking_app.debug.xcconfig"; sourceTree = "<group>"; };
 		31826294EDC40B85F972BCC7 /* Pods_my_tracking_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_my_tracking_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		683FC8D79AFBFF15D38889D4 /* Pods-my_tracking_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_appTests.debug.xcconfig"; path = "Target Support Files/Pods-my_tracking_appTests/Pods-my_tracking_appTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6A7ECC5C46E31B3FF050AD11 /* Pods-my_tracking_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_app.release.xcconfig"; path = "Target Support Files/Pods-my_tracking_app/Pods-my_tracking_app.release.xcconfig"; sourceTree = "<group>"; };
 		DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		DE0801C724A45B0E00E9F873 /* Summary.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Summary.storyboard; sourceTree = "<group>"; };
 		DE4F3D6B24A488ED00966B60 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		DE4FF00B24D0F11000F980D8 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		DE67A315249889BD000FFEA5 /* my_tracking_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = my_tracking_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE67A318249889BD000FFEA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE67A31A249889BD000FFEA5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -134,6 +139,7 @@
 				2CADC9C854ED767557D76DB2 /* Pods-my_tracking_app.debug.xcconfig */,
 				683FC8D79AFBFF15D38889D4 /* Pods-my_tracking_appTests.debug.xcconfig */,
 				1676BEA3E1160BC82F37ECD3 /* Pods-my_tracking_appTests.release.xcconfig */,
+				6A7ECC5C46E31B3FF050AD11 /* Pods-my_tracking_app.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -172,6 +178,7 @@
 				E82D14F024A287AA002A0773 /* LocationAnnotation.swift */,
 				DE67A34124988B9B000FFEA5 /* MapViewController.swift */,
 				F2ACEB8D24A1789500ED9079 /* MapViewDelegate.swift */,
+				DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */,
 				F2B350D624B909670029B093 /* SettingSelectionViewController.swift */,
 				F2AA4B9C24AAB6E500BB00DA /* SettingsViewController.swift */,
 				DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */,
@@ -210,6 +217,7 @@
 				DE67A326249889BE000FFEA5 /* LaunchScreen.storyboard */,
 				DE0801C724A45B0E00E9F873 /* Summary.storyboard */,
 				DE835AF024BE044F00122C2C /* Chart.storyboard */,
+				DE4FF00B24D0F11000F980D8 /* Profile.storyboard */,
 			);
 			name = Storyboards;
 			path = ..;
@@ -315,6 +323,7 @@
 				DE67A325249889BE000FFEA5 /* Assets.xcassets in Resources */,
 				DEFCD749249B36A0007D7E75 /* Map.storyboard in Resources */,
 				DE67A320249889BD000FFEA5 /* Main.storyboard in Resources */,
+				DE4FF00C24D0F11000F980D8 /* Profile.storyboard in Resources */,
 				DEFCD747249B364D007D7E75 /* History.storyboard in Resources */,
 				F2AA4B9F24B6728700BB00DA /* Settings.storyboard in Resources */,
 			);
@@ -404,6 +413,7 @@
 				DE67A323249889BD000FFEA5 /* my_tracking_app.xcdatamodeld in Sources */,
 				DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */,
 				DE67A319249889BD000FFEA5 /* AppDelegate.swift in Sources */,
+				DE4FF00A24D0F0F900F980D8 /* ProfileViewController.swift in Sources */,
 				DE67A33E24988B6B000FFEA5 /* HistoryViewController.swift in Sources */,
 				F2ACEB8E24A1789500ED9079 /* MapViewDelegate.swift in Sources */,
 				F2702F0624A5227B002AE16F /* WorkoutDataHelper.swift in Sources */,
@@ -598,6 +608,7 @@
 		};
 		DE67A339249889BE000FFEA5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A7ECC5C46E31B3FF050AD11 /* Pods-my_tracking_app.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

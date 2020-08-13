@@ -1,18 +1,26 @@
 PODS:
+  - ActionSheetPicker-3.0 (2.3.1)
   - Charts (3.5.0):
     - Charts/Core (= 3.5.0)
   - Charts/Core (3.5.0)
+  - RSSelectionMenu (7.0.0)
 
 DEPENDENCIES:
+  - ActionSheetPicker-3.0 (~> 2.3.0)
   - Charts (~> 3.5)
+  - RSSelectionMenu (~> 7.0.0)
 
 SPEC REPOS:
   trunk:
+    - ActionSheetPicker-3.0
     - Charts
+    - RSSelectionMenu
 
 SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: 2f5e3fde6b3205a7318f9338e4ec0f373ce7e75c
   Charts: 40a08591df1f8ad5c223ddedfb1a06da92f24f7c
+  RSSelectionMenu: 096db1676b37214a2c447383e80733599b74a052
 
-PODFILE CHECKSUM: 02054c1d47a8ed138c8989e04771b14e21b4ea51
+PODFILE CHECKSUM: 04bd10141ab971ab5a240043cd2346b18850e98c
 
 COCOAPODS: 1.9.3
