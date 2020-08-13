@@ -32,13 +32,13 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="206.66666666666666" height="92.666666666666671"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJQ-eg-ztk">
-                                                                <rect key="frame" x="42.999999999999993" y="10" width="123.33333333333331" height="34.666666666666664"/>
+                                                                <rect key="frame" x="42.999999999999993" y="28.99999999999994" width="123.33333333333331" height="34.666666666666657"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TIME" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ng-cD-emt">
-                                                                <rect key="frame" x="89" y="46.666666666666686" width="30.333333333333329" height="14.333333333333336"/>
+                                                                <rect key="frame" x="89" y="65.666666666666686" width="30.333333333333329" height="14.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                                 <color key="textColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -47,7 +47,7 @@
                                                         <color key="backgroundColor" red="0.77965408560000005" green="0.92647665739999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstItem="2ng-cD-emt" firstAttribute="centerX" secondItem="FTK-eT-EVD" secondAttribute="centerX" constant="1" id="Jjt-dn-3Ow"/>
-                                                            <constraint firstItem="SJQ-eg-ztk" firstAttribute="top" secondItem="FTK-eT-EVD" secondAttribute="top" constant="10" id="PMS-aJ-rZQ"/>
+                                                            <constraint firstItem="SJQ-eg-ztk" firstAttribute="centerY" secondItem="FTK-eT-EVD" secondAttribute="centerY" id="Z4i-Pw-dGl"/>
                                                             <constraint firstItem="SJQ-eg-ztk" firstAttribute="centerX" secondItem="FTK-eT-EVD" secondAttribute="centerX" constant="1.5" id="brI-VQ-bzy"/>
                                                             <constraint firstItem="2ng-cD-emt" firstAttribute="top" secondItem="SJQ-eg-ztk" secondAttribute="bottom" constant="2" id="ySp-sx-9i5"/>
                                                         </constraints>
@@ -57,13 +57,13 @@
                                                         <rect key="frame" x="207.66666666666663" y="0.0" width="206.33333333333337" height="92.666666666666671"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ol2-5t-6Bj">
-                                                                <rect key="frame" x="81.333333333333343" y="10" width="43.333333333333343" height="34.666666666666664"/>
+                                                                <rect key="frame" x="81.333333333333343" y="28.99999999999994" width="43.333333333333343" height="34.666666666666657"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="DISTANCE, km" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6D-yr-Uko">
-                                                                <rect key="frame" x="59.000000000000028" y="46.666666666666686" width="88" height="14.333333333333336"/>
+                                                                <rect key="frame" x="59.000000000000028" y="65.666666666666686" width="88" height="14.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                                 <color key="textColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -72,9 +72,9 @@
                                                         <color key="backgroundColor" red="0.77965408560000005" green="0.92647665739999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstItem="Y6D-yr-Uko" firstAttribute="centerX" secondItem="Bf1-pV-O94" secondAttribute="centerX" id="2p8-HP-97T"/>
-                                                            <constraint firstItem="Ol2-5t-6Bj" firstAttribute="top" secondItem="Bf1-pV-O94" secondAttribute="top" constant="10" id="Rbn-EH-SHN"/>
                                                             <constraint firstItem="Y6D-yr-Uko" firstAttribute="top" secondItem="Ol2-5t-6Bj" secondAttribute="bottom" constant="2" id="iMe-z7-MSK"/>
                                                             <constraint firstItem="Ol2-5t-6Bj" firstAttribute="centerX" secondItem="Bf1-pV-O94" secondAttribute="centerX" id="sDj-Jr-045"/>
+                                                            <constraint firstItem="Ol2-5t-6Bj" firstAttribute="centerY" secondItem="Bf1-pV-O94" secondAttribute="centerY" id="tGc-K2-Vwd"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>

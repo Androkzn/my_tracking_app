@@ -306,7 +306,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // show dropdown alertpopover
         let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
         
-        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 230, height: 220)), from: self)
+        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
 
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
@@ -345,16 +345,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
 
     func setupContainersTap() {
-       let firstContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       let firstContainerTap = UILongPressGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
        firstContainerTap.delegate = self
         
-       let secondContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       let secondContainerTap = UILongPressGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
        secondContainerTap.delegate = self
         
-       let thirdContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       let thirdContainerTap = UILongPressGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
        thirdContainerTap.delegate = self
          
-       let fourthContainerTap = UITapGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
+       let fourthContainerTap = UILongPressGestureRecognizer(target: self, action: #selector(self.containerTapped(_:)))
        fourthContainerTap.delegate = self
         
         
