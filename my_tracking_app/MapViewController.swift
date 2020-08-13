@@ -81,7 +81,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupMapView()
         resetLabels()
         setupContainersTap()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,6 +114,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    //set up labels from Core Data
     func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> [String] {
         var data: [String] = ["",""]
         if label == "TIME" {
@@ -161,10 +161,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        }
     }
 
+    //center map button
     @IBAction func centerMap(_ sender: UIButton) {
         centerToCurrentLocation()
     }
-
+    
+    //start button state
     @objc func startButton(_ sender: UITapGestureRecognizer) {
         // Start new workout button pressed
         if lastLocation != nil {
@@ -182,6 +184,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    //stop button state
     @objc func stopButton(_ sender: UILongPressGestureRecognizer) {
         if isTrackingStarted {
             if sender.state == .began {
@@ -210,6 +213,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    //controls popup behaviour when stop button is long pressed
     func setupCounterLabel (started: Bool) {
         counterTextLabel.layer.backgroundColor = #colorLiteral(red: 0.3249011148, green: 0.7254286438, blue: 0.9069467254, alpha: 0.8043396832)
         counterTextLabel.layer.cornerRadius = 10
@@ -256,6 +260,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
 
+    //activate text to speach when a milestone is reached
     func speakWhenReachingMilestones() {
         if (milestone != 0) {
             let distanceString = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
@@ -275,7 +280,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
 
     }
     
-
+    //
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
         print("TAPPED")
 
@@ -297,9 +302,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
             self.selectedName = selectedItems
         }
-
-        // show dropdown alert
-        //menu.show(style: .alert(title: "CHANGE CARD NAME", action: "Done", height: 265), from: self)
+        
         // show dropdown alertpopover
         let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
         
@@ -315,6 +318,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
     }
+    
     
     func cards(atIndex: Int) -> String {
         switch atIndex {
@@ -377,245 +381,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         return true
     }
     
-    
-    
-}
-
-// MARK: Delegate for CLLocationManager
-extension MapViewController: CLLocationManagerDelegate {
-    // Handle incoming location events.
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
-        mapLabel.centerToLocation(locations.last!, regionRadius: 300)
-
-        if isTrackingStarted {
-            addWorkoutLocations(locations: locations)
-
-            if self.currentLocations.count > 0 {
-                locations.forEach { location in
-                    let speed = location.speed >= 0.0 ? location.speed : 0.0
-                    currentWorkoutSpeedSum += speed
-                }
-            }
-        }
-        lastLocation = locations.first!
-        altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation!.altitude)
-    }
-
-    // Handle authorization for the location manager.
-    func locationManager(_ manager: CLLocationManager,
-                         didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .restricted:
-            print("Location access was restricted.")
-        case .denied:
-            print("User denied access to location.")
-        case .notDetermined:
-            print("Location status not determined.")
-        case .authorizedAlways: fallthrough
-        case .authorizedWhenInUse:
-            print("Location status is OK.")
-        @unknown default:
-            fatalError()
-        }
-    }
-
-    // Handle location manager errors.
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationManager.stopUpdatingLocation()
-        print("Error: \(error)")
-    }
-    
-    
-    
-}
-
-// MARK: Delegate for MapViewDelegate
-extension MapViewController: MapViewDelegate {
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        return renderer(mapView, rendererFor: overlay)
-    }
-}
-
-// MARK: Delegate for SummaryViewControllerDelegate
-extension MapViewController: SummaryViewControllerDelegate {
-    func showToast (_vc: SummaryViewController) {
-        currentWorkout = nil
-        ToastView.shared.redToast(view, txt_msg: "Your workout has been saved successfully", duration: 2)
-   }
-}
-
-// MARK: MKMapView extension to easily change the zoom level (region)
-extension MKMapView {
-    func centerToLocation(_ location: CLLocation, regionRadius: CLLocationDistance = 1000) {
-        let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
-                                                  latitudinalMeters: regionRadius,
-                                                  longitudinalMeters: regionRadius)
-        setRegion(coordinateRegion, animated: true)
-    }
-}
-
-// MARK: Helper functions
-extension MapViewController {
-    // Create a new Location object and add to the currentLocations
-    // for the started workout
-    func addWorkoutLocations(locations: [CLLocation]) {
-        guard let workout = currentWorkout else {
-            return
-        }
-        var distance: Double = 0.0
-        for location in locations {
-            if currentLocations.isEmpty {
-                distance = 0
-            } else {
-                distance = location.distance(from: lastLocation!)
-                drawRoute(mapLabel,
-                          coordinates: [lastLocation!.coordinate, location.coordinate],
-                          animateToRoute: false)
-                lastLocation = location
-            }
-
-            let workoutLocation =
-                DataManager.shared.location(timestamp: Date(), distance: distance,
-                                            latitude: location.coordinate.latitude,
-                                            longitude: location.coordinate.longitude,
-                                            speed: location.speed, altitude: location.altitude,
-                                            workout: workout)
-            currentLocations.append(workoutLocation)
-            currentWorkoutDistance += distance
-
-            // Update milesone and speak when milestone is met
-            speakWhenReachingMilestones()
-        }
-    }
-
-    func averageSpeed() -> Double {
-        var averageSpeed = 0.0
-        if !currentLocations.isEmpty {
-            averageSpeed = currentWorkoutSpeedSum/Double(currentLocations.count)
-        }
-        return averageSpeed
-    }
-
-    func centerToCurrentLocation() {
-        if let lastLocation = lastLocation {
-        mapLabel.centerToLocation(lastLocation, regionRadius: 300)
-        }
-    }
-
-    func resetLabels() {
-        // Reset distance and averageSpeed
-        currentWorkoutDistance = 0.0
-        currentWorkoutSpeedSum = 0.0
-        updateLabels()
-
-    }
-    
-    func updateLabels() {
-        // Prepare UserDefauld instance
-        let defaults = UserDefaults.standard
-        // Update timer label
-        timeLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
-        timeUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
-        // Update distance label
-        distanceLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
-        distanceUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
-        // Update speed label
-        speedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
-        speedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
-        // Update avg speed label
-        averageSpeedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
-        averageSpeedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
-    }
-    
-    func updateAllLabels (label: String)  -> [String] {
-        var data: [String] = ["",""]
-        if label == "TIME" {
-            data[0] = "00:00:00"
-            data[1] = "TIME"
-        }
-        if label == "DISTANCE" {
-            data[0] = "0.0"
-            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
-        }
-        if label == "SPEED" {
-            print("speed")
-            data[0] = "0.0"
-            data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
-        }
-        if label == "AVG SPEED" {
-            data[0] = "0.0"
-            data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
-        }
-        if label == "HEART RATE" {
-            data[0] = "0"
-            data[1] = "HEART RATE, bpm"
-        }
-        if label == "CALLORIES" {
-            data[0] = "0"
-            data[1] = "CALLORIES, cal"
-        }
-        //print(data)
-        return data
-    }
-    
-
-    func setMapType() {
-        let mapType = UserDefaults.standard.integer(forKey: "MAP")
-        switch mapType {
-        case Map.satellite.rawValue:
-            mapLabel.mapType = .satellite
-        case Map.hybrid.rawValue:
-            mapLabel.mapType = .hybrid
-        case Map.standard.rawValue:
-            fallthrough
-        default:
-            mapLabel.mapType = .standard
-        }
-    }
-
-//    func refreshUnitLabels() {
-//        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
-//        let speedFormat = WorkoutDataHelper.getSpeedUnit()
-//        speedUnitLabel.text = "SPEED, \(speedFormat)"
-//        averageSpeedUnitLabel.text = "AVG SPEED, \(speedFormat)"
-//        var altitude = 0.0
-//        if let lastLocation = lastLocation {
-//            altitude = lastLocation.altitude
-//        }
-//        altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: altitude)
-//    }
-
-    func setupCenterButton() {
-        recenterButton.layer.cornerRadius = 25.0
-        recenterButton.layer.borderWidth = 1.0
-        recenterButton.layer.borderColor = UIColor.black.cgColor
-        recenterButton.alpha = 0.8
-    }
-
-    func setupSettingsButton() {
-        settingButton.layer.cornerRadius = 25.0
-        settingButton.layer.borderWidth = 1.0
-        settingButton.layer.borderColor = UIColor.black.cgColor
-        settingButton.alpha = 0.8
-    }
-
-    func setupLocationManager() {
-        // Initialize the location manager.
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.distanceFilter = 50
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.startUpdatingLocation()
-    }
-
-    func setupMapView() {
-        mapLabel.showsUserLocation = true
-        mapLabel.delegate = self
-    }
-
     func setupWorkoutButton(started: Bool) {
         startButtonLabel.layer.borderWidth = 3
         startButtonLabel.layer.cornerRadius = 10
@@ -715,5 +480,228 @@ extension MapViewController {
                milestone = 1
            }
        }
+    
+    func resetLabels() {
+        // Reset distance and averageSpeed
+        currentWorkoutDistance = 0.0
+        currentWorkoutSpeedSum = 0.0
+        updateLabels()
 
+    }
+    
+    func updateLabels() {
+        // Prepare UserDefauld instance
+        let defaults = UserDefaults.standard
+        // Update timer label
+        timeLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
+        timeUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
+        // Update distance label
+        distanceLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
+        distanceUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
+        // Update speed label
+        speedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
+        speedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
+        // Update avg speed label
+        averageSpeedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
+        averageSpeedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
+    }
+    
+    func updateAllLabels (label: String)  -> [String] {
+        var data: [String] = ["",""]
+        if label == "TIME" {
+            data[0] = "00:00:00"
+            data[1] = "TIME"
+        }
+        if label == "DISTANCE" {
+            data[0] = "0.0"
+            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+        }
+        if label == "SPEED" {
+            print("speed")
+            data[0] = "0.0"
+            data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "AVG SPEED" {
+            data[0] = "0.0"
+            data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "HEART RATE" {
+            data[0] = "0"
+            data[1] = "HEART RATE, bpm"
+        }
+        if label == "CALLORIES" {
+            data[0] = "0"
+            data[1] = "CALLORIES, cal"
+        }
+        //print(data)
+        return data
+    }
+    
+
+    func setupCenterButton() {
+        recenterButton.layer.cornerRadius = 25.0
+        recenterButton.layer.borderWidth = 1.0
+        recenterButton.layer.borderColor = UIColor.black.cgColor
+        recenterButton.alpha = 0.8
+    }
+
+    func setupSettingsButton() {
+        settingButton.layer.cornerRadius = 25.0
+        settingButton.layer.borderWidth = 1.0
+        settingButton.layer.borderColor = UIColor.black.cgColor
+        settingButton.alpha = 0.8
+    }
+
+}
+
+
+// MARK: Delegate for CLLocationManager
+extension MapViewController: CLLocationManagerDelegate {
+    // Handle incoming location events.
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        mapLabel.centerToLocation(locations.last!, regionRadius: 300)
+
+        if isTrackingStarted {
+            addWorkoutLocations(locations: locations)
+
+            if self.currentLocations.count > 0 {
+                locations.forEach { location in
+                    let speed = location.speed >= 0.0 ? location.speed : 0.0
+                    currentWorkoutSpeedSum += speed
+                }
+            }
+        }
+        lastLocation = locations.first!
+        altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation!.altitude)
+    }
+
+    // Handle authorization for the location manager.
+    func locationManager(_ manager: CLLocationManager,
+                         didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted:
+            print("Location access was restricted.")
+        case .denied:
+            print("User denied access to location.")
+        case .notDetermined:
+            print("Location status not determined.")
+        case .authorizedAlways: fallthrough
+        case .authorizedWhenInUse:
+            print("Location status is OK.")
+        @unknown default:
+            fatalError()
+        }
+    }
+
+    // Handle location manager errors.
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationManager.stopUpdatingLocation()
+        print("Error: \(error)")
+    }
+}
+
+// MARK: Delegate for MapViewDelegate
+extension MapViewController: MapViewDelegate {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        return renderer(mapView, rendererFor: overlay)
+    }
+}
+
+// MARK: Delegate for SummaryViewControllerDelegate
+extension MapViewController: SummaryViewControllerDelegate {
+    func showToast (_vc: SummaryViewController) {
+        currentWorkout = nil
+        ToastView.shared.redToast(view, txt_msg: "Your workout has been saved successfully", duration: 2)
+   }
+}
+
+// MARK: MKMapView extension to easily change the zoom level (region)
+extension MKMapView {
+    func centerToLocation(_ location: CLLocation, regionRadius: CLLocationDistance = 1000) {
+        let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
+                                                  latitudinalMeters: regionRadius,
+                                                  longitudinalMeters: regionRadius)
+        setRegion(coordinateRegion, animated: true)
+    }
+}
+
+// MARK: Helper functions
+extension MapViewController {
+    // Create a new Location object and add to the currentLocations
+    // for the started workout
+    func addWorkoutLocations(locations: [CLLocation]) {
+        guard let workout = currentWorkout else {
+            return
+        }
+        var distance: Double = 0.0
+        for location in locations {
+            if currentLocations.isEmpty {
+                distance = 0
+            } else {
+                distance = location.distance(from: lastLocation!)
+                drawRoute(mapLabel,
+                          coordinates: [lastLocation!.coordinate, location.coordinate],
+                          animateToRoute: false)
+                lastLocation = location
+            }
+
+            let workoutLocation =
+                DataManager.shared.location(timestamp: Date(), distance: distance,
+                                            latitude: location.coordinate.latitude,
+                                            longitude: location.coordinate.longitude,
+                                            speed: location.speed, altitude: location.altitude,
+                                            workout: workout)
+            currentLocations.append(workoutLocation)
+            currentWorkoutDistance += distance
+
+            // Update milesone and speak when milestone is met
+            speakWhenReachingMilestones()
+        }
+    }
+
+    func averageSpeed() -> Double {
+        var averageSpeed = 0.0
+        if !currentLocations.isEmpty {
+            averageSpeed = currentWorkoutSpeedSum/Double(currentLocations.count)
+        }
+        return averageSpeed
+    }
+
+    func centerToCurrentLocation() {
+        if let lastLocation = lastLocation {
+        mapLabel.centerToLocation(lastLocation, regionRadius: 300)
+        }
+    }
+
+    func setupLocationManager() {
+        // Initialize the location manager.
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.distanceFilter = 50
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.startUpdatingLocation()
+    }
+
+    func setupMapView() {
+        mapLabel.showsUserLocation = true
+        mapLabel.delegate = self
+    }
+    
+    func setMapType() {
+        let mapType = UserDefaults.standard.integer(forKey: "MAP")
+        switch mapType {
+        case Map.satellite.rawValue:
+            mapLabel.mapType = .satellite
+        case Map.hybrid.rawValue:
+            mapLabel.mapType = .hybrid
+        case Map.standard.rawValue:
+            fallthrough
+        default:
+            mapLabel.mapType = .standard
+        }
+    }
+    
 }
