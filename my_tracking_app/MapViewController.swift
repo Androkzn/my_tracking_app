@@ -140,7 +140,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
         }
         if label == "HEART RATE" {
-            data[0] = "0"
+            data[0] = "\(HealthData.shared.heartRate)"
             data[1] = ", bpm"
             
         }
@@ -246,6 +246,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
 
         //Gets number of steps after workout
         HealthData.shared.latestStepsData(seconds: GlobalTimer.shared.seconds)
+        
+        //Gets number of steps after workout
+        HealthData.shared.latestHeartRate(seconds: GlobalTimer.shared.seconds)
         
         if let lastLocation = lastLocation {
             // Prepare UserDefauld instance
