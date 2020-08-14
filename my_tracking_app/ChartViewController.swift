@@ -80,7 +80,7 @@ class ChartViewController: UIViewController, GetChartData {
         var distance = 0.0
         var seconds = 0
         let initialTimestamp = workoutLocations.first?.timestamp ?? Date()
-        print(workoutLocations)
+
         workoutLocations.forEach { (location) in
             distance += location.distance
             if SummaryViewController.sender == 1 {
@@ -111,8 +111,6 @@ class ChartViewController: UIViewController, GetChartData {
             } else {
                 unitxAxis = unitDistance
                 xAxisName = "DISTANCE"
-                print("DISTAMCE: \(workouts.distance)")
-                
                 if workouts.distance < 1000{
                      unitxAxis = unitAltitude
                     dataPoints.append(WorkoutDataHelper.getDisplayedAltitude(from: distance))

@@ -88,11 +88,6 @@ class ProfileViewController: UIViewController {
                                      rows: rows,
                                      initialSelection: rows.count/3,
                                      doneBlock: { picker, value, index in
-                                        //printings
-                                        print("picker = \(String(describing: picker))")
-                                        print("value = \(value)")
-                                        print("index = \(String(describing: index))")
-                                        
                                         UserDefaults.standard.set("\(index!)", forKey: field)
                                         sender.text = "\(index!)"
                         

@@ -126,7 +126,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
         }
         if label == "SPEED" {
-            print("speed")
             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: speed)
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
@@ -144,7 +143,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[1] = ", cal"
             
         }
-        print(data)
         return data
     }
     
@@ -270,7 +268,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             if (convertedDistance == nextMilestone) && (convertedDistance > 0) {
                 nextMilestone += milestone
-                print(nextMilestone)
                 TextToSpeech.speakWhenReachingMilestones(workoutDistance: currentWorkoutDistance,
                         workoutTime: GlobalTimer.shared.secondsFormatterToSpokenDuration(
                                                     seconds: GlobalTimer.shared.seconds))
@@ -282,8 +279,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
-        print("TAPPED")
-
         let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
@@ -517,7 +512,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
         }
         if label == "SPEED" {
-            print("speed")
             data[0] = "0.0"
             data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
         }
@@ -533,7 +527,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[0] = "0"
             data[1] = "CALLORIES, cal"
         }
-        //print(data)
         return data
     }
     

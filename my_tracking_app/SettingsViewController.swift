@@ -85,7 +85,6 @@ extension SettingsViewController: UITableViewDataSource {
         var cell: UITableViewCell
         cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel!.text = settingTitle(atIndex: indexPath.section)
-//        print("settingTitle \(settingTitle(atIndex: indexPath.section))")
         cell.textLabel!.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.bold)
         tableView.rowHeight = 50.0
         return cell
