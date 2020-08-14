@@ -145,8 +145,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
         }
         if label == "CALLORIES" {
-            data[0] = "0"
-            data[1] = ", cal"
+            data[0] = "\(HealthData.shared.totalCaloriesBurned)"
+            data[1] = ", kcal"
             
         }
         return data
@@ -244,11 +244,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         GlobalTimer.shared.seconds += 1
         var speedMPS: CLLocationSpeed = 0
 
-        //Gets number of steps after workout
-        HealthData.shared.latestStepsData(seconds: GlobalTimer.shared.seconds)
+        //Gets number of steps
+        HealthData.shared.latestSteps(seconds: GlobalTimer.shared.seconds)
         
-        //Gets number of steps after workout
+        //Gets heart  rate
         HealthData.shared.latestHeartRate(seconds: GlobalTimer.shared.seconds)
+        
+        //Gets burned callories
+        HealthData.shared.latestEnergyBurned(seconds:GlobalTimer.shared.seconds)
         
         if let lastLocation = lastLocation {
             // Prepare UserDefauld instance
@@ -313,7 +316,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // show dropdown alertpopover
         let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
         
-        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
+        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 265)), from: self)
 
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
@@ -544,7 +547,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         if label == "CALLORIES" {
             data[0] = "0"
-            data[1] = "CALLORIES, cal"
+            data[1] = "CALLORIES, kcal"
         }
         return data
     }
