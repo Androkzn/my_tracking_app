@@ -145,7 +145,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
         }
         if label == "CALLORIES" {
-            data[0] = "0"
+            data[0] = "\(HealthData.shared.totalCalloriesBurned)"
             data[1] = ", cal"
             
         }
@@ -244,11 +244,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         GlobalTimer.shared.seconds += 1
         var speedMPS: CLLocationSpeed = 0
 
-        //Gets number of steps after workout
-        HealthData.shared.latestStepsData(seconds: GlobalTimer.shared.seconds)
+        //Gets number of steps
+        HealthData.shared.latestSteps(seconds: GlobalTimer.shared.seconds)
         
-        //Gets number of steps after workout
+        //Gets heart  rate
         HealthData.shared.latestHeartRate(seconds: GlobalTimer.shared.seconds)
+        
+        //Gets burned callories
+        HealthData.shared.latestEnergyBurned(seconds:GlobalTimer.shared.seconds)
         
         if let lastLocation = lastLocation {
             // Prepare UserDefauld instance

@@ -16,20 +16,22 @@ class HealthData {
     var steps: Int16 = 0
     var totalSteps: Int16 = 0
     var heartRate: Int16 = 0
- 
+    var calloriesBurned: Int16 = 0
+    var totalCalloriesBurned: Int16 = 0
     
     func requestAutorization () {
         let stepType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
         let heartType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.heartRate)!
+        let energyType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.activeEnergyBurned)!
         
-        healthStore.requestAuthorization(toShare: [], read: [stepType,heartType]) { (success, error) in
+        healthStore.requestAuthorization(toShare: [], read: [stepType, heartType, energyType]) { (success, error) in
             if (success) {
                 print("Permission granted")
             }
         }
     }
     
-    func latestStepsData (seconds: Int16) {
+    func latestSteps (seconds: Int16) {
         steps = 0
         guard let sampleType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) else {
             return
@@ -61,7 +63,6 @@ class HealthData {
     }
     
     func latestHeartRate (seconds: Int16) {
-            
             guard let sampleType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.heartRate) else {
                 return
             }
@@ -90,5 +91,34 @@ class HealthData {
             }
             healthStore.execute(querry)
         }
+    
+    func latestEnergyBurned (seconds: Int16) {
+        calloriesBurned = 0
+        guard let sampleType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.activeEnergyBurned) else {
+            return
+        }
+        
+        let startDate = Calendar.current.date(byAdding: .second, value: -Int(seconds), to: Date())
+        
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictEndDate)
+        
+        let  sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+    
+        let querry = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: [sortDescriptor]) { (sample, result, error) in
+            guard error == nil else {
+                return
+            }
+            
+            result!.forEach { (eachResult) in
+                let data =  result![0] as! HKQuantitySample
+                let unit = HKUnit(from: "kcal")
+                let latestCallories = data.quantity.doubleValue(for: unit)
+                self.calloriesBurned = Int16(latestCallories)
+                //print("Callories: \(latestRate)")
+            }
+            self.totalCalloriesBurned = self.calloriesBurned
+        }
+        healthStore.execute(querry)
+    }
     
 }
