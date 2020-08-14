@@ -80,6 +80,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupMapView()
         resetLabels()
         setupContainersTap()
+        //asks permission to HealthStore
+        HealthData.shared.requestAutorization()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,6 +133,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         if label == "AVG SPEED" {
             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "STEPS" {
+            data[0] = "\(HealthData.shared.totalSteps)"
+            data[1] = ""
+            
         }
         if label == "HEART RATE" {
             data[0] = "0"
@@ -237,6 +244,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         GlobalTimer.shared.seconds += 1
         var speedMPS: CLLocationSpeed = 0
 
+        //Gets number of steps after workout
+        HealthData.shared.latestStepsData(seconds: GlobalTimer.shared.seconds)
+        
         if let lastLocation = lastLocation {
             // Prepare UserDefauld instance
             let defaults = UserDefaults.standard
@@ -278,7 +288,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
-        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
+        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
@@ -397,11 +407,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
 
         //set up milestone
-        
         nextMilestone = milestone
         
         // Start timer
         GlobalTimer.shared.startTimer(self)
+        
+        //Reset steps
+        HealthData.shared.totalSteps = 0
 
         // Create new workout
         currentWorkout = DataManager.shared.workout(timestamp: Date())
@@ -415,6 +427,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     func stopWorkout() {
         // Save workout and locations
         if let currentWorkout = currentWorkout {
+            currentWorkout.steps = HealthData.shared.steps
             currentWorkout.workoutLocations = NSSet(array: currentLocations)
             currentWorkout.comment = ""
             currentWorkout.duration = GlobalTimer.shared.seconds
@@ -517,6 +530,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         if label == "AVG SPEED" {
             data[0] = "0.0"
             data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "STEPS" {
+            data[0] = "0"
+            data[1] = "STEPS"
         }
         if label == "HEART RATE" {
             data[0] = "0"
