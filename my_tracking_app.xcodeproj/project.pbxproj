@@ -11,6 +11,7 @@
 		9F9D759821DDB6602AD01794 /* Pods_my_tracking_appTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E325A54E15F9434533163B /* Pods_my_tracking_appTests.framework */; };
 		DE0801C624A45AFD00E9F873 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */; };
 		DE0801C824A45B0E00E9F873 /* Summary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE0801C724A45B0E00E9F873 /* Summary.storyboard */; };
+		DE1B12A324E636CB0028FFFD /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1B12A224E636CA0028FFFD /* HealthData.swift */; };
 		DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F3D6B24A488ED00966B60 /* ToastView.swift */; };
 		DE4FF00A24D0F0F900F980D8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */; };
 		DE4FF00C24D0F11000F980D8 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4FF00B24D0F11000F980D8 /* Profile.storyboard */; };
@@ -65,6 +66,7 @@
 		6A7ECC5C46E31B3FF050AD11 /* Pods-my_tracking_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_app.release.xcconfig"; path = "Target Support Files/Pods-my_tracking_app/Pods-my_tracking_app.release.xcconfig"; sourceTree = "<group>"; };
 		DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		DE0801C724A45B0E00E9F873 /* Summary.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Summary.storyboard; sourceTree = "<group>"; };
+		DE1B12A224E636CA0028FFFD /* HealthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
 		DE4F3D6B24A488ED00966B60 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DE4FF00B24D0F11000F980D8 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */,
 				F2B350D624B909670029B093 /* SettingSelectionViewController.swift */,
 				F2AA4B9C24AAB6E500BB00DA /* SettingsViewController.swift */,
+				DE1B12A224E636CA0028FFFD /* HealthData.swift */,
 				DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */,
 				DE67A34424988DED000FFEA5 /* TabViewController.swift */,
 				DE7FCB1F24A04915009EC89B /* Timer.swift */,
@@ -413,6 +416,7 @@
 				DE67A323249889BD000FFEA5 /* my_tracking_app.xcdatamodeld in Sources */,
 				DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */,
 				DE67A319249889BD000FFEA5 /* AppDelegate.swift in Sources */,
+				DE1B12A324E636CB0028FFFD /* HealthData.swift in Sources */,
 				DE4FF00A24D0F0F900F980D8 /* ProfileViewController.swift in Sources */,
 				DE67A33E24988B6B000FFEA5 /* HistoryViewController.swift in Sources */,
 				F2ACEB8E24A1789500ED9079 /* MapViewDelegate.swift in Sources */,

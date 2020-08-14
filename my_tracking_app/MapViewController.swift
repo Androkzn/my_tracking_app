@@ -58,8 +58,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var milestone: Double = 0.0 //Milstone from settings
     var editedCard: Int? //Stores value of edited card tag
     var selectedName: [String] = [] //selected cars name after editing
-
-
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         setInitialCardsSettings()
@@ -216,7 +215,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         counterTextLabel.layer.backgroundColor = #colorLiteral(red: 0.3249011148, green: 0.7254286438, blue: 0.9069467254, alpha: 0.8043396832)
         counterTextLabel.layer.cornerRadius = 10
         counterTextLabel.layer.borderWidth = 1.0
-        counterTextLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        counterTextLabel.layer.borderColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
         if started {
             startButtonLabel.titleLabel?.textColor = #colorLiteral(red: 0.9596351981, green: 0.4475290775, blue: 0.2867116332, alpha: 1)
             ToastView.shared.stopAnimation()
@@ -377,7 +376,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setupWorkoutButton(started: Bool) {
-        startButtonLabel.layer.borderWidth = 3
+        startButtonLabel.layer.borderWidth = 1.5
         startButtonLabel.layer.cornerRadius = 10
 
         if !started {

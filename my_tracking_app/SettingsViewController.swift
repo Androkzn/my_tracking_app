@@ -261,6 +261,9 @@ extension SettingsViewController {
         let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
             DataManager.shared.resetAllRecords(in: "Workout")
             DataManager.shared.resetAllRecords(in: "Location")
+            ToastView.shared.blueToast(self.view,
+            txt_msg: "All your existing workouts has been deleted successfully",
+            duration: 4)
         })
 
         // Create Cancel button with action handlder
