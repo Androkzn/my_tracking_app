@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19F101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Location" representedClassName="Location" syncable="YES" codeGenerationType="class">
         <attribute name="altitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -16,12 +16,13 @@
         <attribute name="duration" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="speed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="steps" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="workoutLocations" toMany="YES" deletionRule="Cascade" destinationEntity="Location" inverseName="workout" inverseEntity="Location"/>
     </entity>
     <elements>
         <element name="Location" positionX="-127.33203125" positionY="49.65234375" width="128" height="148"/>
-        <element name="Workout" positionX="-413.265625" positionY="155.6640625" width="128" height="178"/>
+        <element name="Workout" positionX="-413.265625" positionY="155.6640625" width="128" height="193"/>
     </elements>
 </model>
