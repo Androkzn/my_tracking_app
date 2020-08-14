@@ -16,8 +16,8 @@ class HealthData {
     var steps: Int16 = 0
     var totalSteps: Int16 = 0
     var heartRate: Int16 = 0
-    var calloriesBurned: Int16 = 0
-    var totalCalloriesBurned: Int16 = 0
+    var caloriesBurned: Int16 = 0
+    var totalCaloriesBurned: Int16 = 0
     
     func requestAutorization () {
         let stepType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
@@ -93,7 +93,7 @@ class HealthData {
         }
     
     func latestEnergyBurned (seconds: Int16) {
-        calloriesBurned = 0
+        caloriesBurned = 0
         guard let sampleType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.activeEnergyBurned) else {
             return
         }
@@ -112,11 +112,11 @@ class HealthData {
             result!.forEach { (eachResult) in
                 let data =  result![0] as! HKQuantitySample
                 let unit = HKUnit(from: "kcal")
-                let latestCallories = data.quantity.doubleValue(for: unit)
-                self.calloriesBurned = Int16(latestCallories)
+                let latestCalories = data.quantity.doubleValue(for: unit)
+                self.caloriesBurned = Int16(latestCalories)
                 //print("Callories: \(latestRate)")
             }
-            self.totalCalloriesBurned = self.calloriesBurned
+            self.totalCaloriesBurned = self.caloriesBurned 
         }
         healthStore.execute(querry)
     }
