@@ -82,6 +82,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
+        Pedometere.shared.getStepsUpdate(seconds: GlobalTimer.shared.seconds)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,8 +123,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[0] = GlobalTimer.shared.getTime()
             data[1] = ""
         }
-        if label == "DISTANCE" {
+        if label == "DISTANCE GPS" {
             data[0] = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+            data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
+        }
+        if label == "DISTANCE STEPS" {
+            data[0] = WorkoutDataHelper.getDisplayedDistance(from: Pedometere.shared.distance)
             data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
         }
         if label == "SPEED" {
@@ -135,7 +140,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "STEPS" {
-            data[0] = "\(HealthData.shared.totalSteps)"
+            data[0] = "\(Pedometere.shared.steps)"
             data[1] = ""
             
         }
@@ -253,6 +258,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         //Gets burned callories
         HealthData.shared.latestEnergyBurned(seconds:GlobalTimer.shared.seconds)
         
+        //Gets steps from pedometer
+        Pedometere.shared.getSteps(seconds: GlobalTimer.shared.seconds)
+        
         if let lastLocation = lastLocation {
             // Prepare UserDefauld instance
             let defaults = UserDefaults.standard
@@ -294,7 +302,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
-        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
+        let data: [String] = ["TIME", "DISTANCE GPS", "DISTANCE STEPS", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
@@ -347,7 +355,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func setInitialCardsSettings() {
         UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
-        UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
+        UserDefaults.standard.set("DISTANCE GPS", forKey: cards(atIndex: 1))
         UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
         UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
 
@@ -525,9 +533,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[0] = "00:00:00"
             data[1] = "TIME"
         }
-        if label == "DISTANCE" {
+        if label == "DISTANCE GPS" {
             data[0] = "0.0"
-            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+            data[1] = "DISTANCE GPS, \(WorkoutDataHelper.getDistanceUnit())"
+        }
+        if label == "DISTANCE STEPS" {
+            data[0] = "0.0"
+            data[1] = "DISTANCE STEPS, \(WorkoutDataHelper.getDistanceUnit())"
         }
         if label == "SPEED" {
             data[0] = "0.0"

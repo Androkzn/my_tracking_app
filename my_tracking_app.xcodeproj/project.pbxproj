@@ -14,6 +14,7 @@
 		DE1B12A324E636CB0028FFFD /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1B12A224E636CA0028FFFD /* HealthData.swift */; };
 		DE1B12A624E644A10028FFFD /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1B12A524E644A10028FFFD /* HealthKit.framework */; };
 		DE1B12A824E644BA0028FFFD /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1B12A724E644BA0028FFFD /* MapKit.framework */; };
+		DE1B12AA24E7B8FA0028FFFD /* Pedometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1B12A924E7B8FA0028FFFD /* Pedometer.swift */; };
 		DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F3D6B24A488ED00966B60 /* ToastView.swift */; };
 		DE4FF00A24D0F0F900F980D8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */; };
 		DE4FF00C24D0F11000F980D8 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4FF00B24D0F11000F980D8 /* Profile.storyboard */; };
@@ -72,6 +73,7 @@
 		DE1B12A424E644A10028FFFD /* my_tracking_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = my_tracking_app.entitlements; sourceTree = "<group>"; };
 		DE1B12A524E644A10028FFFD /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		DE1B12A724E644BA0028FFFD /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		DE1B12A924E7B8FA0028FFFD /* Pedometer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pedometer.swift; sourceTree = "<group>"; };
 		DE4F3D6B24A488ED00966B60 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DE4FF00B24D0F11000F980D8 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				E82D14F024A287AA002A0773 /* LocationAnnotation.swift */,
 				DE67A34124988B9B000FFEA5 /* MapViewController.swift */,
 				F2ACEB8D24A1789500ED9079 /* MapViewDelegate.swift */,
+				DE1B12A924E7B8FA0028FFFD /* Pedometer.swift */,
 				DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */,
 				F2B350D624B909670029B093 /* SettingSelectionViewController.swift */,
 				F2AA4B9C24AAB6E500BB00DA /* SettingsViewController.swift */,
@@ -437,6 +440,7 @@
 				DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */,
 				DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */,
 				DE7FCB2024A04915009EC89B /* Timer.swift in Sources */,
+				DE1B12AA24E7B8FA0028FFFD /* Pedometer.swift in Sources */,
 				F2B350DC24B90D6E0029B093 /* CheckTableViewCell.swift in Sources */,
 				DE67A31B249889BD000FFEA5 /* SceneDelegate.swift in Sources */,
 				F2B350D724B909670029B093 /* SettingSelectionViewController.swift in Sources */,
@@ -608,12 +612,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = my_tracking_app/my_tracking_app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				INFOPLIST_FILE = my_tracking_app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -628,12 +634,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = my_tracking_app/my_tracking_app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				INFOPLIST_FILE = my_tracking_app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
