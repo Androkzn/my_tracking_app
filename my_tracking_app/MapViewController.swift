@@ -38,6 +38,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var progressBarLabel: UIProgressView!
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
+    @IBOutlet weak var workoutTypeLabel: UIImageView!
     
     @IBOutlet weak var firstCardLabel: UIView!
     @IBOutlet weak var secondCardLabel: UIView!
@@ -82,7 +83,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
-        Pedometere.shared.getStepsUpdate(seconds: GlobalTimer.shared.seconds)
+        DeviceMotion.shared.getStepsUpdate(seconds: GlobalTimer.shared.seconds)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +94,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         resetLabels()
         showSavedWorkoutToast()
         setUpAltitudeLaberl ()
+        updatesWorkoutTypeIcon ()
     }
     
     //shows toast if workout just saved
@@ -123,13 +125,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[0] = GlobalTimer.shared.getTime()
             data[1] = ""
         }
-        if label == "DISTANCE GPS" {
-            data[0] = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
-            data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
-        }
-        if label == "DISTANCE STEPS" {
-            data[0] = WorkoutDataHelper.getDisplayedDistance(from: Pedometere.shared.distance)
-            data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
+        //Updates distance label depends on workout type
+        if WorkoutDataHelper.getWorkoutType() == 2 {
+            //Source of data is GPS
+            if label == "DISTANCE" {
+                data[0] = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+                data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
+            }
+        } else {
+            //Source of data is pedometer
+            if label == "DISTANCE" {
+                data[0] = WorkoutDataHelper.getDisplayedDistance(from: DeviceMotion.shared.distance)
+                data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
+            }
         }
         if label == "SPEED" {
             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: speed)
@@ -140,7 +148,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
         if label == "STEPS" {
-            data[0] = "\(Pedometere.shared.steps)"
+            data[0] = "\(DeviceMotion.shared.steps)"
             data[1] = ""
             
         }
@@ -259,7 +267,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         HealthData.shared.latestEnergyBurned(seconds:GlobalTimer.shared.seconds)
         
         //Gets steps from pedometer
-        Pedometere.shared.getSteps(seconds: GlobalTimer.shared.seconds)
+        DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
         
         if let lastLocation = lastLocation {
             // Prepare UserDefauld instance
@@ -302,7 +310,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
-        let data: [String] = ["TIME", "DISTANCE GPS", "DISTANCE STEPS", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
+        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
@@ -355,7 +363,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func setInitialCardsSettings() {
         UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
-        UserDefaults.standard.set("DISTANCE GPS", forKey: cards(atIndex: 1))
+        UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
         UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
         UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
 
@@ -399,6 +407,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         return true
     }
     
+    func updatesWorkoutTypeIcon () {
+        if  WorkoutDataHelper.getWorkoutType() == 0 {
+            workoutTypeLabel.image = UIImage(named: "walk")
+        }
+        if  WorkoutDataHelper.getWorkoutType() == 1 {
+            workoutTypeLabel.image = UIImage(named: "run")
+        }
+        if  WorkoutDataHelper.getWorkoutType() == 2 {
+            workoutTypeLabel.image = UIImage(named: "cycling")
+        }
+        if  WorkoutDataHelper.getWorkoutType() == 3 {
+            workoutTypeLabel.image = UIImage(named: "paddling")
+        }
+    }
+    
     func setupWorkoutButton(started: Bool) {
         startButtonLabel.layer.borderWidth = 1.5
         startButtonLabel.layer.cornerRadius = 10
@@ -438,6 +461,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
 
+    
     func stopWorkout() {
         // Save workout and locations
         if let currentWorkout = currentWorkout {
@@ -445,7 +469,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             currentWorkout.workoutLocations = NSSet(array: currentLocations)
             currentWorkout.comment = ""
             currentWorkout.duration = GlobalTimer.shared.seconds
-            currentWorkout.distance = self.currentWorkoutDistance
+            //Saves distance depends on workout type
+            if WorkoutDataHelper.getWorkoutType() == 2 {
+                //Source of data is GPS
+                currentWorkout.distance = self.currentWorkoutDistance
+            } else {
+                //Source of data is pedometer
+                currentWorkout.distance = DeviceMotion.shared.distance
+            }
             currentWorkout.type = WorkoutDataHelper.getWorkoutType()
             currentWorkout.averageSpeed = averageSpeed()
             currentWorkout.speed = WorkoutDataHelper.getMaxSpeed(locations: currentLocations)
@@ -533,13 +564,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             data[0] = "00:00:00"
             data[1] = "TIME"
         }
-        if label == "DISTANCE GPS" {
+        if label == "DISTANCE" {
             data[0] = "0.0"
-            data[1] = "DISTANCE GPS, \(WorkoutDataHelper.getDistanceUnit())"
-        }
-        if label == "DISTANCE STEPS" {
-            data[0] = "0.0"
-            data[1] = "DISTANCE STEPS, \(WorkoutDataHelper.getDistanceUnit())"
+            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
         }
         if label == "SPEED" {
             data[0] = "0.0"

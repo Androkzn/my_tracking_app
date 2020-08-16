@@ -15,9 +15,10 @@ enum Units: Int {
 }
 
 enum WorkoutType: Int {
+    case walk
     case run
     case bike
-    case walk
+    case paddle
 }
 
 enum Map: Int {
@@ -217,8 +218,8 @@ class WorkoutDataHelper {
 
     static func getWorkoutType() -> Int16 {
         var workoutType = retrieveWorkoutTypeSetting()
-        if workoutType > WorkoutType.walk.rawValue {
-            workoutType = WorkoutType.run.rawValue
+        if workoutType > WorkoutType.paddle.rawValue {
+            workoutType = WorkoutType.walk.rawValue
             UserDefaults.standard.set(workoutType,
                                       forKey: keyWorkout)
         }
@@ -227,12 +228,14 @@ class WorkoutDataHelper {
 
     static func getDisplayWorkoutType(from workoutType: Int) -> String {
         switch workoutType {
+        case WorkoutType.walk.rawValue:
+            return String(describing: WorkoutType.walk).capitalized
         case WorkoutType.run.rawValue:
             return String(describing: WorkoutType.run).capitalized
         case WorkoutType.bike.rawValue:
             return String(describing: WorkoutType.bike).capitalized
-        case WorkoutType.walk.rawValue:
-            return String(describing: WorkoutType.walk).capitalized
+        case WorkoutType.paddle.rawValue:
+                       return String(describing: WorkoutType.paddle).capitalized
         default:
             return ""
         }
@@ -240,12 +243,14 @@ class WorkoutDataHelper {
 
     static func getWorkoutTypeSpokenString() -> String {
         switch retrieveWorkoutTypeSetting() {
+        case WorkoutType.walk.rawValue:
+            return "walked"
         case WorkoutType.run.rawValue:
             return "ran"
         case WorkoutType.bike.rawValue:
             return "biked"
-        case WorkoutType.walk.rawValue:
-            return "walked"
+        case WorkoutType.paddle.rawValue:
+            return "paddled"
         default:
             return ""
         }

@@ -9,26 +9,22 @@
 import Foundation
 import CoreMotion
 
-class Pedometere {
+class DeviceMotion {
     
     var steps: Int16 = 0
     var distance: Double = 0
     
-    static let shared  = Pedometere()
+    static let shared  = DeviceMotion()
     let pedometer = CMPedometer()
-    
-    
+
     //updates pedometer data
     func getSteps (seconds: Int16) {
         if CMPedometer.isStepCountingAvailable() {
-            let startDate = Calendar.current.date(byAdding: .second, value: -Int(seconds), to: Date())
-            pedometer.queryPedometerData(from: startDate!, to: Date()) { (data, error) in
-                print(data!)
-                
+        let startDate = Calendar.current.date(byAdding: .second, value: -Int(seconds), to: Date())
+        pedometer.queryPedometerData(from: startDate!, to: Date()) { (data, error) in
+                print("Pedometer data: \(data!)")
                 self.distance = Double(truncating: (data?.distance)!)
-                print(self.distance)
                 self.steps =  Int16(truncating: (data?.numberOfSteps)!)
-                print(self.steps)
                 
             }
         }
@@ -48,6 +44,5 @@ class Pedometere {
             }
         }
     }
-    
     
 }
