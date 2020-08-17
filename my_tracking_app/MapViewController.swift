@@ -83,7 +83,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
-        DeviceMotion.shared.getStepsUpdate(seconds: GlobalTimer.shared.seconds)
+        DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +91,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setMilestones()
         setMapType()
         centerToCurrentLocation()
-        resetLabels()
+        //resetLabels()
         showSavedWorkoutToast()
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
@@ -256,9 +256,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc func eachSecond(timer: Timer) {
         GlobalTimer.shared.seconds += 1
         var speedMPS: CLLocationSpeed = 0
-
-        //Gets number of steps
-        HealthData.shared.latestSteps(seconds: GlobalTimer.shared.seconds)
         
         //Gets heart  rate
         HealthData.shared.latestHeartRate(seconds: GlobalTimer.shared.seconds)
@@ -340,6 +337,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
             if self.isTrackingStarted == false {
                 self.updateLabels()
+                print("Labels was updated")
             }
         }
         
@@ -449,8 +447,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // Start timer
         GlobalTimer.shared.startTimer(self)
         
-        //Reset steps
-        HealthData.shared.totalSteps = 0
 
         // Create new workout
         currentWorkout = DataManager.shared.workout(timestamp: Date())
@@ -465,7 +461,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     func stopWorkout() {
         // Save workout and locations
         if let currentWorkout = currentWorkout {
-            currentWorkout.steps = HealthData.shared.steps
+            currentWorkout.steps = DeviceMotion.shared.steps
             currentWorkout.workoutLocations = NSSet(array: currentLocations)
             currentWorkout.comment = ""
             currentWorkout.duration = GlobalTimer.shared.seconds
@@ -505,6 +501,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         //clean route
         deleteRoute(mapLabel)
         locationManager.allowsBackgroundLocationUpdates = false
+        //Reset data
+        HealthData.shared.totalSteps = 0
+        HealthData.shared.totalCaloriesBurned = 0
+        HealthData.shared.heartRate = 0
+        DeviceMotion.shared.steps = 0
+        DeviceMotion.shared.distance = 0
+        
     }
     
     func setMilestones() {
