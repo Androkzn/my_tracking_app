@@ -21,18 +21,22 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var startButtonLabel: UIButton!
     @IBOutlet weak var mapLabel: MKMapView!
 
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var timeUnitLabel: UILabel!
+    @IBOutlet weak var firstCardLabel: UILabel!
+    @IBOutlet weak var firstCardUnitLabel: UILabel!
+    @IBOutlet weak var firstCardView: UIView!
     
-    @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var distanceUnitLabel: UILabel!
+    @IBOutlet weak var secondCardLabel: UILabel!
+    @IBOutlet weak var secondCardUnitLabel: UILabel!
+    @IBOutlet weak var secondCardView: UIView!
 
-    @IBOutlet weak var speedLabel: UILabel!
-    @IBOutlet weak var speedUnitLabel: UILabel!
+    @IBOutlet weak var thirdCardLabel: UILabel!
+    @IBOutlet weak var thirdCardUnitLabel: UILabel!
+    @IBOutlet weak var thirdCardView: UIView!
 
-    @IBOutlet weak var averageSpeedLabel: UILabel!
-    @IBOutlet weak var averageSpeedUnitLabel: UILabel!
-
+    @IBOutlet weak var fourthCardLabel: UILabel!
+    @IBOutlet weak var fourthCardUnitLabel: UILabel!
+    @IBOutlet weak var fourthCardView: UIView!
+    
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var counterTextLabel: UILabel!
     @IBOutlet weak var progressBarLabel: UIProgressView!
@@ -40,10 +44,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var workoutTypeLabel: UIImageView!
     
-    @IBOutlet weak var firstCardLabel: UIView!
-    @IBOutlet weak var secondCardLabel: UIView!
-    @IBOutlet weak var thirdCardLabel: UIView!
-    @IBOutlet weak var fourthCardLabel: UIView!
     
     //Variables
     var isTrackingStarted = false
@@ -271,18 +271,18 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             let defaults = UserDefaults.standard
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            speedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
-            speedUnitLabel.text = defaults.string(forKey: cards(atIndex: 2))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
-            averageSpeedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
-            averageSpeedUnitLabel.text = defaults.string(forKey: cards(atIndex: 3))! +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
+            thirdCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
+            thirdCardUnitLabel.text = defaults.string(forKey: cards(atIndex: 2))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
+            fourthCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
+            fourthCardUnitLabel.text = defaults.string(forKey: cards(atIndex: 3))! +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
             // Update timer label
-            timeLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
-            timeUnitLabel.text = defaults.string(forKey: cards(atIndex: 0))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
+            firstCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
+            firstCardUnitLabel.text = defaults.string(forKey: cards(atIndex: 0))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
             // Update distance label
-            distanceLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
-            distanceUnitLabel.text = defaults.string(forKey: cards(atIndex: 1))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
+            secondCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
+            secondCardUnitLabel.text = defaults.string(forKey: cards(atIndex: 1))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
         }
     }
 
@@ -327,7 +327,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         // show dropdown alertpopover
-        let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
+        let label = [firstCardUnitLabel, secondCardUnitLabel, thirdCardUnitLabel, fourthCardUnitLabel]
         
         menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 265)), from: self)
 
@@ -382,20 +382,20 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        fourthContainerTap.delegate = self
         
         
-       firstCardLabel.isUserInteractionEnabled = true
-       firstCardLabel.addGestureRecognizer(firstContainerTap)
+       firstCardView.isUserInteractionEnabled = true
+       firstCardView.addGestureRecognizer(firstContainerTap)
        firstContainerTap.view?.tag = 0
        
-       secondCardLabel.isUserInteractionEnabled = true
-       secondCardLabel.addGestureRecognizer(secondContainerTap)
+       secondCardView.isUserInteractionEnabled = true
+       secondCardView.addGestureRecognizer(secondContainerTap)
        secondContainerTap.view?.tag = 1
         
-       thirdCardLabel.isUserInteractionEnabled = true
-       thirdCardLabel.addGestureRecognizer(thirdContainerTap)
+       thirdCardView.isUserInteractionEnabled = true
+       thirdCardView.addGestureRecognizer(thirdContainerTap)
        thirdContainerTap.view?.tag = 2
         
-       fourthCardLabel.isUserInteractionEnabled = true
-       fourthCardLabel.addGestureRecognizer(fourthContainerTap)
+       fourthCardView.isUserInteractionEnabled = true
+       fourthCardView.addGestureRecognizer(fourthContainerTap)
        fourthContainerTap.view?.tag = 3
         
     }
@@ -548,17 +548,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         // Update timer label
-        timeLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
-        timeUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
+        firstCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
+        firstCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
         // Update distance label
-        distanceLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
-        distanceUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
+        secondCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
+        secondCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
         // Update speed label
-        speedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
-        speedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
+        thirdCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
+        thirdCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
         // Update avg speed label
-        averageSpeedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
-        averageSpeedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
+        fourthCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
+        fourthCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
     }
     
     func updateAllLabels (label: String)  -> [String] {

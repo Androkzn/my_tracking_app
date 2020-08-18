@@ -255,26 +255,26 @@
                     <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="GzP-kB-2yW"/>
                     <connections>
                         <outlet property="altitudeLabel" destination="V6Z-lb-IDd" id="5nx-sK-aVH"/>
-                        <outlet property="averageSpeedLabel" destination="pZr-Gn-FoV" id="4Di-va-fr9"/>
-                        <outlet property="averageSpeedUnitLabel" destination="f9K-7b-4hk" id="sqn-AD-NqH"/>
                         <outlet property="button" destination="xa3-au-3KY" id="eWA-94-PwU"/>
                         <outlet property="counterTextLabel" destination="f5O-xC-hCQ" id="gSs-dL-lnL"/>
-                        <outlet property="distanceLabel" destination="Ol2-5t-6Bj" id="uJy-GT-d8D"/>
-                        <outlet property="distanceUnitLabel" destination="Y6D-yr-Uko" id="ZaC-pm-aud"/>
-                        <outlet property="firstCardLabel" destination="FTK-eT-EVD" id="8gu-GA-OWp"/>
-                        <outlet property="fourthCardLabel" destination="irg-to-muz" id="iAs-SU-ZcJ"/>
+                        <outlet property="firstCardLabel" destination="SJQ-eg-ztk" id="G1O-aj-HeZ"/>
+                        <outlet property="firstCardUnitLabel" destination="2ng-cD-emt" id="Dqq-dJ-xxG"/>
+                        <outlet property="firstCardView" destination="FTK-eT-EVD" id="8gu-GA-OWp"/>
+                        <outlet property="fourthCardLabel" destination="pZr-Gn-FoV" id="2gz-Qz-XE9"/>
+                        <outlet property="fourthCardUnitLabel" destination="f9K-7b-4hk" id="rkx-jK-lIM"/>
+                        <outlet property="fourthCardView" destination="irg-to-muz" id="iAs-SU-ZcJ"/>
                         <outlet property="iconAltitudeLabel" destination="UVH-VO-1a7" id="ETy-W4-f5S"/>
                         <outlet property="mapLabel" destination="z3U-gV-IkQ" id="GuX-2K-wqZ"/>
                         <outlet property="progressBarLabel" destination="Wfj-fa-akl" id="nnh-DR-OAo"/>
                         <outlet property="recenterButton" destination="ldZ-GE-gzT" id="ckv-1b-cBP"/>
-                        <outlet property="secondCardLabel" destination="Bf1-pV-O94" id="cOa-Q4-m36"/>
+                        <outlet property="secondCardLabel" destination="Ol2-5t-6Bj" id="uJy-GT-d8D"/>
+                        <outlet property="secondCardUnitLabel" destination="Y6D-yr-Uko" id="ZaC-pm-aud"/>
+                        <outlet property="secondCardView" destination="Bf1-pV-O94" id="cOa-Q4-m36"/>
                         <outlet property="settingButton" destination="2oi-Em-MKy" id="a4m-56-PT2"/>
-                        <outlet property="speedLabel" destination="00T-cp-aCH" id="bVk-ZM-MrY"/>
-                        <outlet property="speedUnitLabel" destination="bxo-VE-NGP" id="NOt-he-l9N"/>
                         <outlet property="startButtonLabel" destination="xa3-au-3KY" id="oHa-rV-nRT"/>
-                        <outlet property="thirdCardLabel" destination="Ajh-ZB-iN3" id="cER-7p-ubY"/>
-                        <outlet property="timeLabel" destination="SJQ-eg-ztk" id="G1O-aj-HeZ"/>
-                        <outlet property="timeUnitLabel" destination="2ng-cD-emt" id="Dqq-dJ-xxG"/>
+                        <outlet property="thirdCardLabel" destination="00T-cp-aCH" id="bVk-ZM-MrY"/>
+                        <outlet property="thirdCardUnitLabel" destination="bxo-VE-NGP" id="NOt-he-l9N"/>
+                        <outlet property="thirdCardView" destination="Ajh-ZB-iN3" id="cER-7p-ubY"/>
                         <outlet property="workoutTypeLabel" destination="mfP-Qa-jYo" id="7z1-A3-kdm"/>
                         <segue destination="MhB-Pv-Eh9" kind="show" identifier="summaryView" id="Jge-Jg-By2"/>
                     </connections>
