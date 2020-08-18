@@ -81,6 +81,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupMapView()
         resetLabels()
         setupContainersTap()
+        setupWorkoutTypeTap()
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
         DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
@@ -414,6 +415,72 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        fourthCardView.isUserInteractionEnabled = true
        fourthCardView.addGestureRecognizer(fourthContainerTap)
        fourthContainerTap.view?.tag = 3
+        
+    }
+    
+    
+    func sectionWorkout(atIndex: Int) -> String {
+        switch atIndex {
+        case 0:
+            return "WALK"
+        case 1:
+            return "RUN"
+        case 2:
+            return "BIKE"
+        case 3:
+            return "PADDLE"
+        default:
+            return "PADDLE"
+        }
+    }
+    
+    
+    @objc func workoutTypeTapped(_ sender: UITapGestureRecognizer) {
+        let data: [String] = ["WALK", "RUN", "BIKE", "PADDLE"]
+        var selectedIndex = 0
+        
+        let defaults = UserDefaults.standard
+        let workoutType = Int(defaults.string(forKey: "WORKOUT")!)!
+        selectedName = ["\(sectionWorkout(atIndex: workoutType))"]
+         
+        // create menu with data source -> here [String]
+        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
+            cell.textLabel?.text = name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        }
+        
+        // provide selected items
+        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
+            self.selectedName = selectedItems
+            selectedIndex = index
+        }
+    
+        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 128)), from: self)
+
+        
+        menu.onDismiss = { [self] selectedItems in
+            self.selectedName = selectedItems
+            UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
+            self.resetLabels()
+            self.updatesWorkoutTypeIcon ()
+            if self.isTrackingStarted == false {
+                self.updateLabels()
+                print("Labels was updated")
+            }
+        }
+        
+    }
+    
+    
+    func setupWorkoutTypeTap() {
+       let workoutTypeTap = UILongPressGestureRecognizer(target: self, action: #selector(self.workoutTypeTapped(_:)))
+       workoutTypeTap.delegate = self
+    
+       workoutTypeLabel.isUserInteractionEnabled = true
+       workoutTypeLabel.addGestureRecognizer(workoutTypeTap)
         
     }
     
