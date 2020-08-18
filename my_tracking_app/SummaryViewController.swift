@@ -31,14 +31,19 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var backButtonLabel: UIButton!
     @IBOutlet weak var mapLabel: MKMapView!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var distanceUnitLabel: UILabel!
-    @IBOutlet weak var speedLabel: UILabel!
-    @IBOutlet weak var speedUnitLabel: UILabel!
-    @IBOutlet weak var averageSpeedLabel: UILabel!
-    @IBOutlet weak var averageSpeedUnitLabel: UILabel!
-
+    @IBOutlet weak var firstCardLabel: UILabel!
+    @IBOutlet weak var secondCardLabel: UILabel!
+    @IBOutlet weak var secondCardUnitLabel: UILabel!
+    @IBOutlet weak var thirdCardLabel: UILabel!
+    @IBOutlet weak var thirdCardUnitLabel: UILabel!
+    @IBOutlet weak var fourthCardLabel: UILabel!
+    @IBOutlet weak var fourthCardUnitLabel: UILabel!
+    @IBOutlet weak var fifthCardLabel: UILabel!
+    @IBOutlet weak var fifthCardUnitLabel: UILabel!
+    @IBOutlet weak var sixthCardLabel: UILabel!
+    @IBOutlet weak var additionalStackView: UIStackView!
+    
+    
     @IBOutlet weak var writeCommentLabel: UIButton!
     @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var commentsTextView: UITextView!
@@ -197,26 +202,42 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
     func updateLabels () {
         workoutLocations = WorkoutDataHelper.sortedLocations(
             locations: currentWorkout!.workoutLocations?.allObjects as! [Location])
-        timeLabel.text = GlobalTimer.shared.secondsFormatter(seconds: currentWorkout!.duration)
-        distanceLabel.text = WorkoutDataHelper.getDisplayedDistance(
+        firstCardLabel.text = GlobalTimer.shared.secondsFormatter(seconds: currentWorkout!.duration)
+        secondCardLabel.text = WorkoutDataHelper.getDisplayedDistance(
             from: currentWorkout!.distance)
-        speedLabel.text = WorkoutDataHelper.getDisplayedMaxSpeed(
+        thirdCardLabel.text = WorkoutDataHelper.getDisplayedMaxSpeed(
             locations: workoutLocations)
-        averageSpeedLabel.text = WorkoutDataHelper.getDisplayedSpeed(
+        fourthCardLabel.text = WorkoutDataHelper.getDisplayedSpeed(
             from: currentWorkout!.averageSpeed)
+        if WorkoutDataHelper.getWorkoutType() == 2 {
+            additionalStackView.isHidden = true
+        } else if WorkoutDataHelper.getWorkoutType() == 3{
+            additionalStackView.isHidden = false
+            fifthCardUnitLabel.text = "PADDLES"
+        } else {
+            additionalStackView.isHidden = false
+            fifthCardUnitLabel.text = "STEPS"
+        }
+
         if (currentWorkout!.comment == "") {
             commentsTextView.text = "Tap to add a comment"
             commentsTextView.textAlignment = .center
         } else {
             commentsTextView.text = currentWorkout!.comment
         }
+        
     }
 
     func refreshUnitLabels() {
-        distanceUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
+        secondCardUnitLabel.text = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
         let speedFormat = WorkoutDataHelper.getSpeedUnit()
-        speedUnitLabel.text = "SPEED, \(speedFormat)"
-        averageSpeedUnitLabel.text = "AVG SPEED, \(speedFormat)"
+        thirdCardUnitLabel.text = "SPEED, \(speedFormat)"
+        fourthCardUnitLabel.text = "AVG SPEED, \(speedFormat)"
+        if WorkoutDataHelper.getWorkoutType() == 3{
+            fifthCardUnitLabel.text = "PADDLES"
+        } else {
+            fifthCardUnitLabel.text = "STEPS"
+        }
     }
 
     func setLocationAnnotation(location: Location) {

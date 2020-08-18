@@ -21,18 +21,22 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var startButtonLabel: UIButton!
     @IBOutlet weak var mapLabel: MKMapView!
 
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var timeUnitLabel: UILabel!
+    @IBOutlet weak var firstCardLabel: UILabel!
+    @IBOutlet weak var firstCardUnitLabel: UILabel!
+    @IBOutlet weak var firstCardView: UIView!
     
-    @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var distanceUnitLabel: UILabel!
+    @IBOutlet weak var secondCardLabel: UILabel!
+    @IBOutlet weak var secondCardUnitLabel: UILabel!
+    @IBOutlet weak var secondCardView: UIView!
 
-    @IBOutlet weak var speedLabel: UILabel!
-    @IBOutlet weak var speedUnitLabel: UILabel!
+    @IBOutlet weak var thirdCardLabel: UILabel!
+    @IBOutlet weak var thirdCardUnitLabel: UILabel!
+    @IBOutlet weak var thirdCardView: UIView!
 
-    @IBOutlet weak var averageSpeedLabel: UILabel!
-    @IBOutlet weak var averageSpeedUnitLabel: UILabel!
-
+    @IBOutlet weak var fourthCardLabel: UILabel!
+    @IBOutlet weak var fourthCardUnitLabel: UILabel!
+    @IBOutlet weak var fourthCardView: UIView!
+    
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var counterTextLabel: UILabel!
     @IBOutlet weak var progressBarLabel: UIProgressView!
@@ -40,10 +44,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var workoutTypeLabel: UIImageView!
     
-    @IBOutlet weak var firstCardLabel: UIView!
-    @IBOutlet weak var secondCardLabel: UIView!
-    @IBOutlet weak var thirdCardLabel: UIView!
-    @IBOutlet weak var fourthCardLabel: UIView!
     
     //Variables
     var isTrackingStarted = false
@@ -81,6 +81,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupMapView()
         resetLabels()
         setupContainersTap()
+        setupWorkoutTypeTap()
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
         DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
@@ -91,7 +92,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setMilestones()
         setMapType()
         centerToCurrentLocation()
-        //resetLabels()
+        updateLabels()
         showSavedWorkoutToast()
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
@@ -121,43 +122,50 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     //set up labels from Core Data
     func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> [String] {
         var data: [String] = ["",""]
-        if label == "TIME" {
+        let labelUpdated = updatesLabelDependsOnWorkoutType(label: label)
+
+        
+        if labelUpdated == "TIME" {
             data[0] = GlobalTimer.shared.getTime()
             data[1] = ""
         }
         //Updates distance label depends on workout type
         if WorkoutDataHelper.getWorkoutType() == 2 {
             //Source of data is GPS
-            if label == "DISTANCE" {
+            if labelUpdated == "DISTANCE" {
                 data[0] = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
                 data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
             }
-        } else {
+        }
+        else {
             //Source of data is pedometer
-            if label == "DISTANCE" {
+            if labelUpdated == "DISTANCE" {
                 data[0] = WorkoutDataHelper.getDisplayedDistance(from: DeviceMotion.shared.distance)
                 data[1] = ", \(WorkoutDataHelper.getDistanceUnit())"
             }
         }
-        if label == "SPEED" {
+        if labelUpdated == "SPEED" {
             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: speed)
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
-        if label == "AVG SPEED" {
+        if labelUpdated == "AVG SPEED" {
             data[0] = WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed())
             data[1] = ", \(WorkoutDataHelper.getSpeedUnit())"
         }
-        if label == "STEPS" {
+        if labelUpdated == "PADDLES" {
+            data[0] = "0"
+            data[1] = ""
+        }
+        if labelUpdated == "STEPS" {
             data[0] = "\(DeviceMotion.shared.steps)"
             data[1] = ""
-            
         }
-        if label == "HEART RATE" {
+        if labelUpdated == "HEART RATE" {
             data[0] = "\(HealthData.shared.heartRate)"
             data[1] = ", bpm"
             
         }
-        if label == "CALLORIES" {
+        if labelUpdated == "CALLORIES" {
             data[0] = "\(HealthData.shared.totalCaloriesBurned)"
             data[1] = ", kcal"
             
@@ -271,18 +279,18 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             let defaults = UserDefaults.standard
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            speedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
-            speedUnitLabel.text = defaults.string(forKey: cards(atIndex: 2))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
-            averageSpeedLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
-            averageSpeedUnitLabel.text = defaults.string(forKey: cards(atIndex: 3))! +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
+            thirdCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
+            thirdCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 2))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
+            fourthCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
+            fourthCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 3))!) +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
             // Update timer label
-            timeLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
-            timeUnitLabel.text = defaults.string(forKey: cards(atIndex: 0))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
+            firstCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
+            firstCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 0))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
             // Update distance label
-            distanceLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
-            distanceUnitLabel.text = defaults.string(forKey: cards(atIndex: 1))! + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
+            secondCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
+            secondCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 1))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
         }
     }
 
@@ -307,7 +315,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     //
     @objc func containerTapped(_ sender: UITapGestureRecognizer) {
-        let data: [String] = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
+        var data: [String] = []
+         if  WorkoutDataHelper.getWorkoutType() == 2 {
+             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
+         } else if WorkoutDataHelper.getWorkoutType() == 3 {
+             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "PADDLES", "HEART RATE", "CALLORIES"]
+         } else {
+             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
+         }
+        
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
@@ -327,14 +343,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         // show dropdown alertpopover
-        let label = [timeUnitLabel, distanceUnitLabel, speedUnitLabel, averageSpeedUnitLabel]
-        
-        menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 265)), from: self)
-
+        let label = [firstCardUnitLabel, secondCardUnitLabel, thirdCardUnitLabel, fourthCardUnitLabel]
+        if  WorkoutDataHelper.getWorkoutType() == 2 {
+            menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
+        } else {
+            menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 265)), from: self)
+        }
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
-            
+            self.resetLabels()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
@@ -382,21 +400,87 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        fourthContainerTap.delegate = self
         
         
-       firstCardLabel.isUserInteractionEnabled = true
-       firstCardLabel.addGestureRecognizer(firstContainerTap)
+       firstCardView.isUserInteractionEnabled = true
+       firstCardView.addGestureRecognizer(firstContainerTap)
        firstContainerTap.view?.tag = 0
        
-       secondCardLabel.isUserInteractionEnabled = true
-       secondCardLabel.addGestureRecognizer(secondContainerTap)
+       secondCardView.isUserInteractionEnabled = true
+       secondCardView.addGestureRecognizer(secondContainerTap)
        secondContainerTap.view?.tag = 1
         
-       thirdCardLabel.isUserInteractionEnabled = true
-       thirdCardLabel.addGestureRecognizer(thirdContainerTap)
+       thirdCardView.isUserInteractionEnabled = true
+       thirdCardView.addGestureRecognizer(thirdContainerTap)
        thirdContainerTap.view?.tag = 2
         
-       fourthCardLabel.isUserInteractionEnabled = true
-       fourthCardLabel.addGestureRecognizer(fourthContainerTap)
+       fourthCardView.isUserInteractionEnabled = true
+       fourthCardView.addGestureRecognizer(fourthContainerTap)
        fourthContainerTap.view?.tag = 3
+        
+    }
+    
+    
+    func sectionWorkout(atIndex: Int) -> String {
+        switch atIndex {
+        case 0:
+            return "WALK"
+        case 1:
+            return "RUN"
+        case 2:
+            return "BIKE"
+        case 3:
+            return "PADDLE"
+        default:
+            return "PADDLE"
+        }
+    }
+    
+    
+    @objc func workoutTypeTapped(_ sender: UITapGestureRecognizer) {
+        let data: [String] = ["WALK", "RUN", "BIKE", "PADDLE"]
+        var selectedIndex = 0
+        
+        let defaults = UserDefaults.standard
+        let workoutType = Int(defaults.string(forKey: "WORKOUT")!)!
+        selectedName = ["\(sectionWorkout(atIndex: workoutType))"]
+         
+        // create menu with data source -> here [String]
+        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
+            cell.textLabel?.text = name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        }
+        
+        // provide selected items
+        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
+            self.selectedName = selectedItems
+            selectedIndex = index
+        }
+    
+        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 128)), from: self)
+
+        
+        menu.onDismiss = { [self] selectedItems in
+            self.selectedName = selectedItems
+            UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
+            self.resetLabels()
+            self.updatesWorkoutTypeIcon ()
+            if self.isTrackingStarted == false {
+                self.updateLabels()
+                print("Labels was updated")
+            }
+        }
+        
+    }
+    
+    
+    func setupWorkoutTypeTap() {
+       let workoutTypeTap = UILongPressGestureRecognizer(target: self, action: #selector(self.workoutTypeTapped(_:)))
+       workoutTypeTap.delegate = self
+    
+       workoutTypeLabel.isUserInteractionEnabled = true
+       workoutTypeLabel.addGestureRecognizer(workoutTypeTap)
         
     }
     
@@ -548,20 +632,35 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         // Update timer label
-        timeLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
-        timeUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
+        firstCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
+        firstCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
         // Update distance label
-        distanceLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
-        distanceUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
+        secondCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
+        secondCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
         // Update speed label
-        speedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
-        speedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
+        thirdCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
+        thirdCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
         // Update avg speed label
-        averageSpeedLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
-        averageSpeedUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
+        fourthCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
+        fourthCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
+    }
+    
+  
+    func updatesLabelDependsOnWorkoutType (label: String) -> String {
+        var label = label
+        if WorkoutDataHelper.getWorkoutType() == 3 && label == "STEPS" {
+            label = "PADDLES"
+        } else if (WorkoutDataHelper.getWorkoutType() == 0 && label == "PADDLES") || (WorkoutDataHelper.getWorkoutType() == 1 && label == "PADDLES") {
+            label = "STEPS"
+        } else if (WorkoutDataHelper.getWorkoutType() == 2 && label == "PADDLES") || (WorkoutDataHelper.getWorkoutType() == 2 && label == "STEPS") {
+            label = "HEART RATE"
+        }
+         print(label)
+        return label
     }
     
     func updateAllLabels (label: String)  -> [String] {
+        let label = updatesLabelDependsOnWorkoutType(label: label)
         var data: [String] = ["",""]
         if label == "TIME" {
             data[0] = "00:00:00"
@@ -578,6 +677,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         if label == "AVG SPEED" {
             data[0] = "0.0"
             data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
+        }
+        if label == "PADDLES" {
+            data[0] = "0"
+            data[1] = "PADDLES"
         }
         if label == "STEPS" {
             data[0] = "0"
