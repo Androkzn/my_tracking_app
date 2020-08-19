@@ -30,6 +30,7 @@
 		DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */; };
 		DE67A3802499C902000FFEA5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A37F2499C902000FFEA5 /* DataManager.swift */; };
 		DE7FCB2024A04915009EC89B /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FCB1F24A04915009EC89B /* Timer.swift */; };
+		DE80AC9B24ECCF3C004B86BC /* Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE80AC9A24ECCF3C004B86BC /* Watch.swift */; };
 		DE835AF124BE044F00122C2C /* Chart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE835AF024BE044F00122C2C /* Chart.storyboard */; };
 		DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F724BE441500364F15 /* CubicChart.swift */; };
 		DEB238FB24BE441500364F15 /* ChartFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F824BE441500364F15 /* ChartFormatter.swift */; };
@@ -93,6 +94,7 @@
 		DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		DE67A37F2499C902000FFEA5 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		DE7FCB1F24A04915009EC89B /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		DE80AC9A24ECCF3C004B86BC /* Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch.swift; sourceTree = "<group>"; };
 		DE835AF024BE044F00122C2C /* Chart.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chart.storyboard; sourceTree = "<group>"; };
 		DEB238F724BE441500364F15 /* CubicChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicChart.swift; sourceTree = "<group>"; };
 		DEB238F824BE441500364F15 /* ChartFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartFormatter.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				DE7FCB1F24A04915009EC89B /* Timer.swift */,
 				DE4F3D6B24A488ED00966B60 /* ToastView.swift */,
 				E8F3BEC024BFDBFD0037AFD8 /* TextToSpeech.swift */,
+				DE80AC9A24ECCF3C004B86BC /* Watch.swift */,
 				F2702F0524A5227B002AE16F /* WorkoutDataHelper.swift */,
 				DEFCD74A249B4183007D7E75 /* Storyboards */,
 				DEFCD74C249B4202007D7E75 /* Core Data  */,
@@ -439,6 +442,7 @@
 				F2AA4B9D24AAB6E500BB00DA /* SettingsViewController.swift in Sources */,
 				DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */,
 				DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */,
+				DE80AC9B24ECCF3C004B86BC /* Watch.swift in Sources */,
 				DE7FCB2024A04915009EC89B /* Timer.swift in Sources */,
 				DE1B12AA24E7B8FA0028FFFD /* DeviceMotion.swift in Sources */,
 				F2B350DC24B90D6E0029B093 /* CheckTableViewCell.swift in Sources */,

@@ -85,6 +85,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
         DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
+        Watch.shared.checkWatchConnection()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -654,7 +655,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         } else if (WorkoutDataHelper.getWorkoutType() == 2 && label == "PADDLES") || (WorkoutDataHelper.getWorkoutType() == 2 && label == "STEPS") {
             label = "HEART RATE"
         }
-         print(label)
         return label
     }
     
