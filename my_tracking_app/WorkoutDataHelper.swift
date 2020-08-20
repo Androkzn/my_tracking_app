@@ -497,4 +497,19 @@ extension WorkoutDataHelper {
     private static func retrieveMapSetting() -> Int {
         return UserDefaults.standard.integer(forKey: keyMap)
     }
+    
+    //OTHER HELPER FUNCTIONS
+    
+    
+    static func getVersion () -> String {
+        //First get the nsObject by defining as an optional anyObject
+        let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
+
+        //Then just cast the object as a String, but be careful, you may want to double check for nil
+        let version = nsObject as! String
+        print(version)
+        return version
+    }
+    
+    
 }

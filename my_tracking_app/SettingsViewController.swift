@@ -9,11 +9,12 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
-    
-    var headerSetUp = false
 
+    
+    @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var settingsTableView: UITableView!
     
+    var headerSetUp = false
     var settingsValue = [["Metric (meters, kilometers)", "Imperial UK (yards, miles)",
                           "Imperial US (feet, miles)"],
                          [String(describing: WorkoutType.walk).capitalized,
@@ -40,6 +41,8 @@ class SettingsViewController: UIViewController {
         //prints path to settings data
         let library_path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
         print("library path is \(library_path)")
+        //set vesion
+        versionLabel.text = "v. \(WorkoutDataHelper.getVersion())"
     }
 
     override func viewWillAppear(_ animated: Bool) {

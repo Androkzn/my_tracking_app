@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var weightTextField: UITextField!
     @IBOutlet weak var heightTextField: UITextField!
+    @IBOutlet weak var heightInchedTextField: UITextField!
     
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
@@ -22,13 +23,12 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setUpLabels()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         setUpLabels()
-        
     }
 
     func setUpLabels() {
@@ -40,11 +40,27 @@ class ProfileViewController: UIViewController {
             heightLabel.text = "/ \(WorkoutDataHelper.getHeightUnit()[0])"
             heightInchesStackLabel.isHidden = false
         }
-        
-        
-        
+        setUpTextFields ()
     }
     
+    func setUpTextFields () {
+        let defaults = UserDefaults.standard
+        if UserDefaults.standard.object(forKey: "AGE") == nil  {
+            defaults.set("", forKey: "AGE")
+            defaults.set("", forKey: "GENDER")
+            defaults.set("", forKey: "WEIGHT")
+            defaults.set("", forKey: "HEIGHT")
+            defaults.set("", forKey: "HEIGHTINCH")
+        } else {
+            print("UPDATED")
+            ageTextField.text = "\(defaults.string(forKey:  "AGE")!)"
+            genderTextField.text  = "\(defaults.string(forKey:  "GENDER")!)"
+            weightTextField.text  = "\(defaults.string(forKey:  "WEIGHT")!)"
+            heightTextField.text  = "\(defaults.string(forKey:  "HEIGHT")!)"
+            heightInchedTextField.text = "\(defaults.string(forKey:  "HEIGHTINCH")!)"
+        }
+        
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)

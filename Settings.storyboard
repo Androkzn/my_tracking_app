@@ -80,21 +80,30 @@
                                     <outlet property="delegate" destination="Q1c-dg-sGl" id="Sis-hF-3sl"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v. 1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9J-HO-v5t">
+                                <rect key="frame" x="186" y="826" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="tNe-wU-m2o" firstAttribute="top" secondItem="pYy-wm-cwn" secondAttribute="top" id="54A-3E-6E0"/>
                             <constraint firstItem="TQy-Yq-x2R" firstAttribute="trailing" secondItem="pYy-wm-cwn" secondAttribute="trailing" id="6GR-3r-Gc5"/>
+                            <constraint firstItem="j9J-HO-v5t" firstAttribute="centerX" secondItem="pYy-wm-cwn" secondAttribute="centerX" id="7o5-7K-7k0"/>
                             <constraint firstItem="tNe-wU-m2o" firstAttribute="leading" secondItem="pYy-wm-cwn" secondAttribute="leading" id="EBl-Pc-fFu"/>
                             <constraint firstItem="tNe-wU-m2o" firstAttribute="trailing" secondItem="pYy-wm-cwn" secondAttribute="trailing" id="Nrc-eK-YML"/>
                             <constraint firstItem="TQy-Yq-x2R" firstAttribute="top" secondItem="tNe-wU-m2o" secondAttribute="bottom" id="bIu-4c-Ddg"/>
                             <constraint firstItem="TQy-Yq-x2R" firstAttribute="bottom" secondItem="pYy-wm-cwn" secondAttribute="bottom" id="oxn-dt-kYb"/>
+                            <constraint firstItem="pYy-wm-cwn" firstAttribute="bottom" secondItem="j9J-HO-v5t" secondAttribute="bottom" constant="15" id="vpW-GQ-Slw"/>
                             <constraint firstItem="TQy-Yq-x2R" firstAttribute="leading" secondItem="pYy-wm-cwn" secondAttribute="leading" id="yZA-hS-V2b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pYy-wm-cwn"/>
                     </view>
                     <connections>
                         <outlet property="settingsTableView" destination="TQy-Yq-x2R" id="8ON-a2-m2p"/>
+                        <outlet property="versionLabel" destination="j9J-HO-v5t" id="zEU-k2-JBr"/>
                         <segue destination="elN-EM-Gpa" kind="show" identifier="settingSelection" destinationCreationSelector="editSetting:" id="x21-lK-Rm4"/>
                     </connections>
                 </viewController>
@@ -196,11 +205,19 @@
                                     <outlet property="delegate" destination="elN-EM-Gpa" id="Cq5-Nq-jzY"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v. 1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N12-n0-Cbn">
+                                <rect key="frame" x="186" y="826" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.32859539989999997" green="0.73464852570000005" blue="0.91824555399999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="2C8-X7-ZwD" firstAttribute="leading" secondItem="KaT-kf-Uwt" secondAttribute="leading" constant="20" id="3IT-RW-g72"/>
                             <constraint firstItem="iGr-cS-HLs" firstAttribute="bottom" secondItem="KaT-kf-Uwt" secondAttribute="bottom" id="96H-JR-lj8"/>
+                            <constraint firstItem="N12-n0-Cbn" firstAttribute="centerX" secondItem="KaT-kf-Uwt" secondAttribute="centerX" id="DoB-TV-kmC"/>
+                            <constraint firstItem="KaT-kf-Uwt" firstAttribute="bottom" secondItem="N12-n0-Cbn" secondAttribute="bottom" constant="15" id="OJF-qS-wcD"/>
                             <constraint firstItem="2C8-X7-ZwD" firstAttribute="centerY" secondItem="Fnz-5i-g6T" secondAttribute="centerY" id="Q8i-1G-XCT"/>
                             <constraint firstItem="KaT-kf-Uwt" firstAttribute="trailing" secondItem="Fnz-5i-g6T" secondAttribute="trailing" id="bIH-6z-4Gu"/>
                             <constraint firstItem="Fnz-5i-g6T" firstAttribute="top" secondItem="KaT-kf-Uwt" secondAttribute="top" constant="10" id="deT-Pa-NP0"/>
@@ -215,6 +232,7 @@
                     <connections>
                         <outlet property="settingTableView" destination="iGr-cS-HLs" id="4uC-3Y-LtG"/>
                         <outlet property="settingTitleLabel" destination="dyF-ne-uPH" id="zEv-BS-dLJ"/>
+                        <outlet property="versionLabel" destination="N12-n0-Cbn" id="yoZ-ef-D2H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HbE-8e-lQg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

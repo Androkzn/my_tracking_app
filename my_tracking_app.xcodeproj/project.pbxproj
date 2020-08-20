@@ -229,14 +229,14 @@
 		DEFCD74A249B4183007D7E75 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				DE67A31E249889BD000FFEA5 /* Main.storyboard */,
-				DEFCD748249B36A0007D7E75 /* Map.storyboard */,
-				F2AA4B9E24B6728700BB00DA /* Settings.storyboard */,
+				DE835AF024BE044F00122C2C /* Chart.storyboard */,
 				DEFCD746249B364D007D7E75 /* History.storyboard */,
 				DE67A326249889BE000FFEA5 /* LaunchScreen.storyboard */,
-				DE0801C724A45B0E00E9F873 /* Summary.storyboard */,
-				DE835AF024BE044F00122C2C /* Chart.storyboard */,
+				DE67A31E249889BD000FFEA5 /* Main.storyboard */,
+				DEFCD748249B36A0007D7E75 /* Map.storyboard */,
 				DE4FF00B24D0F11000F980D8 /* Profile.storyboard */,
+				F2AA4B9E24B6728700BB00DA /* Settings.storyboard */,
+				DE0801C724A45B0E00E9F873 /* Summary.storyboard */,
 			);
 			name = Storyboards;
 			path = ..;

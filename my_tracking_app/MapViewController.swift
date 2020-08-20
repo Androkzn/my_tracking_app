@@ -62,7 +62,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        setInitialCardsSettings()
+        setCardsSettings()
         //Tap function will call when user tap on button
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector (startButton))
@@ -97,6 +97,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         showSavedWorkoutToast()
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
+        setCardsSettings()
     }
     
     //shows toast if workout just saved
@@ -378,12 +379,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func setInitialCardsSettings() {
-        UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
-        UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
-        UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
-        UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
-
+    func setCardsSettings() {
+        if UserDefaults.standard.object(forKey: "FirstCard") == nil {
+            UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
+            UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
+            UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
+            UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
+        } else {
+            updateLabels()
+        }
     }
     
 

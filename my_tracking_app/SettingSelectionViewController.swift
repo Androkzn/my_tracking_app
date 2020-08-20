@@ -14,6 +14,7 @@ protocol SettingSelectionViewControllerDelegate: AnyObject {
 
 class SettingSelectionViewController: UIViewController, CheckTableViewDelegate {
 
+    @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var settingTableView: UITableView!
     @IBOutlet weak var settingTitleLabel: UILabel!
     
@@ -33,6 +34,7 @@ class SettingSelectionViewController: UIViewController, CheckTableViewDelegate {
         if let settingTitle = settingTitle {
             self.settingTitleLabel.text = settingTitle
         }
+        versionLabel.text = "v. \(WorkoutDataHelper.getVersion())"
     }
 
     func checkboxSelected(checkbox: CheckTableViewCell, settingValue: String) {

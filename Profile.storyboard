@@ -244,6 +244,7 @@
                     <connections>
                         <outlet property="ageTextField" destination="sSs-OV-dtC" id="IRV-zY-MWm"/>
                         <outlet property="genderTextField" destination="UPv-gv-OZy" id="qDF-CR-VtT"/>
+                        <outlet property="heightInchedTextField" destination="wkQ-RX-aii" id="84o-p4-jwH"/>
                         <outlet property="heightInchesStackLabel" destination="Hqt-XX-wBP" id="ugK-2x-GXV"/>
                         <outlet property="heightLabel" destination="m13-5U-5tz" id="LP2-py-u65"/>
                         <outlet property="heightTextField" destination="Ywv-Mk-bQF" id="1n9-Vo-vhV"/>
