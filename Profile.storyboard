@@ -24,7 +24,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8vr-Cw-AGn">
                                 <rect key="frame" x="0.0" y="100" width="414" height="713"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ojy-YQ-GKP" userLabel="Main Stack View">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ojy-YQ-GKP" userLabel="Main Stack View">
                                         <rect key="frame" x="20" y="42" width="310" height="210"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FtV-UE-nfK" userLabel="Age Stack View">
@@ -222,7 +222,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.80850833649999998" blue="0.48923581840000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="ojy-YQ-GKP" firstAttribute="top" secondItem="8vr-Cw-AGn" secondAttribute="top" constant="43" id="8gc-Yc-Iq5"/>
+                                    <constraint firstItem="ojy-YQ-GKP" firstAttribute="top" secondItem="8vr-Cw-AGn" secondAttribute="top" constant="42" id="8gc-Yc-Iq5"/>
                                     <constraint firstItem="ojy-YQ-GKP" firstAttribute="leading" secondItem="8vr-Cw-AGn" secondAttribute="leading" constant="20" id="Pr9-Zb-kbR"/>
                                 </constraints>
                             </view>
