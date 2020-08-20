@@ -44,7 +44,7 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var additionalStackView: UIStackView!
     
     
-    @IBOutlet weak var writeCommentLabel: UIButton!
+   
     @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var commentsTextView: UITextView!
     @IBOutlet weak var distanceContainer: UIView!
@@ -74,7 +74,6 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBAction func shareToMedia(_ sender: UIButton) {
         // hide buttons to take screenshot
         backButtonLabel.isHidden = true
-        writeCommentLabel.isHidden = true
         shareButtonLabel.isHidden = true
         
         UIGraphicsBeginImageContextWithOptions(view.frame.size, false, UIScreen.main.scale)
@@ -101,7 +100,6 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         
         // show buttons after screenshot
         backButtonLabel.isHidden = false
-        writeCommentLabel.isHidden = false
         shareButtonLabel.isHidden = false
     }
     

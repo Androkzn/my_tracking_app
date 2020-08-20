@@ -355,7 +355,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
-            self.resetLabels()
+            //self.updateLabels()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
