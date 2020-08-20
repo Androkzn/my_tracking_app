@@ -82,6 +82,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         resetLabels()
         setupContainersTap()
         setupWorkoutTypeTap()
+        setWorkoutType ()
         //asks permission to HealthStore
         HealthData.shared.requestAutorization()
         DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
@@ -436,6 +437,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             return "PADDLE"
         default:
             return "PADDLE"
+        }
+    }
+    
+    func setWorkoutType () {
+        let defaults = UserDefaults.standard
+        if UserDefaults.standard.object(forKey: "WORKOUT") == nil  {
+            defaults.set("0", forKey: "WORKOUT")
         }
     }
     
