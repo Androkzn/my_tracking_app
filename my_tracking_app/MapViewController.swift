@@ -143,7 +143,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             UIImageView(image: UIImage(named: "banner5"))
         ]
         //set up set of bodies for the banner
-        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you.", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts tells you about reaching 'milestones' during a workout." ]
+        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you.", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts will tell you about reaching 'milestones' during a workout." ]
         
         imageViews.forEach { imageView in
             imageView.contentMode = .scaleToFill
