@@ -216,6 +216,16 @@ class WorkoutDataHelper {
         }
     }
 
+    static func getWorkoutType(workout: Workout) -> Int16 {
+        var workoutType = Int(workout.type)
+        if workoutType > WorkoutType.paddle.rawValue {
+            workoutType = WorkoutType.walk.rawValue
+            UserDefaults.standard.set(workoutType,
+                                      forKey: keyWorkout)
+        }
+        return Int16(workoutType)
+    }
+    
     static func getWorkoutType() -> Int16 {
         var workoutType = retrieveWorkoutTypeSetting()
         if workoutType > WorkoutType.paddle.rawValue {
@@ -293,28 +303,32 @@ class WorkoutDataHelper {
         print("Number of workouts: \(workouts.count)")
         print(workouts)
         var count = 1
-        let dateFormat = "yyyy-MM-dd HH:mm:ss"
+        //let dateFormat = "yyyy-MM-dd HH:mm:ss"
         workouts.forEach { (workout) in
             print("Workout \(count)")
             print("Duration \(workout.duration)")
             print("Distance \(workout.distance)")
             print("Speed \(workout.speed)")
             print("Average Speed \(workout.averageSpeed)")
+            print("Comment \(String(describing: workout.comment))")
+            print("Steps \(workout.steps)")
+            print("Heart rate \(workout.heartRate)")
+            print("Type \(workout.type)")
             count += 1
-            if let workoutLocations = workout.workoutLocations {
-                let sortedLocations = WorkoutDataHelper.sortedLocations(locations: workoutLocations.allObjects as! [Location])
-                print("Number of locations in workout: \(sortedLocations.count)")
-                for location in sortedLocations  {
-                    print(" ")
-                    let dateFormatterGet = DateFormatter()
-                    dateFormatterGet.dateFormat = dateFormat
-                    print(dateFormatterGet.string(from: location.timestamp!))
-                    print(location.latitude)
-                    print(location.longitude)
-                    print(location.distance)
-                    print(location.speed)
-                }
-            }
+//            if let workoutLocations = workout.workoutLocations {
+//                let sortedLocations = WorkoutDataHelper.sortedLocations(locations: workoutLocations.allObjects as! [Location])
+//                print("Number of locations in workout: \(sortedLocations.count)")
+//                for location in sortedLocations  {
+//                    print(" ")
+//                    let dateFormatterGet = DateFormatter()
+//                    dateFormatterGet.dateFormat = dateFormat
+//                    print(dateFormatterGet.string(from: location.timestamp!))
+//                    print("latitude \(location.latitude)")
+//                    print("longitude \(location.longitude)")
+//                    print("distance \(location.distance)")
+//                    print("speed \(location.speed)")
+//                }
+//            }
         }
     }
 
@@ -329,10 +343,10 @@ class WorkoutDataHelper {
             let dateFormatterGet = DateFormatter()
             dateFormatterGet.dateFormat = dateFormat
             print(dateFormatterGet.string(from: location.timestamp!))
-            print(location.latitude)
-            print(location.longitude)
-            print(location.distance)
-            print(location.speed)
+            print("latitude \(location.latitude)")
+            print("longitude \(location.longitude)")
+            print("distance \(location.distance)")
+            print("speed \(location.speed)")
         }
     }
 }

@@ -355,7 +355,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
-            //self.updateLabels()
+            self.resetLabels()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
@@ -634,8 +634,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func resetLabels() {
         // Reset distance and averageSpeed
-        currentWorkoutDistance = 0.0
-        currentWorkoutSpeedSum = 0.0
+        //currentWorkoutDistance = 0.0
+        //currentWorkoutSpeedSum = 0.0
         updateLabels()
 
     }

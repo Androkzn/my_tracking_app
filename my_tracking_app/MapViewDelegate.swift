@@ -56,15 +56,5 @@ extension MapViewDelegate {
                                       animated: true)
         }
 
-        // Uncomment the code below if you want to use this code for the main map
-                
-        //        let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-        //        let padding: CGFloat = 18
-        //        mapView.addOverlays([polyline])
-        //
-        //        let rect = polyline.boundingMapRect
-        //        mapView.setVisibleMapRect(rect,
-        //            edgePadding: UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding),
-        //            animated: true)
     }
 }

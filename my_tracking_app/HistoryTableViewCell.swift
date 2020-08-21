@@ -20,6 +20,7 @@ class HistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var snapshot: UIImageView!
     @IBOutlet weak var workoutTypeLabel: UILabel!
     
+    
     // Set up cell with image and labels
     func set(image: UIImage, timestamp: Date, time: Int16, distance: Double,
              averageSpeed: Double, workout: Int16) {
@@ -29,5 +30,6 @@ class HistoryTableViewCell: UITableViewCell {
         distanceLabel.text = WorkoutDataHelper.getCompleteDisplayedDistance(from: distance)
         averageSpeedLabel.text = WorkoutDataHelper.getCompleteDisplayedSpeed(from: averageSpeed)
         workoutTypeLabel.text = WorkoutDataHelper.getDisplayWorkoutType(from: Int(workout))
+        
     }
 }

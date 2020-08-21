@@ -207,9 +207,9 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
             locations: workoutLocations)
         fourthCardLabel.text = WorkoutDataHelper.getDisplayedSpeed(
             from: currentWorkout!.averageSpeed)
-        if WorkoutDataHelper.getWorkoutType() == 2 {
+        if WorkoutDataHelper.getWorkoutType(workout: currentWorkout!) == 2 {
             additionalStackView.isHidden = true
-        } else if WorkoutDataHelper.getWorkoutType() == 3{
+        } else if WorkoutDataHelper.getWorkoutType(workout: currentWorkout!) == 3{
             additionalStackView.isHidden = false
             fifthCardUnitLabel.text = "PADDLES"
         } else {
@@ -231,7 +231,7 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         let speedFormat = WorkoutDataHelper.getSpeedUnit()
         thirdCardUnitLabel.text = "SPEED, \(speedFormat)"
         fourthCardUnitLabel.text = "AVG SPEED, \(speedFormat)"
-        if WorkoutDataHelper.getWorkoutType() == 3{
+        if WorkoutDataHelper.getWorkoutType(workout: currentWorkout!) == 3{
             fifthCardUnitLabel.text = "PADDLES"
         } else {
             fifthCardUnitLabel.text = "STEPS"

@@ -30,7 +30,6 @@ class HistoryViewController: UIViewController {
         workouts = DataManager.shared.workouts()
         self.tableView.tableFooterView = UIView()
         emptyTableLabel.isHidden = !workouts.isEmpty
-
         SummaryViewController.isSaved = false
      }
 
