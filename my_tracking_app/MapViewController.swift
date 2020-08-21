@@ -50,6 +50,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var bannerBodyLabel: UILabel!
     @IBOutlet weak var bannerPageControlLabel: UIPageControl!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var backgroundBanerView: UIView!
+    
     
     //Variables
     var isTrackingStarted = false
@@ -114,19 +116,25 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func closeBannerButton(_ sender: Any) {
         bannerView.isHidden = true
+        backgroundBanerView.isHidden = true
     }
     
     func setUpBannerScrollView() {
-    
+        //set up banner's border
         bannerView.layer.cornerRadius = 10
         bannerView.layer.borderWidth = 1.0
         bannerView.layer.borderColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
         
+        //set up title's border
         bannerTitleLabel.layer.cornerRadius = 10
         bannerTitleLabel.layer.borderWidth = 1.0
         bannerTitleLabel.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8085083365, blue: 0.4892358184, alpha: 1)
         bannerTitleLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.580126236, blue: 0.01286631583, alpha: 0.5366010274)
+       
+        //set up title's depends on current version
+        bannerTitleLabel.text = "What is new in version \(WorkoutDataHelper.getVersion())?"
         
+        //set up set of images for the banner
         let imageViews = [
             UIImageView(image: UIImage(named: "banner1")),
             UIImageView(image: UIImage(named: "banner2")),
@@ -134,7 +142,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             UIImageView(image: UIImage(named: "banner4")),
             UIImageView(image: UIImage(named: "banner5"))
         ]
-        
+        //set up set of bodies for the banner
         bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you..", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories", "Graphs provide extended analytics after a workout", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts tells you about reaching 'milestones' during a workout." ]
         
         imageViews.forEach { imageView in
@@ -148,7 +156,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
         stackView.distribution = .fillEqually
-        stackView.alignment = .fill
+        stackView.alignment = .center
         
         NSLayoutConstraint.activate([
           stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -156,9 +164,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
           stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
           stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
         
-          stackView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
-          stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier:  CGFloat(imageViews.count)),
+          stackView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor, multiplier:  1),
+          stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier:  CGFloat(Double(imageViews.count))),
         ])
+        
     }
     
     

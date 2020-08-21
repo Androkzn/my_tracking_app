@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="UfD-CY-Zmq">
+                            <stackView userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="UfD-CY-Zmq">
                                 <rect key="frame" x="0.0" y="-5" width="375" height="623"/>
                                 <subviews>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z3U-gV-IkQ">
@@ -229,6 +229,10 @@
                                 </constraints>
                                 <color key="progressTintColor" red="0.9371213317" green="0.34781831499999999" blue="0.19313588740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
+                            <view alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oUJ-nG-Njh">
+                                <rect key="frame" x="0.0" y="-5" width="375" height="672"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eal-gx-so3">
                                 <rect key="frame" x="25" y="80" width="325" height="336"/>
                                 <subviews>
@@ -311,15 +315,18 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.32908498809999998" green="0.73477026010000002" blue="0.91862581809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.3249011148" green="0.72542864380000005" blue="0.90694672539999999" alpha="0.80433968320000004" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="deh-zn-pSH" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="4si-oW-E8c"/>
                             <constraint firstItem="2oi-Em-MKy" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="7IC-hC-pYy"/>
+                            <constraint firstItem="oUJ-nG-Njh" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" id="8X6-ws-AnZ"/>
                             <constraint firstItem="xa3-au-3KY" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="AW7-GY-hpY"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="bottom" secondItem="eal-gx-so3" secondAttribute="bottom" constant="202" id="BBd-4F-SLF"/>
                             <constraint firstItem="eal-gx-so3" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" constant="25" id="Ehg-FU-GfE"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="leading" secondItem="f5O-xC-hCQ" secondAttribute="leadingMargin" constant="3.3333333333333428" id="FL1-d0-fMJ"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="trailing" secondItem="eal-gx-so3" secondAttribute="trailing" constant="25" id="GM3-fP-Adf"/>
+                            <constraint firstItem="Zsl-v5-xCU" firstAttribute="trailing" secondItem="oUJ-nG-Njh" secondAttribute="trailing" id="IsK-Mk-2Mv"/>
+                            <constraint firstItem="xa3-au-3KY" firstAttribute="top" secondItem="oUJ-nG-Njh" secondAttribute="bottom" constant="-171" id="LOY-Gi-zq2"/>
                             <constraint firstItem="ldZ-GE-gzT" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="NMd-Zx-TXt"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerY" secondItem="Zsl-v5-xCU" secondAttribute="centerY" id="O9Z-pa-K08"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="trailing" secondItem="UfD-CY-Zmq" secondAttribute="trailing" id="QII-2l-0AF"/>
@@ -327,6 +334,7 @@
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="top" secondItem="UfD-CY-Zmq" secondAttribute="top" constant="5" id="SWO-L3-zMj"/>
                             <constraint firstItem="xa3-au-3KY" firstAttribute="centerY" secondItem="3xg-9K-b0L" secondAttribute="centerY" id="W6z-zF-Qf3"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="centerX" secondItem="f5O-xC-hCQ" secondAttribute="centerX" id="Yfx-4G-fXA"/>
+                            <constraint firstItem="oUJ-nG-Njh" firstAttribute="top" secondItem="deh-zn-pSH" secondAttribute="bottom" constant="-65" id="avf-R5-CKc"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="cVa-ZU-Sbl"/>
                             <constraint firstItem="eal-gx-so3" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="80" id="cW6-Jf-YDJ"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="top" secondItem="f5O-xC-hCQ" secondAttribute="bottom" constant="-10" id="dmc-gh-45E"/>
@@ -340,6 +348,7 @@
                     <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="GzP-kB-2yW"/>
                     <connections>
                         <outlet property="altitudeLabel" destination="V6Z-lb-IDd" id="5nx-sK-aVH"/>
+                        <outlet property="backgroundBanerView" destination="oUJ-nG-Njh" id="Far-bW-J8n"/>
                         <outlet property="bannerBodyLabel" destination="9H2-hq-uhu" id="hhe-sI-VWT"/>
                         <outlet property="bannerPageControlLabel" destination="a2F-Ys-dsh" id="nbp-y1-hO7"/>
                         <outlet property="bannerTitleLabel" destination="frZ-H0-A2c" id="x2w-wE-vNF"/>
