@@ -100,9 +100,32 @@ class ProfileViewController: UIViewController {
     
     
     func textFieldPicker(_ sender: UITextField, rows: [Any], title: String, field: String) {
+        var selector = 0
+        //set initiall selector based on existing value
+        print(sender.text!)
+        if sender.text! != "" {
+            if sender == genderTextField {
+                if sender.text! == "Male" {
+                    selector = 0
+                } else if sender.text! == "Female"{
+                    selector = 1
+                } else {
+                    selector = 2
+                }
+            } else {
+                selector = Int(sender.text!)! - 1
+            }
+        } else {
+            if sender == heightTextField {
+                selector = rows.count/2
+            } else {
+                selector = rows.count/3
+            }
+        }
+        print(selector)
         let picker = ActionSheetStringPicker(title: title,
                                      rows: rows,
-                                     initialSelection: rows.count/3,
+                                     initialSelection: selector,
                                      doneBlock: { picker, value, index in
                                         UserDefaults.standard.set("\(index!)", forKey: field)
                                         sender.text = "\(index!)"
