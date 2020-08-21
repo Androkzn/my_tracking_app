@@ -116,9 +116,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         if  mapLabel.mapType == .standard {
             altitudeLabel.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
             iconAltitudeLabel.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            workoutTypeLabel.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
         } else {
             altitudeLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             iconAltitudeLabel.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            workoutTypeLabel.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
     }
     
