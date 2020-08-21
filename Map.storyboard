@@ -287,13 +287,21 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iD9-Pc-ySO">
+                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iD9-Pc-ySO">
                                                         <rect key="frame" x="0.0" y="65" width="305" height="187"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="iD9-Pc-ySO" secondAttribute="height" multiplier="305:187" id="zaj-4a-352"/>
+                                                        </constraints>
+                                                        <edgeInsets key="layoutMargins" top="8" left="20" bottom="8" right="25"/>
                                                         <connections>
                                                             <outlet property="delegate" destination="fpw-Wl-p7n" id="6q1-5M-5zA"/>
                                                         </connections>
                                                     </scrollView>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="iD9-Pc-ySO" secondAttribute="trailing" constant="30" id="6Dw-V8-F31"/>
+                                                    <constraint firstItem="iD9-Pc-ySO" firstAttribute="leading" secondItem="ZmP-w1-5En" secondAttribute="leading" constant="30" id="pRp-zr-kce"/>
+                                                </constraints>
                                             </stackView>
                                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="a2F-Ys-dsh">
                                                 <rect key="frame" x="0.0" y="298" width="305" height="30"/>

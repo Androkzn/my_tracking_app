@@ -59,7 +59,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var currentWorkout: Workout? // Reset only when we're back from SummaryViewController
     var currentWorkoutDistance = 0.0 // Raw distance in meters
     var currentWorkoutSpeedSum = 0.0 // Addition of raw speeds in meter per second
-    var counter = 2.0 //stop button timer counter
+    var counter = 1.0 //stop button timer counter
     var lastLocation: CLLocation?
     var locationManager: CLLocationManager!
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
@@ -143,7 +143,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             UIImageView(image: UIImage(named: "banner5"))
         ]
         //set up set of bodies for the banner
-        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you..", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories", "Graphs provide extended analytics after a workout", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts tells you about reaching 'milestones' during a workout." ]
+        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you.", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts tells you about reaching 'milestones' during a workout." ]
         
         imageViews.forEach { imageView in
             imageView.contentMode = .scaleToFill
@@ -278,7 +278,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
                 setupWorkoutButton(started: isTrackingStarted)
                 startWorkout()
             } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 3 seconds to stop workout", duration: 3)
+                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 2 seconds to stop workout", duration: 3)
             }
         } else {
             ToastView.shared.redToast(view,
@@ -546,7 +546,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             selectedIndex = index
         }
     
-        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 128)), from: self)
+        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 130)), from: self)
 
         
         menu.onDismiss = { [self] selectedItems in
