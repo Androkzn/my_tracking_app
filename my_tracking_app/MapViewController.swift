@@ -156,7 +156,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
         stackView.distribution = .fillEqually
-        stackView.alignment = .center
+        stackView.alignment = .fill
         
         NSLayoutConstraint.activate([
           stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
