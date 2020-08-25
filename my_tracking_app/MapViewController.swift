@@ -98,6 +98,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
         Watch.shared.checkWatchConnection()
         setUpBannerScrollView()
+        showBanner ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,11 +116,38 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     @IBAction func closeBannerButton(_ sender: Any) {
-        bannerView.isHidden = true
-        backgroundBanerView.isHidden = true
+        let dialogMessage = UIAlertController(title: "Information about new features",
+                                              message: " ",
+                                              preferredStyle: .alert)
+
+        // Create OK button with action handler
+        let ok = UIAlertAction(title: "Don't show again", style: .default, handler: { (action) -> Void in
+            self.bannerView.isHidden = true
+            self.backgroundBanerView.isHidden = true
+            UserDefaults.standard.set("false", forKey: "FirstSeenBanner")
+            
+        })
+
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(title: "Review later", style: .cancel) { (action) -> Void in
+            self.bannerView.isHidden = true
+            self.backgroundBanerView.isHidden = true
+        }
+
+        //Add OK and Cancel button to dialog message
+        dialogMessage.addAction(ok)
+        dialogMessage.addAction(cancel)
+
+        // Present dialog message to user
+        self.present(dialogMessage, animated: true, completion: nil)
+        
     }
     
     func setUpBannerScrollView() {
+        //set up banner var in defaults
+        if UserDefaults.standard.object(forKey: "FirstSeenBanner") == nil {
+            UserDefaults.standard.set("true", forKey: "FirstSeenBanner")
+        }
         //set up banner's border
         bannerView.layer.cornerRadius = 10
         bannerView.layer.borderWidth = 1.0
@@ -133,6 +161,20 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
        
         //set up title's depends on current version
         bannerTitleLabel.text = "What is new in version \(WorkoutDataHelper.getVersion())?"
+        
+        //set up ScrollView constraints
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.heightAnchor.constraint(equalTo:  scrollView.widthAnchor, multiplier: 1050/1237).isActive = true
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        let constraints = [
+            NSLayoutConstraint(item: scrollView!, attribute: .top, relatedBy: .equal, toItem: bannerBodyLabel, attribute: .bottom, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: scrollView!, attribute: .bottom, relatedBy: .equal, toItem: bannerPageControlLabel, attribute: .top, multiplier: 1, constant: -15),
+            NSLayoutConstraint(item: scrollView!, attribute: .leading, relatedBy: .equal, toItem: bannerView, attribute: .leading, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: scrollView!, attribute: .trailing, relatedBy: .equal, toItem: bannerView, attribute: .leading, multiplier: 1, constant: 10)
+        ]
+        constraints[2].priority = UILayoutPriority(rawValue: 999)
+        constraints[3].priority = UILayoutPriority(rawValue: 999)
+        NSLayoutConstraint.activate(constraints)
         
         //set up set of images for the banner
         let imageViews = [
@@ -155,7 +197,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.alignment = .fill
         
         NSLayoutConstraint.activate([
@@ -170,7 +212,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         
     }
     
-    
+    func showBanner () {
+        if UserDefaults.standard.string(forKey: "FirstSeenBanner") == "true" {
+            self.bannerView.isHidden = false
+            self.backgroundBanerView.isHidden = false
+        } else {
+            self.bannerView.isHidden = true
+            self.backgroundBanerView.isHidden = true
+        }
+    }
     
     
     
