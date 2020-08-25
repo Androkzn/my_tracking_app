@@ -45,20 +45,30 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var workoutTypeLabel: UIImageView!
     
     
+    @IBOutlet weak var bannerView: UIView!
+    @IBOutlet weak var bannerTitleLabel: UILabel!
+    @IBOutlet weak var bannerBodyLabel: UILabel!
+    @IBOutlet weak var bannerPageControlLabel: UIPageControl!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var backgroundBanerView: UIView!
+    
+    
     //Variables
     var isTrackingStarted = false
     var currentLocations: [Location] = [] // Current workout locations
     var currentWorkout: Workout? // Reset only when we're back from SummaryViewController
     var currentWorkoutDistance = 0.0 // Raw distance in meters
     var currentWorkoutSpeedSum = 0.0 // Addition of raw speeds in meter per second
-    var counter = 2.0 //stop button timer counter
+    var counter = 1.0 //stop button timer counter
     var lastLocation: CLLocation?
     var locationManager: CLLocationManager!
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
     var nextMilestone: Double = 0.0 // The closest milestone after reaching E.g. 1 mile, 2 miles, etc.
     var milestone: Double = 0.0 //Milstone from settings
     var editedCard: Int? //Stores value of edited card tag
-    var selectedName: [String] = [] //selected cars name after editing
+    var selectedName: [String] = [] //selected card name after editing
+    var bannerBodyes: [String] = [] //stores banner's bodyes
+    var bannerBodyIndex = 0
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +97,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         HealthData.shared.requestAutorization()
         DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
         Watch.shared.checkWatchConnection()
+        setUpBannerScrollView()
+        showBanner ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +112,117 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         updatesWorkoutTypeIcon ()
         setCardsSettings()
     }
+    
+    
+    
+    @IBAction func closeBannerButton(_ sender: Any) {
+        let dialogMessage = UIAlertController(title: "Information about new features",
+                                              message: " ",
+                                              preferredStyle: .alert)
+
+        // Create OK button with action handler
+        let ok = UIAlertAction(title: "Don't show again", style: .default, handler: { (action) -> Void in
+            self.bannerView.isHidden = true
+            self.backgroundBanerView.isHidden = true
+            UserDefaults.standard.set("false", forKey: "FirstSeenBanner")
+            
+        })
+
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(title: "Review later", style: .cancel) { (action) -> Void in
+            self.bannerView.isHidden = true
+            self.backgroundBanerView.isHidden = true
+        }
+
+        //Add OK and Cancel button to dialog message
+        dialogMessage.addAction(ok)
+        dialogMessage.addAction(cancel)
+
+        // Present dialog message to user
+        self.present(dialogMessage, animated: true, completion: nil)
+        
+    }
+    
+    func setUpBannerScrollView() {
+        //set up banner var in defaults
+        if UserDefaults.standard.object(forKey: "FirstSeenBanner") == nil {
+            UserDefaults.standard.set("true", forKey: "FirstSeenBanner")
+        }
+        //set up banner's border
+        bannerView.layer.cornerRadius = 10
+        bannerView.layer.borderWidth = 1.0
+        bannerView.layer.borderColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        
+        //set up title's border
+        bannerTitleLabel.layer.cornerRadius = 10
+        bannerTitleLabel.layer.borderWidth = 1.0
+        bannerTitleLabel.layer.backgroundColor = #colorLiteral(red: 1, green: 0.8085083365, blue: 0.4892358184, alpha: 1)
+        bannerTitleLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.580126236, blue: 0.01286631583, alpha: 0.5366010274)
+       
+        //set up title's depends on current version
+        bannerTitleLabel.text = "What is new in version \(WorkoutDataHelper.getVersion())?"
+        
+        //set up ScrollView constraints
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.heightAnchor.constraint(equalTo:  scrollView.widthAnchor, multiplier: 1050/1237).isActive = true
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        let constraints = [
+            NSLayoutConstraint(item: scrollView!, attribute: .top, relatedBy: .equal, toItem: bannerBodyLabel, attribute: .bottom, multiplier: 1, constant: 15),
+            NSLayoutConstraint(item: scrollView!, attribute: .bottom, relatedBy: .equal, toItem: bannerPageControlLabel, attribute: .top, multiplier: 1, constant: -15),
+            NSLayoutConstraint(item: scrollView!, attribute: .leading, relatedBy: .equal, toItem: bannerView, attribute: .leading, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: scrollView!, attribute: .trailing, relatedBy: .equal, toItem: bannerView, attribute: .leading, multiplier: 1, constant: 10)
+        ]
+        constraints[2].priority = UILayoutPriority(rawValue: 999)
+        constraints[3].priority = UILayoutPriority(rawValue: 999)
+        NSLayoutConstraint.activate(constraints)
+        
+        //set up set of images for the banner
+        let imageViews = [
+            UIImageView(image: UIImage(named: "banner1")),
+            UIImageView(image: UIImage(named: "banner2")),
+            UIImageView(image: UIImage(named: "banner3")),
+            UIImageView(image: UIImage(named: "banner4")),
+            UIImageView(image: UIImage(named: "banner5"))
+        ]
+        //set up set of bodies for the banner
+        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you.", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts will tell you about reaching 'milestones' during a workout." ]
+        
+        imageViews.forEach { imageView in
+            imageView.contentMode = .scaleToFill
+            imageView.clipsToBounds = true
+        }
+        
+        let stackView = UIStackView (arrangedSubviews: imageViews)
+        stackView.backgroundColor = UIColor.orange
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(stackView)
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .fill
+        
+        NSLayoutConstraint.activate([
+          stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+          stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+          stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+          stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        
+          stackView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor, multiplier:  1),
+          stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier:  CGFloat(Double(imageViews.count))),
+        ])
+        
+    }
+    
+    func showBanner () {
+        if UserDefaults.standard.string(forKey: "FirstSeenBanner") == "true" {
+            self.bannerView.isHidden = false
+            self.backgroundBanerView.isHidden = false
+        } else {
+            self.bannerView.isHidden = true
+            self.backgroundBanerView.isHidden = true
+        }
+    }
+    
+    
     
     //shows toast if workout just saved
     func showSavedWorkoutToast () {
@@ -205,7 +328,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
                 setupWorkoutButton(started: isTrackingStarted)
                 startWorkout()
             } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 3 seconds to stop workout", duration: 3)
+                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 2 seconds to stop workout", duration: 3)
             }
         } else {
             ToastView.shared.redToast(view,
@@ -473,7 +596,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             selectedIndex = index
         }
     
-        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 128)), from: self)
+        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 130)), from: self)
 
         
         menu.onDismiss = { [self] selectedItems in
@@ -877,4 +1000,18 @@ extension MapViewController {
         }
     }
     
+}
+
+//updates page control depending on scrollView's image
+extension MapViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let page = Int(round(scrollView.contentOffset.x/scrollView.frame.width))
+        print(page)
+        bannerPageControlLabel.currentPage = page
+        bannerBodyIndex = page
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        bannerBodyLabel.text = bannerBodyes[bannerBodyIndex]
+    }
 }
