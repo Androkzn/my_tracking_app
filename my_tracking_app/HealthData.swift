@@ -114,7 +114,7 @@ class HealthData {
                 let unit = HKUnit(from: "kcal")
                 let latestCalories = data.quantity.doubleValue(for: unit)
                 self.caloriesBurned = Int16(latestCalories)
-                //print("Callories: \(latestRate)")
+                print("Callories: \(latestCalories)")
             }
             self.totalCaloriesBurned = self.caloriesBurned
         }

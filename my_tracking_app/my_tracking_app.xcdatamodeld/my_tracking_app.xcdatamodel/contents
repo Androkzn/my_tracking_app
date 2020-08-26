@@ -11,6 +11,7 @@
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES" codeGenerationType="class">
         <attribute name="averageSpeed" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="comment" optional="YES" attributeType="String"/>
         <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="duration" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -24,6 +25,6 @@
     </entity>
     <elements>
         <element name="Location" positionX="-127.33203125" positionY="49.65234375" width="128" height="148"/>
-        <element name="Workout" positionX="-413.265625" positionY="155.6640625" width="128" height="208"/>
+        <element name="Workout" positionX="-413.265625" positionY="155.6640625" width="128" height="223"/>
     </elements>
 </model>

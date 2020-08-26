@@ -512,6 +512,92 @@ extension WorkoutDataHelper {
         return UserDefaults.standard.integer(forKey: keyMap)
     }
     
+    
+    //Calculates callorie
+    static func getCallories(workout: Workout, seconds: Int16) -> String {
+        var calories = ""
+        var caloriesDouble = 0.0
+        var caloriesPerStep = 0.0
+        var caloriesPerSecond = 0.0
+        var caloriesPerPaddle = 0.0
+        if HealthData.shared.totalCaloriesBurned == 0 {
+            if WorkoutDataHelper.getWorkoutType(workout: workout) == 0 {
+                caloriesPerStep = 28 * selectCaloriesCoefficient()/1000
+                caloriesDouble = Double(seconds) * calculateBMRPerSecond() + Double(DeviceMotion.shared.steps) * caloriesPerStep
+            }
+            if WorkoutDataHelper.getWorkoutType(workout: workout) == 1 {
+                caloriesPerStep = 28 * selectCaloriesCoefficient()/3600
+                caloriesDouble = Double(seconds) * (caloriesPerSecond + calculateBMRPerSecond())
+            }
+            if WorkoutDataHelper.getWorkoutType(workout: workout) == 2 {
+                calories = "\(HealthData.shared.totalCaloriesBurned)"
+            }
+            if WorkoutDataHelper.getWorkoutType(workout: workout) == 3 {
+                calories = "\(HealthData.shared.totalCaloriesBurned)"
+            }
+            
+        } else {
+            caloriesDouble = 0.0
+            caloriesPerStep = 0.0
+            caloriesPerSecond = 0.0
+            caloriesPerPaddle = 0.0
+            calories = "\(HealthData.shared.totalCaloriesBurned)"
+        }
+        
+        print("BPM: \(calculateBMRPerSecond())")
+        print("calories: \(caloriesDouble)")
+        caloriesDouble = round(caloriesDouble)
+        let caloriesInt = Int(caloriesDouble)
+        calories = "\(caloriesInt)"
+        return calories
+    }
+    
+    static func selectCaloriesCoefficient() -> Double {
+        var coefficient = 1.0
+        let weightString = UserDefaults.standard.string(forKey: "WEIGHT")
+        let weight = Int(weightString!)
+        if weight! < 45 {
+             coefficient = 1
+        } else if weight! < 55 {
+             coefficient = 1.17
+        } else if weight! < 64 {
+             coefficient = 1.35
+        } else if weight! < 73 {
+            coefficient = 1.57
+        } else if weight! < 82 {
+            coefficient = 1.75
+        } else if weight! < 91 {
+            coefficient = 1.96
+        } else if weight! < 100 {
+            coefficient = 2.14
+        } else if weight! < 114{
+            coefficient = 2.46
+        } else if weight! < 125 {
+            coefficient = 2.67
+        }else if weight! < 136 {
+            coefficient = 2.92
+        }
+        return coefficient
+    }
+    
+    static func calculateBMRPerSecond () -> Double {
+        var bmr = 0.0
+        let weight =  Double(UserDefaults.standard.string(forKey: "WEIGHT")!)
+        let height =  Double(UserDefaults.standard.string(forKey: "HEIGHT")!)
+        let age =  Double(UserDefaults.standard.string(forKey: "AGE")!)
+        
+        if UserDefaults.standard.string(forKey: "GENDER") == "Male" {
+            bmr = (66 + (6.2 * weight!) + (12.7 * height!) - (6.76 * age!))/86400
+            
+        } else if UserDefaults.standard.string(forKey: "GENDER") == "Female" {
+            bmr = (655.1 + (4.35 * weight!) + (4.7 * height!) - (4.7 * age!))/86400
+        } else {
+            bmr = (66 + (6.2 * weight!) + (12.7 * height!) - (6.76 * age!))/86400
+        }
+        return bmr
+    }
+    
+    
     //OTHER HELPER FUNCTIONS
     
     

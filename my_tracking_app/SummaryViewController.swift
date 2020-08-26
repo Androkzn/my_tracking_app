@@ -212,9 +212,11 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         } else if WorkoutDataHelper.getWorkoutType(workout: currentWorkout!) == 3{
             additionalStackView.isHidden = false
             fifthCardUnitLabel.text = "PADDLES"
+            fifthCardLabel.text = "Not avaliable"
         } else {
             additionalStackView.isHidden = false
             fifthCardUnitLabel.text = "STEPS"
+            fifthCardLabel.text = "\(currentWorkout!.steps)"
         }
 
         if (currentWorkout!.comment == "") {
@@ -223,7 +225,7 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         } else {
             commentsTextView.text = currentWorkout!.comment
         }
-        
+        sixthCardLabel.text = "\(currentWorkout!.calories)"
     }
 
     func refreshUnitLabels() {

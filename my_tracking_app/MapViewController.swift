@@ -93,9 +93,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         setupWorkoutTypeTap()
         setWorkoutType ()
-        //asks permission to HealthStore
         HealthData.shared.requestAutorization()
-        DeviceMotion.shared.getSteps(seconds: GlobalTimer.shared.seconds)
         Watch.shared.checkWatchConnection()
         setUpBannerScrollView()
         showBanner ()
@@ -294,7 +292,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
         }
         if labelUpdated == "CALLORIES" {
-            data[0] = "\(HealthData.shared.totalCaloriesBurned)"
+            data[0] = "\(WorkoutDataHelper.getCallories(workout: currentWorkout!, seconds: GlobalTimer.shared.seconds))"
             data[1] = ", kcal"
             
         }
@@ -561,7 +559,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         case 3:
             return "PADDLE"
         default:
-            return "PADDLE"
+            return "WALK"
         }
     }
     
@@ -697,6 +695,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             currentWorkout.type = WorkoutDataHelper.getWorkoutType()
             currentWorkout.averageSpeed = averageSpeed()
             currentWorkout.speed = WorkoutDataHelper.getMaxSpeed(locations: currentLocations)
+            currentWorkout.calories = Int16(WorkoutDataHelper.getCallories(workout: currentWorkout, seconds: GlobalTimer.shared.seconds))!
             DataManager.shared.save()
             GlobalTimer.shared.stopTimer()
             locationManager.distanceFilter = 50
