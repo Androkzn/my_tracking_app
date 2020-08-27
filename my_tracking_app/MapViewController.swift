@@ -639,12 +639,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
-            self.currentWorkout!.type = WorkoutDataHelper.getWorkoutType()
+            
             self.updatesWorkoutTypeIcon ()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
             }
+            guard self.currentWorkout?.type != nil else {
+                       return
+                   }
+            self.currentWorkout!.type = WorkoutDataHelper.getWorkoutType()
         }
         
     }

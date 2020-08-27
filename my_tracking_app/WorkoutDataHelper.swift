@@ -228,6 +228,7 @@ class WorkoutDataHelper {
     
     static func getWorkoutType() -> Int16 {
         var workoutType = retrieveWorkoutTypeSetting()
+        print("workoutType: \(workoutType)")
         if workoutType > WorkoutType.paddle.rawValue {
             workoutType = WorkoutType.walk.rawValue
             UserDefaults.standard.set(workoutType,
