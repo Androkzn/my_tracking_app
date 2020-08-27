@@ -608,6 +608,7 @@ extension WorkoutDataHelper {
 
         //Then just cast the object as a String, but be careful, you may want to double check for nil
         let version = nsObject as! String
+
         return version
     }
     

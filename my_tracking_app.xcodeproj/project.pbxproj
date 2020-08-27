@@ -15,6 +15,14 @@
 		DE1B12A624E644A10028FFFD /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1B12A524E644A10028FFFD /* HealthKit.framework */; };
 		DE1B12A824E644BA0028FFFD /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1B12A724E644BA0028FFFD /* MapKit.framework */; };
 		DE1B12AA24E7B8FA0028FFFD /* DeviceMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1B12A924E7B8FA0028FFFD /* DeviceMotion.swift */; };
+		DE46E97824F7734900271B92 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE46E97624F7734900271B92 /* Interface.storyboard */; };
+		DE46E97A24F7734D00271B92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE46E97924F7734D00271B92 /* Assets.xcassets */; };
+		DE46E98124F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DE46E98024F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DE46E98624F7734D00271B92 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE46E98524F7734D00271B92 /* InterfaceController.swift */; };
+		DE46E98824F7734D00271B92 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE46E98724F7734D00271B92 /* ExtensionDelegate.swift */; };
+		DE46E98A24F7734D00271B92 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE46E98924F7734D00271B92 /* NotificationController.swift */; };
+		DE46E98C24F7734E00271B92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE46E98B24F7734E00271B92 /* Assets.xcassets */; };
+		DE46E99124F7734E00271B92 /* My_Trackin_App_Watch_Extension.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DE46E97424F7734900271B92 /* My_Trackin_App_Watch_Extension.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F3D6B24A488ED00966B60 /* ToastView.swift */; };
 		DE4FF00A24D0F0F900F980D8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */; };
 		DE4FF00C24D0F11000F980D8 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4FF00B24D0F11000F980D8 /* Profile.storyboard */; };
@@ -52,6 +60,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DE46E98224F7734D00271B92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE67A30D249889BD000FFEA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE46E97F24F7734D00271B92;
+			remoteInfo = "My_Trackin_App_Watch_Extension Extension";
+		};
+		DE46E98F24F7734E00271B92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE67A30D249889BD000FFEA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE46E97324F7734900271B92;
+			remoteInfo = My_Trackin_App_Watch_Extension;
+		};
 		DE67A32F249889BE000FFEA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DE67A30D249889BD000FFEA5 /* Project object */;
@@ -60,6 +82,31 @@
 			remoteInfo = my_tracking_app;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DE46E99524F7734E00271B92 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DE46E98124F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE46E99924F7734E00271B92 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				DE46E99124F7734E00271B92 /* My_Trackin_App_Watch_Extension.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1676BEA3E1160BC82F37ECD3 /* Pods-my_tracking_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_appTests.release.xcconfig"; path = "Target Support Files/Pods-my_tracking_appTests/Pods-my_tracking_appTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +122,18 @@
 		DE1B12A524E644A10028FFFD /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		DE1B12A724E644BA0028FFFD /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DE1B12A924E7B8FA0028FFFD /* DeviceMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotion.swift; sourceTree = "<group>"; };
+		DE46E97424F7734900271B92 /* My_Trackin_App_Watch_Extension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_Trackin_App_Watch_Extension.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE46E97724F7734900271B92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		DE46E97924F7734D00271B92 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DE46E97B24F7734D00271B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE46E98024F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "My_Trackin_App_Watch_Extension Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE46E98524F7734D00271B92 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		DE46E98724F7734D00271B92 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		DE46E98924F7734D00271B92 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		DE46E98B24F7734E00271B92 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DE46E98D24F7734E00271B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE46E98E24F7734E00271B92 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		DE46E99A24F77EC800271B92 /* My_Trackin_App_Watch_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = My_Trackin_App_Watch_Extension.entitlements; sourceTree = "<group>"; };
 		DE4F3D6B24A488ED00966B60 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DE4FF00B24D0F11000F980D8 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
@@ -116,6 +175,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		DE46E97D24F7734D00271B92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DE67A312249889BD000FFEA5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -159,11 +225,37 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DE46E97524F7734900271B92 /* My_Trackin_App_Watch_Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DE46E99A24F77EC800271B92 /* My_Trackin_App_Watch_Extension.entitlements */,
+				DE46E97624F7734900271B92 /* Interface.storyboard */,
+				DE46E97924F7734D00271B92 /* Assets.xcassets */,
+				DE46E97B24F7734D00271B92 /* Info.plist */,
+			);
+			path = My_Trackin_App_Watch_Extension;
+			sourceTree = "<group>";
+		};
+		DE46E98424F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DE46E98524F7734D00271B92 /* InterfaceController.swift */,
+				DE46E98724F7734D00271B92 /* ExtensionDelegate.swift */,
+				DE46E98924F7734D00271B92 /* NotificationController.swift */,
+				DE46E98B24F7734E00271B92 /* Assets.xcassets */,
+				DE46E98D24F7734E00271B92 /* Info.plist */,
+				DE46E98E24F7734E00271B92 /* PushNotificationPayload.apns */,
+			);
+			path = "My_Trackin_App_Watch_Extension Extension";
+			sourceTree = "<group>";
+		};
 		DE67A30C249889BD000FFEA5 = {
 			isa = PBXGroup;
 			children = (
 				DE67A317249889BD000FFEA5 /* my_tracking_app */,
 				DE67A331249889BE000FFEA5 /* my_tracking_appTests */,
+				DE46E97524F7734900271B92 /* My_Trackin_App_Watch_Extension */,
+				DE46E98424F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension */,
 				DE67A316249889BD000FFEA5 /* Products */,
 				3722C13CA33BB27C675AB3FE /* Pods */,
 				215E0085BAB6256F4848CD1D /* Frameworks */,
@@ -175,6 +267,8 @@
 			children = (
 				DE67A315249889BD000FFEA5 /* my_tracking_app.app */,
 				DE67A32E249889BE000FFEA5 /* my_tracking_appTests.xctest */,
+				DE46E97424F7734900271B92 /* My_Trackin_App_Watch_Extension.app */,
+				DE46E98024F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -254,6 +348,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DE46E97324F7734900271B92 /* My_Trackin_App_Watch_Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE46E99624F7734E00271B92 /* Build configuration list for PBXNativeTarget "My_Trackin_App_Watch_Extension" */;
+			buildPhases = (
+				DE46E97224F7734900271B92 /* Resources */,
+				DE46E99524F7734E00271B92 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE46E98324F7734D00271B92 /* PBXTargetDependency */,
+			);
+			name = My_Trackin_App_Watch_Extension;
+			productName = My_Trackin_App_Watch_Extension;
+			productReference = DE46E97424F7734900271B92 /* My_Trackin_App_Watch_Extension.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		DE46E97F24F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE46E99224F7734E00271B92 /* Build configuration list for PBXNativeTarget "My_Trackin_App_Watch_Extension Extension" */;
+			buildPhases = (
+				DE46E97C24F7734D00271B92 /* Sources */,
+				DE46E97D24F7734D00271B92 /* Frameworks */,
+				DE46E97E24F7734D00271B92 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "My_Trackin_App_Watch_Extension Extension";
+			productName = "My_Trackin_App_Watch_Extension Extension";
+			productReference = DE46E98024F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		DE67A314249889BD000FFEA5 /* my_tracking_app */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE67A337249889BE000FFEA5 /* Build configuration list for PBXNativeTarget "my_tracking_app" */;
@@ -263,10 +391,12 @@
 				DE67A312249889BD000FFEA5 /* Frameworks */,
 				DE67A313249889BD000FFEA5 /* Resources */,
 				15638D744B0D47421E2D6C5A /* [CP] Embed Pods Frameworks */,
+				DE46E99924F7734E00271B92 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DE46E99024F7734E00271B92 /* PBXTargetDependency */,
 			);
 			name = my_tracking_app;
 			productName = my_tracking_app;
@@ -298,10 +428,16 @@
 		DE67A30D249889BD000FFEA5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1160;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = HomeFoxDev;
 				TargetAttributes = {
+					DE46E97324F7734900271B92 = {
+						CreatedOnToolsVersion = 11.6;
+					};
+					DE46E97F24F7734D00271B92 = {
+						CreatedOnToolsVersion = 11.6;
+					};
 					DE67A314249889BD000FFEA5 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -327,11 +463,30 @@
 			targets = (
 				DE67A314249889BD000FFEA5 /* my_tracking_app */,
 				DE67A32D249889BE000FFEA5 /* my_tracking_appTests */,
+				DE46E97324F7734900271B92 /* My_Trackin_App_Watch_Extension */,
+				DE46E97F24F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DE46E97224F7734900271B92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE46E97A24F7734D00271B92 /* Assets.xcassets in Resources */,
+				DE46E97824F7734900271B92 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE46E97E24F7734D00271B92 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE46E98C24F7734E00271B92 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DE67A313249889BD000FFEA5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -422,6 +577,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DE46E97C24F7734D00271B92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE46E98A24F7734D00271B92 /* NotificationController.swift in Sources */,
+				DE46E98824F7734D00271B92 /* ExtensionDelegate.swift in Sources */,
+				DE46E98624F7734D00271B92 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DE67A311249889BD000FFEA5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -468,6 +633,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DE46E98324F7734D00271B92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE46E97F24F7734D00271B92 /* My_Trackin_App_Watch_Extension Extension */;
+			targetProxy = DE46E98224F7734D00271B92 /* PBXContainerItemProxy */;
+		};
+		DE46E99024F7734E00271B92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE46E97324F7734900271B92 /* My_Trackin_App_Watch_Extension */;
+			targetProxy = DE46E98F24F7734E00271B92 /* PBXContainerItemProxy */;
+		};
 		DE67A330249889BE000FFEA5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DE67A314249889BD000FFEA5 /* my_tracking_app */;
@@ -476,6 +651,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		DE46E97624F7734900271B92 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE46E97724F7734900271B92 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		DE67A31E249889BD000FFEA5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -495,6 +678,90 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		DE46E99324F7734E00271B92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2ZY5M2YW2;
+				INFOPLIST_FILE = "My_Trackin_App_Watch_Extension Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		DE46E99424F7734E00271B92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2ZY5M2YW2;
+				INFOPLIST_FILE = "My_Trackin_App_Watch_Extension Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		DE46E99724F7734E00271B92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = My_Trackin_App_Watch_Extension/My_Trackin_App_Watch_Extension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2ZY5M2YW2;
+				IBSC_MODULE = My_Trackin_App_Watch_Extension_Extension;
+				INFOPLIST_FILE = My_Trackin_App_Watch_Extension/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		DE46E99824F7734E00271B92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = My_Trackin_App_Watch_Extension/My_Trackin_App_Watch_Extension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2ZY5M2YW2;
+				IBSC_MODULE = My_Trackin_App_Watch_Extension_Extension;
+				INFOPLIST_FILE = My_Trackin_App_Watch_Extension/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
 		DE67A335249889BE000FFEA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -705,6 +972,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DE46E99224F7734E00271B92 /* Build configuration list for PBXNativeTarget "My_Trackin_App_Watch_Extension Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE46E99324F7734E00271B92 /* Debug */,
+				DE46E99424F7734E00271B92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DE46E99624F7734E00271B92 /* Build configuration list for PBXNativeTarget "My_Trackin_App_Watch_Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE46E99724F7734E00271B92 /* Debug */,
+				DE46E99824F7734E00271B92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DE67A310249889BD000FFEA5 /* Build configuration list for PBXProject "my_tracking_app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

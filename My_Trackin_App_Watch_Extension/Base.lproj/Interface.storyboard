@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.2" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="My_Trackin_App_Watch_Extension" customModuleProvider="target">
+                    <items>
+                        <group width="1" alignment="left" id="Omo-gF-SUF">
+                            <items>
+                                <imageView width="30" height="28" alignment="left" image="walk" id="kf9-eQ-XVb">
+                                    <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </imageView>
+                                <label width="103" height="29" alignment="left" text="00:00:00" textAlignment="center" minimumScaleFactor="0.80000000000000004" id="g3u-TF-wi8">
+                                    <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                </label>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="15" bottom="20"/>
+                        </group>
+                        <button width="136" height="73" alignment="left" title="START" id="oPb-5j-01n">
+                            <color key="backgroundColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" type="boldSystem" pointSize="19"/>
+                            <connections>
+                                <action selector="startButton" destination="AgC-eL-Hgc" id="yQF-MS-gTj"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="startButtonLabel" destination="oPb-5j-01n" id="4Cq-uK-nHj"/>
+                        <outlet property="timerLabel" destination="g3u-TF-wi8" id="jIH-Wl-6YY"/>
+                        <outlet property="workoutTypeIcon" destination="kf9-eQ-XVb" id="vpU-yv-onu"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="220" y="308"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Alert Label" numberOfLines="0" id="IdU-wH-bcW"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
+                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
+                        <segue destination="eXb-UN-Cd0" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="mpB-YA-K8N"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="220" y="643"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="ZPc-GJ-vnh">
+            <objects>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="My_Trackin_App_Watch_Extension" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="614" y="1059"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="Niz-AI-uX2">
+            <objects>
+                <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="My_Trackin_App_Watch_Extension" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="614" y="643"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="walk" width="512" height="512"/>
+    </resources>
+</document>
