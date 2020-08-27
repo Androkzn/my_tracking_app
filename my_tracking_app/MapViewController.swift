@@ -93,7 +93,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         setupWorkoutTypeTap()
         setWorkoutType ()
-        HealthData.shared.requestAutorization()
         Watch.shared.checkWatchConnection()
         setUpBannerScrollView()
         showBanner ()
@@ -114,11 +113,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     @IBAction func closeBannerButton(_ sender: Any) {
-        let dialogMessage = UIAlertController(title: "Information about new features",
+        let dialogMessage = UIAlertController(title: "Do you want to know about our new features?",
                                               message: " ",
                                               preferredStyle: .alert)
-
-        // Create OK button with action handler
+        
+        //set up background color and button color
+        dialogMessage.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 1, green: 0.8076083209, blue: 0.4960746166, alpha: 0.8323255565)
+        dialogMessage.view.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        
+        // Create Don't show again button with action handler
         let ok = UIAlertAction(title: "Don't show again", style: .default, handler: { (action) -> Void in
             self.bannerView.isHidden = true
             self.backgroundBanerView.isHidden = true
@@ -126,13 +129,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             
         })
 
-        // Create Cancel button with action handlder
+        // Create Review later button with action handlder
         let cancel = UIAlertAction(title: "Review later", style: .cancel) { (action) -> Void in
             self.bannerView.isHidden = true
             self.backgroundBanerView.isHidden = true
         }
 
-        //Add OK and Cancel button to dialog message
+        //Add Don't show again and Cancel button to dialog message
         dialogMessage.addAction(ok)
         dialogMessage.addAction(cancel)
 
@@ -220,7 +223,38 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    
+    func checkProfile () -> Bool {
+        var  profileFilledOut = false
+        
+        if UserDefaults.standard.object(forKey: "AGE") == nil || UserDefaults.standard.object(forKey: "GENDER") == nil || UserDefaults.standard.object(forKey: "WEIGHT") == nil || UserDefaults.standard.object(forKey: "HEIGHT") == nil || UserDefaults.standard.string(forKey: "AGE") == "" || UserDefaults.standard.string(forKey: "GENDER") == "" || UserDefaults.standard.string(forKey: "WEIGHT") == "" || UserDefaults.standard.string(forKey: "HEIGHT") == ""{
+                let dialogMessage = UIAlertController(title: "Please fill out Profile information to be able to get an accurate callories, steps and paddles",
+                                                          message: " ",
+                                                          preferredStyle: .alert)
+                //set up background color and button color
+                dialogMessage.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 1, green: 0.8076083209, blue: 0.4960746166, alpha: 0.8323255565)
+                dialogMessage.view.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            
+                // Create OK button with action handler
+                let ok = UIAlertAction(title: "Cancel", style: .default, handler: { (action) -> Void in
+ 
+                })
+
+                // Create Cancel button with action handlder
+                let cancel = UIAlertAction(title: "Go to Profile", style: .cancel) { (action) -> Void in
+                    self.tabBarController!.selectedIndex = 2
+                }
+
+                //Add OK and Cancel button to dialog message
+                dialogMessage.addAction(ok)
+                dialogMessage.addAction(cancel)
+
+                // Present dialog message to user
+                self.present(dialogMessage, animated: true, completion: nil)
+        } else {
+            profileFilledOut = true
+        }
+        return profileFilledOut
+    }
     
     //shows toast if workout just saved
     func showSavedWorkoutToast () {
@@ -309,9 +343,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         } else if let destination = segue.destination as? SettingsViewController {
            destination.modalPresentationStyle = .fullScreen
-       }
+        }
+        
     }
 
+    
+    
     //center map button
     @IBAction func centerMap(_ sender: UIButton) {
         centerToCurrentLocation()
@@ -322,9 +359,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         // Start new workout button pressed
         if lastLocation != nil {
             if !isTrackingStarted {
-                isTrackingStarted = !isTrackingStarted
-                setupWorkoutButton(started: isTrackingStarted)
-                startWorkout()
+                if checkProfile () { 
+                    isTrackingStarted = !isTrackingStarted
+                    setupWorkoutButton(started: isTrackingStarted)
+                    startWorkout()
+                }
             } else {
                 ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 2 seconds to stop workout", duration: 3)
             }
@@ -661,6 +700,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         locationManager.distanceFilter = 5
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
 
+        //request autorization
+        HealthData.shared.requestAutorization()
+        
         //set up milestone
         nextMilestone = milestone
         

@@ -45,7 +45,7 @@ class ProfileViewController: UIViewController {
     
     func setUpTextFields () {
         let defaults = UserDefaults.standard
-        if UserDefaults.standard.object(forKey: "AGE") == nil  {
+        if UserDefaults.standard.object(forKey: "AGE") == nil && UserDefaults.standard.object(forKey: "GENDER") == nil && UserDefaults.standard.object(forKey: "WEIGHT") == nil && UserDefaults.standard.object(forKey: "HEIGHT") == nil {
             defaults.set("", forKey: "AGE")
             defaults.set("", forKey: "GENDER")
             defaults.set("", forKey: "WEIGHT")
