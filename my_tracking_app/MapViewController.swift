@@ -974,27 +974,30 @@ extension MapViewController {
         }
         var distance: Double = 0.0
         for location in locations {
-            if currentLocations.isEmpty {
-                distance = 0
-            } else {
-                distance = location.distance(from: lastLocation!)
-                drawRoute(mapLabel,
-                          coordinates: [lastLocation!.coordinate, location.coordinate],
-                          animateToRoute: false)
-                lastLocation = location
+            print("location.horizontalAccuracy: \(location.horizontalAccuracy)")
+            if location.horizontalAccuracy < 20 {
+                if currentLocations.isEmpty {
+                    distance = 0
+                } else {
+                    distance = location.distance(from: lastLocation!)
+                    drawRoute(mapLabel,
+                              coordinates: [lastLocation!.coordinate, location.coordinate],
+                              animateToRoute: false)
+                    lastLocation = location
+                }
+
+                let workoutLocation =
+                    DataManager.shared.location(timestamp: Date(), distance: distance,
+                                                latitude: location.coordinate.latitude,
+                                                longitude: location.coordinate.longitude,
+                                                speed: location.speed, altitude: location.altitude,
+                                                workout: workout)
+                currentLocations.append(workoutLocation)
+                currentWorkoutDistance += distance
+
+                // Update milesone and speak when milestone is met
+                speakWhenReachingMilestones()
             }
-
-            let workoutLocation =
-                DataManager.shared.location(timestamp: Date(), distance: distance,
-                                            latitude: location.coordinate.latitude,
-                                            longitude: location.coordinate.longitude,
-                                            speed: location.speed, altitude: location.altitude,
-                                            workout: workout)
-            currentLocations.append(workoutLocation)
-            currentWorkoutDistance += distance
-
-            // Update milesone and speak when milestone is met
-            speakWhenReachingMilestones()
         }
     }
 
@@ -1017,7 +1020,7 @@ extension MapViewController {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         locationManager.distanceFilter = 50
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.startUpdatingLocation()

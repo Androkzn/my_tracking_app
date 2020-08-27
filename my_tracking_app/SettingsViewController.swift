@@ -261,6 +261,9 @@ extension SettingsViewController {
         let dialogMessage = UIAlertController(title: "Confirm",
                                               message: "Are you sure you want to delete all your workouts?",
                                               preferredStyle: .alert)
+        //set up background color and button color
+        dialogMessage.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 1, green: 0.8076083209, blue: 0.4960746166, alpha: 0.8323255565)
+        dialogMessage.view.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
 
         // Create OK button with action handler
         let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in

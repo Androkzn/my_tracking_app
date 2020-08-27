@@ -52,7 +52,6 @@ class ProfileViewController: UIViewController {
             defaults.set("", forKey: "HEIGHT")
             defaults.set("", forKey: "HEIGHTINCH")
         } else {
-            print("UPDATED")
             ageTextField.text = "\(defaults.string(forKey:  "AGE")!)"
             genderTextField.text  = "\(defaults.string(forKey:  "GENDER")!)"
             weightTextField.text  = "\(defaults.string(forKey:  "WEIGHT")!)"
