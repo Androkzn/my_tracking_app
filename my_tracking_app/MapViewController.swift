@@ -975,7 +975,7 @@ extension MapViewController {
         var distance: Double = 0.0
         for location in locations {
             print("location.horizontalAccuracy: \(location.horizontalAccuracy)")
-            if location.horizontalAccuracy < 20 {
+            if location.horizontalAccuracy < 30 {
                 if currentLocations.isEmpty {
                     distance = 0
                 } else {
