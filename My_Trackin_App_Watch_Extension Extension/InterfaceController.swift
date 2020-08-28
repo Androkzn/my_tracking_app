@@ -27,6 +27,7 @@ class InterfaceController: WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         updateLabels ()
+        updatesWorkoutTypeIcon ()
     }
     
     override func didDeactivate() {
@@ -39,7 +40,6 @@ class InterfaceController: WKInterfaceController {
         userDefaults!.synchronize()
         let workoutType = userDefaults!.integer(forKey: "WORKOUT")
         startButtonLabel.setTitle("\(sectionWorkout(atIndex: workoutType))")
-        updatesWorkoutTypeIcon ()
         
     }
     
@@ -48,16 +48,16 @@ class InterfaceController: WKInterfaceController {
         let workoutType = userDefaults!.integer(forKey: "WORKOUT")
         print("workoutType: \(workoutType)")
         if  workoutType == 0 {
-            workoutTypeIcon.setImage(UIImage(named: "walk"))
+            workoutTypeIcon.setImageNamed("walk")
         }
         if  workoutType == 1 {
-            workoutTypeIcon.setImage(UIImage(named: "run"))
+            workoutTypeIcon.setImageNamed("run")
         }
         if  workoutType == 2 {
-            workoutTypeIcon.setImage(UIImage(named: "cycling"))
+            workoutTypeIcon.setImageNamed("cycling")
         }
         if  workoutType == 3 {
-            workoutTypeIcon.setImage(UIImage(named: "paddling"))
+            workoutTypeIcon.setImageNamed("paddling")
         }
     }
     

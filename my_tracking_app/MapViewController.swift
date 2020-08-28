@@ -69,6 +69,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedName: [String] = [] //selected card name after editing
     var bannerBodyes: [String] = [] //stores banner's bodyes
     var bannerBodyIndex = 0
+    let userDefaults = UserDefaults(suiteName: "group.my_tracking_app")
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,8 +126,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         let ok = UIAlertAction(title: "Don't show again", style: .default, handler: { (action) -> Void in
             self.bannerView.isHidden = true
             self.backgroundBanerView.isHidden = true
-            UserDefaults.standard.set("false", forKey: "FirstSeenBanner")
-            
+            //UserDefaults.standard.set("false", forKey: "FirstSeenBanner")
+            self.userDefaults!.set("false", forKey: "FirstSeenBanner")
         })
 
         // Create Review later button with action handlder
@@ -615,6 +616,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         var selectedIndex = 0
         
         let defaults = UserDefaults.standard
+        let sharedDefaults = UserDefaults(suiteName: "group.my_tracking_app")
         let workoutType = Int(defaults.string(forKey: "WORKOUT")!)!
         selectedName = ["\(sectionWorkout(atIndex: workoutType))"]
          
@@ -639,12 +641,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
-            self.currentWorkout!.type = WorkoutDataHelper.getWorkoutType()
+            sharedDefaults!.set(selectedIndex, forKey: "WORKOUT")
+            sharedDefaults!.synchronize()
             self.updatesWorkoutTypeIcon ()
+            self.syncUserDefaults()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
             }
+            
+            guard self.currentWorkout?.type != nil else {return}
+            self.currentWorkout!.type = WorkoutDataHelper.getWorkoutType()
         }
         
     }
@@ -677,6 +684,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         if  WorkoutDataHelper.getWorkoutType() == 3 {
             workoutTypeLabel.image = UIImage(named: "paddling")
         }
+    }
+    
+    func syncUserDefaults() {
+        let userDefaults = UserDefaults(suiteName: "group.my_tracking_app")
+        userDefaults!.synchronize()
     }
     
     func setupWorkoutButton(started: Bool) {
