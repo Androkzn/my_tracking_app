@@ -59,7 +59,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var currentWorkout: Workout? // Reset only when we're back from SummaryViewController
     var currentWorkoutDistance = 0.0 // Raw distance in meters
     var currentWorkoutSpeedSum = 0.0 // Addition of raw speeds in meter per second
-    var counter = 1.0 //stop button timer counter
+    var counter = 1.5 //stop button timer counter
     var lastLocation: CLLocation?
     var locationManager: CLLocationManager!
     var overlays: [MKPolyline] = [] // From MapViewDelegate protocol, workout route
@@ -365,7 +365,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
                     startWorkout()
                 }
             } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 2 seconds to stop workout", duration: 3)
+                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
             }
         } else {
             ToastView.shared.redToast(view,
@@ -414,14 +414,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             ToastView.shared.stopAnimation()
             counterTextLabel.layer.isHidden = false
             progressBarLabel.isHidden = false
-            counterTextLabel.text = "Keep pressing STOP button \n\(Int(self.counter)) sec"
-            progressBarLabel.progress = Float(self.counter/3)
+            //counterTextLabel.text = "Keep pressing STOP button \n\(Int(self.counter)) sec"
+            counterTextLabel.text = "Keep pressing STOP button"
+            progressBarLabel.progress = Float(self.counter)
         } else {
             startButtonLabel.titleLabel?.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             counterTextLabel.layer.isHidden = true
             progressBarLabel.isHidden = true
             self.counterTextLabel.text = ""
-            self.counter = 3
+            self.counter = 1.5
         }
     }
     
