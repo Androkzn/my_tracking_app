@@ -47,6 +47,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var workoutTypeLabel: UIImageView!
+    @IBOutlet weak var iwatchIcon: UIImageView!
     
     
     @IBOutlet weak var bannerView: UIView!
@@ -944,10 +945,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
            switch activationState{
            case .activated:
                print("Phone WCSEssion Activated")
+               DispatchQueue.main.async {
+                self.iwatchIcon.isHidden = false
+               }
            case .notActivated:
                print("Phone WCSEssion NOT Activated")
+               DispatchQueue.main.async {
+                self.iwatchIcon.isHidden = true
+               }
            case .inactive:
-               print("Phone WCSEssion Inavtive")
+               print("Phone WCSEssion Inactive")
+               DispatchQueue.main.async {
+                self.iwatchIcon.isHidden = true
+               }
            @unknown default:
                print("ERROR")
         }

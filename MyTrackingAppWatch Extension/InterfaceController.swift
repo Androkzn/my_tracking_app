@@ -34,6 +34,12 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.didDeactivate()
     }
     
+    @IBAction func leftSwipe(_ sender: Any) {
+       presentController(withName: "summary", context: nil)
+    }
+    
+    
+    
     func updateLabels (message: [String: Any]) {
         var workoutType = 0
         var isTrackingStarted = false

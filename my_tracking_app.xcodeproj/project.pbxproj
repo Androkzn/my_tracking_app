@@ -19,6 +19,7 @@
 		DE12BC8024FDEFAB000A1097 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12BC7F24FDEFAB000A1097 /* NotificationController.swift */; };
 		DE12BC8224FDEFAC000A1097 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE12BC8124FDEFAC000A1097 /* Assets.xcassets */; };
 		DE12BC8724FDEFAC000A1097 /* MyTrackingAppWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DE12BC6A24FDEFA8000A1097 /* MyTrackingAppWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DE12BC9124FEA507000A1097 /* SummaryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12BC9024FEA507000A1097 /* SummaryInterface.swift */; };
 		DE1B12A324E636CB0028FFFD /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1B12A224E636CA0028FFFD /* HealthData.swift */; };
 		DE1B12A624E644A10028FFFD /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1B12A524E644A10028FFFD /* HealthKit.framework */; };
 		DE1B12A824E644BA0028FFFD /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1B12A724E644BA0028FFFD /* MapKit.framework */; };
@@ -38,7 +39,6 @@
 		DE67A34B2498A34D000FFEA5 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */; };
 		DE67A3802499C902000FFEA5 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE67A37F2499C902000FFEA5 /* DataManager.swift */; };
 		DE7FCB2024A04915009EC89B /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7FCB1F24A04915009EC89B /* Timer.swift */; };
-		DE80AC9B24ECCF3C004B86BC /* Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE80AC9A24ECCF3C004B86BC /* Watch.swift */; };
 		DE835AF124BE044F00122C2C /* Chart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE835AF024BE044F00122C2C /* Chart.storyboard */; };
 		DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F724BE441500364F15 /* CubicChart.swift */; };
 		DEB238FB24BE441500364F15 /* ChartFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F824BE441500364F15 /* ChartFormatter.swift */; };
@@ -128,6 +128,7 @@
 		DE12BC8124FDEFAC000A1097 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE12BC8324FDEFAC000A1097 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE12BC8424FDEFAC000A1097 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		DE12BC9024FEA507000A1097 /* SummaryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryInterface.swift; sourceTree = "<group>"; };
 		DE1B12A224E636CA0028FFFD /* HealthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
 		DE1B12A424E644A10028FFFD /* my_tracking_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = my_tracking_app.entitlements; sourceTree = "<group>"; };
 		DE1B12A524E644A10028FFFD /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
@@ -152,7 +153,6 @@
 		DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		DE67A37F2499C902000FFEA5 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		DE7FCB1F24A04915009EC89B /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
-		DE80AC9A24ECCF3C004B86BC /* Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch.swift; sourceTree = "<group>"; };
 		DE835AF024BE044F00122C2C /* Chart.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chart.storyboard; sourceTree = "<group>"; };
 		DEB238F724BE441500364F15 /* CubicChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicChart.swift; sourceTree = "<group>"; };
 		DEB238F824BE441500364F15 /* ChartFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartFormatter.swift; sourceTree = "<group>"; };
@@ -238,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				DE12BC7B24FDEFAB000A1097 /* InterfaceController.swift */,
+				DE12BC9024FEA507000A1097 /* SummaryInterface.swift */,
 				DE12BC7D24FDEFAB000A1097 /* ExtensionDelegate.swift */,
 				DE12BC7F24FDEFAB000A1097 /* NotificationController.swift */,
 				DE12BC8124FDEFAC000A1097 /* Assets.xcassets */,
@@ -296,7 +297,6 @@
 				DE7FCB1F24A04915009EC89B /* Timer.swift */,
 				DE4F3D6B24A488ED00966B60 /* ToastView.swift */,
 				E8F3BEC024BFDBFD0037AFD8 /* TextToSpeech.swift */,
-				DE80AC9A24ECCF3C004B86BC /* Watch.swift */,
 				F2702F0524A5227B002AE16F /* WorkoutDataHelper.swift */,
 				DEFCD74A249B4183007D7E75 /* Storyboards */,
 				DEFCD74C249B4202007D7E75 /* Core Data  */,
@@ -579,6 +579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE12BC9124FEA507000A1097 /* SummaryInterface.swift in Sources */,
 				DE12BC8024FDEFAB000A1097 /* NotificationController.swift in Sources */,
 				DE12BC7E24FDEFAB000A1097 /* ExtensionDelegate.swift in Sources */,
 				DE12BC7C24FDEFAB000A1097 /* InterfaceController.swift in Sources */,
@@ -605,7 +606,6 @@
 				F2AA4B9D24AAB6E500BB00DA /* SettingsViewController.swift in Sources */,
 				DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */,
 				DE4F3D6C24A488ED00966B60 /* ToastView.swift in Sources */,
-				DE80AC9B24ECCF3C004B86BC /* Watch.swift in Sources */,
 				DE7FCB2024A04915009EC89B /* Timer.swift in Sources */,
 				DE1B12AA24E7B8FA0028FFFD /* DeviceMotion.swift in Sources */,
 				F2B350DC24B90D6E0029B093 /* CheckTableViewCell.swift in Sources */,

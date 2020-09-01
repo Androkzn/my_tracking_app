@@ -184,6 +184,15 @@
                                     </imageView>
                                 </subviews>
                             </stackView>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="w.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="RiZ-YI-uO9">
+                                <rect key="frame" x="304" y="20.333333333333336" width="30" height="49.000000000000007"/>
+                                <color key="tintColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="56o-j0-sIq"/>
+                                    <constraint firstAttribute="height" constant="50" id="7nC-AU-CSt"/>
+                                </constraints>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="12"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldZ-GE-gzT" userLabel="Center">
                                 <rect key="frame" x="344" y="20" width="50" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="0.74507705479452058" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -309,10 +318,12 @@
                             <constraint firstItem="ldZ-GE-gzT" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="NMd-Zx-TXt"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerY" secondItem="Zsl-v5-xCU" secondAttribute="centerY" id="O9Z-pa-K08"/>
                             <constraint firstItem="oUJ-nG-Njh" firstAttribute="trailing" secondItem="Zsl-v5-xCU" secondAttribute="trailing" id="OoX-HT-mrj"/>
+                            <constraint firstItem="ldZ-GE-gzT" firstAttribute="leading" secondItem="RiZ-YI-uO9" secondAttribute="trailing" constant="10" id="Op2-n8-ciF"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="trailing" secondItem="UfD-CY-Zmq" secondAttribute="trailing" id="QII-2l-0AF"/>
                             <constraint firstItem="ldZ-GE-gzT" firstAttribute="trailing" secondItem="z3U-gV-IkQ" secondAttribute="trailing" constant="-20" id="RBr-9k-SV9"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="top" secondItem="UfD-CY-Zmq" secondAttribute="top" constant="5" id="SWO-L3-zMj"/>
                             <constraint firstItem="xa3-au-3KY" firstAttribute="centerY" secondItem="3xg-9K-b0L" secondAttribute="centerY" id="W6z-zF-Qf3"/>
+                            <constraint firstItem="RiZ-YI-uO9" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="W8A-KP-obG"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="centerX" secondItem="f5O-xC-hCQ" secondAttribute="centerX" id="Yfx-4G-fXA"/>
                             <constraint firstItem="oUJ-nG-Njh" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" id="apm-FH-LAI"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="cVa-ZU-Sbl"/>
@@ -343,6 +354,7 @@
                         <outlet property="fourthCardUnitLabel" destination="f9K-7b-4hk" id="rkx-jK-lIM"/>
                         <outlet property="fourthCardView" destination="irg-to-muz" id="iAs-SU-ZcJ"/>
                         <outlet property="iconAltitudeLabel" destination="UVH-VO-1a7" id="ETy-W4-f5S"/>
+                        <outlet property="iwatchIcon" destination="RiZ-YI-uO9" id="ZFg-Sf-76f"/>
                         <outlet property="mapLabel" destination="z3U-gV-IkQ" id="GuX-2K-wqZ"/>
                         <outlet property="progressBarLabel" destination="Wfj-fa-akl" id="nnh-DR-OAo"/>
                         <outlet property="recenterButton" destination="ldZ-GE-gzT" id="ckv-1b-cBP"/>
@@ -407,6 +419,7 @@
         <image name="icons8-mountain-100" width="100" height="100"/>
         <image name="location.north.fill" catalog="system" width="108" height="128"/>
         <image name="map" catalog="system" width="128" height="113"/>
+        <image name="w.circle.fill" catalog="system" width="128" height="121"/>
         <image name="walk" width="512" height="512"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
     </resources>
