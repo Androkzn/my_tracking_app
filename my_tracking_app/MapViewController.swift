@@ -74,23 +74,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var bannerBodyes: [String] = [] //stores banner's bodyes
     var bannerBodyIndex = 0
     var workoutType = 0
-    var timeCurrent = ""
+    var timeCurrent = "00:00:00"
     var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted]}
     let session = WCSession.default
+    var isStartButtonPressedRemoutely = false
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCardsSettings()
-        //Tap function will call when user tap on button
-        let tapGesture = UITapGestureRecognizer(target: self,
-                                                action: #selector (startButton))
-        //Long press function will call when user long presses on button.
-        let longGesture = UILongPressGestureRecognizer(target: self,
-                                                       action: #selector(stopButton))
-        tapGesture.numberOfTapsRequired = 1
-        button.addGestureRecognizer(tapGesture)
-        button.addGestureRecognizer(longGesture)
-        longGesture.minimumPressDuration = 0.5
+        setUpGestureRecognizerForStartButton()
         setMilestones()
         setupCenterButton()
         setupSettingsButton()
@@ -116,7 +107,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
         setCardsSettings()
-         
+        interactiveMessage()
+    }
+    
+    func setUpGestureRecognizerForStartButton() {
+        setCardsSettings()
+        //Tap function will call when user tap on button
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector (startButton))
+        //Long press function will call when user long presses on button.
+        let longGesture = UILongPressGestureRecognizer(target: self,
+                                                       action: #selector(stopButton))
+        tapGesture.numberOfTapsRequired = 1
+        button.addGestureRecognizer(tapGesture)
+        button.addGestureRecognizer(longGesture)
+        longGesture.minimumPressDuration = 0.5
     }
     
     func setUpWatchConectivity() {
@@ -128,6 +133,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     }
     
     func interactiveMessage() {
+        workoutType = Int(WorkoutDataHelper.getWorkoutType())
         session.sendMessage(message, replyHandler: nil, errorHandler: nil)
     }
     
@@ -376,22 +382,27 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     //start button state
     @objc func startButton(_ sender: UITapGestureRecognizer) {
         // Start new workout button pressed
+        startButtonPressed()
+    }
+    
+    func startButtonPressed () {
         if lastLocation != nil {
             if !isTrackingStarted {
-                if checkProfile () { 
+                if checkProfile () {
                     isTrackingStarted = !isTrackingStarted
                     setupWorkoutButton(started: isTrackingStarted)
                     startWorkout()
+                    }
+                } else {
+                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
                 }
             } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
+                ToastView.shared.redToast(view,
+                   txt_msg: "Your location service is not available, please enable Location on your device",
+                   duration: 2)
             }
-        } else {
-            ToastView.shared.redToast(view,
-            txt_msg: "Your location service is not available, please enable Location on your device",
-            duration: 2)
-        }
     }
+    
     
     //stop button state
     @objc func stopButton(_ sender: UILongPressGestureRecognizer) {
@@ -410,16 +421,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
                         timer.invalidate()
                         self.setupCounterLabel(started: false)
                         if self.isTrackingStarted {
-                            self.isTrackingStarted = !self.isTrackingStarted
-                            self.setupWorkoutButton(started: self.isTrackingStarted)
-                            self.stopWorkout()
-                            self.performSegue(withIdentifier: "summaryView", sender: nil)
+                            self.stopButtonPressed()
                         }
                     }
                     self.counter = (self.counter - 0.01)
                 }
             }
         }
+    }
+    
+    func stopButtonPressed() {
+        isTrackingStarted = !self.isTrackingStarted
+        setupWorkoutButton(started: self.isTrackingStarted)
+        stopWorkout()
+        performSegue(withIdentifier: "summaryView", sender: nil)
+        isStartButtonPressedRemoutely = false
     }
     
     //controls popup behaviour when stop button is long pressed
@@ -666,6 +682,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
             
             self.updatesWorkoutTypeIcon ()
+            self.interactiveMessage()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
@@ -941,6 +958,26 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 
     func sessionDidDeactivate(_ session: WCSession) {
        print("Session deactivated")
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        if let pressStart = message["PressStart"] as? Bool {
+            if pressStart {
+                self.isStartButtonPressedRemoutely = pressStart
+                if !isTrackingStarted {
+                    DispatchQueue.main.async {
+                        self.startButtonPressed()
+                        self.isStartButtonPressedRemoutely = false
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.stopButtonPressed()
+                        self.isStartButtonPressedRemoutely = false
+                    }
+                }
+            }
+        }
+        replyHandler(message)
     }
     
 }

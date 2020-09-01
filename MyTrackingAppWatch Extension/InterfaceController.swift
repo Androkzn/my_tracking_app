@@ -55,7 +55,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if isTrackingStarted {
             startButtonLabel.setTitle("STOP")
             startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1))
-                        
+             
+            
          } else {
             startButtonLabel.setTitle(sectionWorkout(atIndex: workoutType))
             startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1))
@@ -94,6 +95,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     @IBAction func startButton() {
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in
+                if let didPress = reply["PressStart"] as? Bool {
+                    if didPress {}
+
+                }
+            }) { (error) in
+                print("Messaging Error: \(error.localizedDescription)")
+            }
+        }
         
     }
     
