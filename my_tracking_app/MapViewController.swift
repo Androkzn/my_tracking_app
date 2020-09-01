@@ -96,6 +96,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpBannerScrollView()
         showBanner ()
         setUpWatchConectivity()
+        isWatchPaired ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +110,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         updatesWorkoutTypeIcon ()
         setCardsSettings()
         interactiveMessage()
+        isWatchPaired ()
     }
     
     func setUpGestureRecognizerForStartButton() {
@@ -131,6 +133,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             session.delegate = self
             session.activate()
         }
+    }
+    
+    func isWatchPaired () {
+    // Check if the iPhone is paired with the Apple Watch
+//        DispatchQueue.main.async {
+//            if self.session.isPaired {
+//                self.iwatchIcon.image = UIImage(named: "applewatch")
+//                self.iwatchIcon.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+//              } else {
+//                self.iwatchIcon.image = UIImage(named: "applewatch_error")
+//                self.iwatchIcon.tintColor  = #colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1)
+//              }
+//        }
     }
     
     func interactiveMessage() {
@@ -945,19 +960,22 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
            switch activationState{
            case .activated:
                print("Phone WCSEssion Activated")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = false
-               }
+//               DispatchQueue.main.async {
+//                    self.iwatchIcon.image = UIImage(named: "applewatch")
+//                    self.iwatchIcon.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+//               }
            case .notActivated:
                print("Phone WCSEssion NOT Activated")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = true
-               }
+//               DispatchQueue.main.async {
+//                    self.iwatchIcon.image = UIImage(named: "applewatch_error")
+//                    self.iwatchIcon.tintColor  = #colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1)
+//               }
            case .inactive:
                print("Phone WCSEssion Inactive")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = true
-               }
+//               DispatchQueue.main.async {
+//                    self.iwatchIcon.image = UIImage(named: "applewatch_error")
+//                    self.iwatchIcon.tintColor  = #colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1)
+//               }
            @unknown default:
                print("ERROR")
         }
