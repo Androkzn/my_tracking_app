@@ -75,7 +75,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var bannerBodyIndex = 0
     var workoutType = 0
     var timeCurrent = ""
-    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent]}
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted]}
     let session = WCSession.default
  
     override func viewDidLoad() {
@@ -799,6 +799,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         HealthData.shared.heartRate = 0
         DeviceMotion.shared.steps = 0
         DeviceMotion.shared.distance = 0
+        timeCurrent = "00:00:00"
+        interactiveMessage()
         
     }
     

@@ -35,13 +35,31 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func updateLabels (message: [String: Any]) {
-        if let workoutType = message ["WorkoutType"] as? Int {
-            updatesWorkoutTypeIcon(workoutType: workoutType)
+        var workoutType = 0
+        var isTrackingStarted = false
+        var timeCurrent = ""
+        
+        if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
+            workoutType = workoutTypeMessage
+            
+        }
+        if let timeCurrentMessage = message ["Time"] as? String {
+            timeCurrent = timeCurrentMessage
+        }
+        if let isTrackingStartedMessage = message ["isTrackingStarted"] as? Bool {
+            isTrackingStarted = isTrackingStartedMessage
+        }
+        
+        updatesWorkoutTypeIcon(workoutType: workoutType)
+        timerLabel.setText(timeCurrent)
+        if isTrackingStarted {
+            startButtonLabel.setTitle("STOP")
+            startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1))
+                        
+         } else {
             startButtonLabel.setTitle(sectionWorkout(atIndex: workoutType))
-        }
-        if let timeCurrent = message ["Time"] as? String {
-            timerLabel.setText(timeCurrent)
-        }
+            startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1))
+         }
     }
     
     func updatesWorkoutTypeIcon (workoutType: Int) {
