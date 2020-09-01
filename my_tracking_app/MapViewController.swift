@@ -12,8 +12,12 @@ import HealthKit
 import MapKit
 import CoreData
 import RSSelectionMenu
+import WatchConnectivity
 
-class MapViewController: UIViewController, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessionDelegate {
+
+    
+
     
     //Outlets
     @IBOutlet weak var recenterButton: UIButton!
@@ -69,20 +73,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedName: [String] = [] //selected card name after editing
     var bannerBodyes: [String] = [] //stores banner's bodyes
     var bannerBodyIndex = 0
+    var workoutType = 0
+    var timeCurrent = "00:00:00"
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted]}
+    let session = WCSession.default
+    var isStartButtonPressedRemoutely = false
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCardsSettings()
-        //Tap function will call when user tap on button
-        let tapGesture = UITapGestureRecognizer(target: self,
-                                                action: #selector (startButton))
-        //Long press function will call when user long presses on button.
-        let longGesture = UILongPressGestureRecognizer(target: self,
-                                                       action: #selector(stopButton))
-        tapGesture.numberOfTapsRequired = 1
-        button.addGestureRecognizer(tapGesture)
-        button.addGestureRecognizer(longGesture)
-        longGesture.minimumPressDuration = 0.5
+        setUpGestureRecognizerForStartButton()
         setMilestones()
         setupCenterButton()
         setupSettingsButton()
@@ -93,9 +92,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         setupWorkoutTypeTap()
         setWorkoutType ()
-        Watch.shared.checkWatchConnection()
         setUpBannerScrollView()
         showBanner ()
+        setUpWatchConectivity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,9 +107,35 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
         setCardsSettings()
+        interactiveMessage()
     }
     
+    func setUpGestureRecognizerForStartButton() {
+        setCardsSettings()
+        //Tap function will call when user tap on button
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector (startButton))
+        //Long press function will call when user long presses on button.
+        let longGesture = UILongPressGestureRecognizer(target: self,
+                                                       action: #selector(stopButton))
+        tapGesture.numberOfTapsRequired = 1
+        button.addGestureRecognizer(tapGesture)
+        button.addGestureRecognizer(longGesture)
+        longGesture.minimumPressDuration = 0.5
+    }
     
+    func setUpWatchConectivity() {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
+    }
+    
+    func interactiveMessage() {
+        workoutType = Int(WorkoutDataHelper.getWorkoutType())
+        session.sendMessage(message, replyHandler: nil, errorHandler: nil)
+    }
     
     @IBAction func closeBannerButton(_ sender: Any) {
         let dialogMessage = UIAlertController(title: "Do you want to know about our new features?",
@@ -179,6 +204,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         
         //set up set of images for the banner
         let imageViews = [
+            UIImageView(image: UIImage(named: "banner11")),
             UIImageView(image: UIImage(named: "banner1")),
             UIImageView(image: UIImage(named: "banner2")),
             UIImageView(image: UIImage(named: "banner3")),
@@ -186,7 +212,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             UIImageView(image: UIImage(named: "banner5"))
         ]
         //set up set of bodies for the banner
-        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you.", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts will tell you about reaching 'milestones' during a workout." ]
+        bannerBodyes = ["Apple Watch extension.", "Customizable cards' set. Change the order and pick what important to you.",  "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts will tell you about reaching 'milestones' during a workout." ]
         
         imageViews.forEach { imageView in
             imageView.contentMode = .scaleToFill
@@ -357,22 +383,27 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     //start button state
     @objc func startButton(_ sender: UITapGestureRecognizer) {
         // Start new workout button pressed
+        startButtonPressed()
+    }
+    
+    func startButtonPressed () {
         if lastLocation != nil {
             if !isTrackingStarted {
-                if checkProfile () { 
+                if checkProfile () {
                     isTrackingStarted = !isTrackingStarted
                     setupWorkoutButton(started: isTrackingStarted)
                     startWorkout()
+                    }
+                } else {
+                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
                 }
             } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
+                ToastView.shared.redToast(view,
+                   txt_msg: "Your location service is not available, please enable Location on your device",
+                   duration: 2)
             }
-        } else {
-            ToastView.shared.redToast(view,
-            txt_msg: "Your location service is not available, please enable Location on your device",
-            duration: 2)
-        }
     }
+    
     
     //stop button state
     @objc func stopButton(_ sender: UILongPressGestureRecognizer) {
@@ -391,16 +422,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
                         timer.invalidate()
                         self.setupCounterLabel(started: false)
                         if self.isTrackingStarted {
-                            self.isTrackingStarted = !self.isTrackingStarted
-                            self.setupWorkoutButton(started: self.isTrackingStarted)
-                            self.stopWorkout()
-                            self.performSegue(withIdentifier: "summaryView", sender: nil)
+                            self.stopButtonPressed()
                         }
                     }
                     self.counter = (self.counter - 0.01)
                 }
             }
         }
+    }
+    
+    func stopButtonPressed() {
+        isTrackingStarted = !self.isTrackingStarted
+        setupWorkoutButton(started: self.isTrackingStarted)
+        stopWorkout()
+        performSegue(withIdentifier: "summaryView", sender: nil)
+        isStartButtonPressedRemoutely = false
     }
     
     //controls popup behaviour when stop button is long pressed
@@ -458,6 +494,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             secondCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
             secondCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 1))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
         }
+        
+        //send message to iWatch
+        workoutType = Int(WorkoutDataHelper.getWorkoutType())
+        timeCurrent = GlobalTimer.shared.getTime()
+        interactiveMessage()
     }
 
     //activate text to speach when a milestone is reached
@@ -642,6 +683,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
             
             self.updatesWorkoutTypeIcon ()
+            self.interactiveMessage()
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 print("Labels was updated")
@@ -775,6 +817,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         HealthData.shared.heartRate = 0
         DeviceMotion.shared.steps = 0
         DeviceMotion.shared.distance = 0
+        timeCurrent = "00:00:00"
+        interactiveMessage()
         
     }
     
@@ -895,6 +939,48 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         settingButton.alpha = 0.8
     }
 
+    //MARK: - Delegate Watch Conectivity
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+           switch activationState{
+           case .activated:
+               print("Phone WCSEssion Activated")
+           case .notActivated:
+               print("Phone WCSEssion NOT Activated")
+           case .inactive:
+               print("Phone WCSEssion Inavtive")
+           @unknown default:
+               print("ERROR")
+        }
+    }
+
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        print("Session went inactive")
+    }
+
+    func sessionDidDeactivate(_ session: WCSession) {
+       print("Session deactivated")
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        if let pressStart = message["PressStart"] as? Bool {
+            if pressStart {
+                self.isStartButtonPressedRemoutely = pressStart
+                if !isTrackingStarted {
+                    DispatchQueue.main.async {
+                        self.startButtonPressed()
+                        self.isStartButtonPressedRemoutely = false
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.stopButtonPressed()
+                        self.isStartButtonPressedRemoutely = false
+                    }
+                }
+            }
+        }
+        replyHandler(message)
+    }
+    
 }
 
 
@@ -968,6 +1054,8 @@ extension MKMapView {
         setRegion(coordinateRegion, animated: true)
     }
 }
+
+
 
 // MARK: Helper functions
 extension MapViewController {
