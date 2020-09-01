@@ -12,8 +12,12 @@ import HealthKit
 import MapKit
 import CoreData
 import RSSelectionMenu
+import WatchConnectivity
 
-class MapViewController: UIViewController, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessionDelegate {
+
+    
+
     
     //Outlets
     @IBOutlet weak var recenterButton: UIButton!
@@ -69,6 +73,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedName: [String] = [] //selected card name after editing
     var bannerBodyes: [String] = [] //stores banner's bodyes
     var bannerBodyIndex = 0
+    var workoutType = 0
+    var timeCurrent = ""
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent]}
+    let session = WCSession.default
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,9 +101,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setupContainersTap()
         setupWorkoutTypeTap()
         setWorkoutType ()
-        Watch.shared.checkWatchConnection()
         setUpBannerScrollView()
         showBanner ()
+        setUpWatchConectivity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,9 +116,20 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
         setCardsSettings()
+         
     }
     
+    func setUpWatchConectivity() {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
+    }
     
+    func interactiveMessage() {
+        session.sendMessage(message, replyHandler: nil, errorHandler: nil)
+    }
     
     @IBAction func closeBannerButton(_ sender: Any) {
         let dialogMessage = UIAlertController(title: "Do you want to know about our new features?",
@@ -458,6 +477,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             secondCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
             secondCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 1))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
         }
+        
+        //send message to iWatch
+        workoutType = Int(WorkoutDataHelper.getWorkoutType())
+        timeCurrent = GlobalTimer.shared.getTime()
+        interactiveMessage()
     }
 
     //activate text to speach when a milestone is reached
@@ -895,6 +919,28 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         settingButton.alpha = 0.8
     }
 
+    //MARK: - Delegate Watch Conectivity
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+           switch activationState{
+           case .activated:
+               print("Phone WCSEssion Activated")
+           case .notActivated:
+               print("Phone WCSEssion NOT Activated")
+           case .inactive:
+               print("Phone WCSEssion Inavtive")
+           @unknown default:
+               print("ERROR")
+        }
+    }
+
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        print("Session went inactive")
+    }
+
+    func sessionDidDeactivate(_ session: WCSession) {
+       print("Session deactivated")
+    }
+    
 }
 
 
@@ -968,6 +1014,8 @@ extension MKMapView {
         setRegion(coordinateRegion, animated: true)
     }
 }
+
+
 
 // MARK: Helper functions
 extension MapViewController {
