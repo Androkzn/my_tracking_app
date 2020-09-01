@@ -204,6 +204,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         
         //set up set of images for the banner
         let imageViews = [
+            UIImageView(image: UIImage(named: "banner11")),
             UIImageView(image: UIImage(named: "banner1")),
             UIImageView(image: UIImage(named: "banner2")),
             UIImageView(image: UIImage(named: "banner3")),
@@ -211,7 +212,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             UIImageView(image: UIImage(named: "banner5"))
         ]
         //set up set of bodies for the banner
-        bannerBodyes = ["Customizable cards' set. Change the order and pick what important to you.", "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts will tell you about reaching 'milestones' during a workout." ]
+        bannerBodyes = ["Apple Watch extension.", "Customizable cards' set. Change the order and pick what important to you.",  "Four different types of workout use unique algorithms for calculating paddles, steps, and calories.", "Graphs provide extended analytics after a workout.", "We protect your workout from stoping accidentally. It stops when you stop it.", "The app can speak to you. Voice prompts will tell you about reaching 'milestones' during a workout." ]
         
         imageViews.forEach { imageView in
             imageView.contentMode = .scaleToFill
