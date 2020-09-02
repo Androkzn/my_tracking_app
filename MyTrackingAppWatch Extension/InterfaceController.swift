@@ -12,6 +12,23 @@ import WatchConnectivity
 
 class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
+    static let shared  = InterfaceController()
+    
+    var workoutType = 0
+    var isTrackingStarted = false
+    var timeCurrent = "00:00:00"
+    var distance = 0.0
+    var distanceUnit = ""
+    var speed = 0.0
+    var avgSpeed = 0.0
+    var speedUnit = ""
+    var steps = 0
+    var calories = 0
+    var paddles = 0
+    var heartRate = 0
+    
+    
+    
     @IBOutlet weak var workoutTypeIcon: WKInterfaceImage!
     @IBOutlet weak var timerLabel: WKInterfaceLabel!
     @IBOutlet weak var startButtonLabel: WKInterfaceButton!
@@ -27,6 +44,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        let session = WCSession.default
+        session.delegate = self
+        session.activate()
     }
     
     override func didDeactivate() {
@@ -41,9 +61,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     
     func updateLabels (message: [String: Any]) {
-        var workoutType = 0
-        var isTrackingStarted = false
-        var timeCurrent = ""
         
         if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
             workoutType = workoutTypeMessage
@@ -105,7 +122,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in
                 if let didPress = reply["PressStart"] as? Bool {
                     if didPress {}
-
                 }
             }) { (error) in
                 print("Messaging Error: \(error.localizedDescription)")

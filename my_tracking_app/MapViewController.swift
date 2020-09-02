@@ -77,7 +77,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var bannerBodyIndex = 0
     var workoutType = 0
     var timeCurrent = "00:00:00"
-    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted]}
+    var distance = "0.0"
+    var distanceUnit = ", km"
+    var speed = "0.0"
+    var avgSpeed = "0.0"
+    var speedUnit = ", km/h"
+    var steps = "0"
+    var calories = "0"
+    var paddles = "0"
+    var heartRate = "0"
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate  ]}
     let session = WCSession.default
     var isStartButtonPressedRemoutely = false
  
@@ -537,6 +546,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         //send message to iWatch
         workoutType = Int(WorkoutDataHelper.getWorkoutType())
         timeCurrent = GlobalTimer.shared.getTime()
+        if WorkoutDataHelper.getWorkoutType() == 2 {
+          distance = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+        } else {
+          distance = WorkoutDataHelper.getDisplayedDistance(from: DeviceMotion.shared.distance)
+        }
+        distanceUnit = ", \(WorkoutDataHelper.getDistanceUnit())"
+        speed = "\(WorkoutDataHelper.getDisplayedSpeed(from: speedMPS))"
+        avgSpeed = "\(WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed()))"
+        speedUnit = ", \(WorkoutDataHelper.getSpeedUnit())"
+        steps = "\(DeviceMotion.shared.steps)"
+        calories = "\(WorkoutDataHelper.getCallories(workout: currentWorkout!, seconds: GlobalTimer.shared.seconds))"
+        paddles = "0"
+        heartRate = "\(HealthData.shared.heartRate)"
         interactiveMessage()
     }
 
@@ -857,6 +879,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         DeviceMotion.shared.steps = 0
         DeviceMotion.shared.distance = 0
         timeCurrent = "00:00:00"
+        distance = "0.0"
+        distanceUnit = ""
+        speed = "0.0"
+        avgSpeed = "0.0"
+        speedUnit = ""
+        steps = "0"
+        calories = "0"
+        paddles = "0"
+        heartRate = "0"
         interactiveMessage()
         
     }
