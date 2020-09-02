@@ -96,6 +96,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpBannerScrollView()
         showBanner ()
         setUpWatchConectivity()
+        isWatchPaired ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +110,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         updatesWorkoutTypeIcon ()
         setCardsSettings()
         interactiveMessage()
+        isWatchPaired ()
     }
     
     func setUpGestureRecognizerForStartButton() {
@@ -132,6 +134,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             session.activate()
         }
     }
+    
+    func isWatchPaired () {
+       // Check if the iPhone is paired with the Apple Watch
+           DispatchQueue.main.async {
+               if self.session.isPaired {
+                   self.iwatchIcon.image = UIImage(named: "applewatch")
+                   self.iwatchIcon.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                 } else {
+                   self.iwatchIcon.image = UIImage(named: "applewatch_error")
+                   self.iwatchIcon.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                 }
+           }
+       }
     
     func interactiveMessage() {
         workoutType = Int(WorkoutDataHelper.getWorkoutType())
@@ -965,10 +980,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 
     func sessionDidBecomeInactive(_ session: WCSession) {
         print("Session went inactive")
+        isWatchPaired ()
     }
 
     func sessionDidDeactivate(_ session: WCSession) {
        print("Session deactivated")
+        isWatchPaired ()
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
@@ -998,7 +1015,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 extension MapViewController: CLLocationManagerDelegate {
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
+        isWatchPaired ()
         mapLabel.centerToLocation(locations.last!, regionRadius: 300)
 
         if isTrackingStarted {
