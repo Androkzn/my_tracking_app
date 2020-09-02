@@ -88,7 +88,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var heartRate = "0"
     var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate  ]}
     let session = WCSession.default
-    var isStartButtonPressedRemoutely = false
+    static var isStartButtonPressedRemoutely = false
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,6 +106,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpBannerScrollView()
         showBanner ()
         setUpWatchConectivity()
+        interactiveMessage()
         isWatchPaired ()
     }
     
@@ -481,10 +482,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         isTrackingStarted = !self.isTrackingStarted
         setupWorkoutButton(started: self.isTrackingStarted)
         stopWorkout()
-        if !isStartButtonPressedRemoutely {
-            performSegue(withIdentifier: "summaryView", sender: nil)
-        }
-        isStartButtonPressedRemoutely = false
+        performSegue(withIdentifier: "summaryView", sender: nil)
     }
     
     //controls popup behaviour when stop button is long pressed
@@ -803,6 +801,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     }
 
     func startWorkout() {
+        //reset variables for workout
+        resetVariables ()
+        
         locationManager.allowsBackgroundLocationUpdates = true
         centerToCurrentLocation()
         locationManager.distanceFilter = 5
@@ -872,7 +873,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         //clean route
         deleteRoute(mapLabel)
         locationManager.allowsBackgroundLocationUpdates = false
-        //Reset data
+    }
+    
+    //reset variables for workout
+    func resetVariables () {
         HealthData.shared.totalSteps = 0
         HealthData.shared.totalCaloriesBurned = 0
         HealthData.shared.heartRate = 0
@@ -889,7 +893,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         paddles = "0"
         heartRate = "0"
         interactiveMessage()
-        
     }
     
     func setMilestones() {
@@ -1036,21 +1039,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         if let pressStart = message["PressStart"] as? Bool {
             if pressStart {
-                self.isStartButtonPressedRemoutely = pressStart
                 if !isTrackingStarted {
                     DispatchQueue.main.async {
+                         MapViewController.isStartButtonPressedRemoutely = pressStart
                         self.startButtonPressed()
-                        self.isStartButtonPressedRemoutely = false
                     }
                 } else {
                     DispatchQueue.main.async {
+                        MapViewController.isStartButtonPressedRemoutely = pressStart
                         self.stopButtonPressed()
-                        self.isStartButtonPressedRemoutely = false
                     }
                 }
             }
         }
         replyHandler(message)
+        print("pressStart: \(MapViewController.isStartButtonPressedRemoutely)")
     }
     
 }

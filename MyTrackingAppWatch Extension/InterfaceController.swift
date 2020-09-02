@@ -26,6 +26,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var calories = 0
     var paddles = 0
     var heartRate = 0
+    var isWorkoutStarted = false
+   
     
     
     
@@ -47,6 +49,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         let session = WCSession.default
         session.delegate = self
         session.activate()
+        if !isWorkoutStarted {
+            updateLabelsAfterStop ()
+        }
     }
     
     override func didDeactivate() {
@@ -71,6 +76,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
         if let isTrackingStartedMessage = message ["isTrackingStarted"] as? Bool {
             isTrackingStarted = isTrackingStartedMessage
+            isWorkoutStarted = isTrackingStartedMessage
         }
         
         updatesWorkoutTypeIcon(workoutType: workoutType)
@@ -84,6 +90,13 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             startButtonLabel.setTitle(sectionWorkout(atIndex: workoutType))
             startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1))
          }
+    }
+    
+    func updateLabelsAfterStop () {
+        updatesWorkoutTypeIcon(workoutType: workoutType)
+        timerLabel.setText("00:00:00")
+        startButtonLabel.setTitle(sectionWorkout(atIndex: workoutType))
+        startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1))
     }
     
     func updatesWorkoutTypeIcon (workoutType: Int) {
@@ -118,16 +131,27 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     @IBAction func startButton() {
+        if isWorkoutStarted {
+            startButtonLabel.setEnabled(false)
+        }
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in
                 if let didPress = reply["PressStart"] as? Bool {
-                    if didPress {}
+                    if didPress {
+                        if self.isWorkoutStarted {
+                            self.presentController(withName: "summary", context: nil)
+                            self.startButtonLabel.setEnabled(true)
+                            self.isWorkoutStarted = false
+                        }
+                    }
                 }
             }) { (error) in
                 print("Messaging Error: \(error.localizedDescription)")
             }
         }
-        
+//          isWorkoutStarted = false
+//        presentController(withName: "summary", context: nil)
+//        self.startButtonLabel.setEnabled(true)
     }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
