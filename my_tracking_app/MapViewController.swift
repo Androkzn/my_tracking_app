@@ -451,7 +451,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         isTrackingStarted = !self.isTrackingStarted
         setupWorkoutButton(started: self.isTrackingStarted)
         stopWorkout()
-        performSegue(withIdentifier: "summaryView", sender: nil)
+        if !isStartButtonPressedRemoutely {
+            performSegue(withIdentifier: "summaryView", sender: nil)
+        }
         isStartButtonPressedRemoutely = false
     }
     
