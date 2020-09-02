@@ -48,7 +48,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var workoutTypeLabel: UIImageView!
     @IBOutlet weak var watchLabel: UIButton!
-    @IBOutlet weak var iwatchIcon: UIImageView!
     
     
     
