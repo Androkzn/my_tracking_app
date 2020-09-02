@@ -184,15 +184,29 @@
                                     </imageView>
                                 </subviews>
                             </stackView>
-                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applewatch_error" translatesAutoresizingMaskIntoConstraints="NO" id="RiZ-YI-uO9">
-                                <rect key="frame" x="304" y="20" width="30" height="50"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applewatch_error" translatesAutoresizingMaskIntoConstraints="NO" id="RiZ-YI-uO9">
+                                <rect key="frame" x="304" y="17" width="30" height="50"/>
                                 <color key="tintColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="56o-j0-sIq"/>
                                     <constraint firstAttribute="height" constant="50" id="7nC-AU-CSt"/>
                                 </constraints>
-                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="12"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="13"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Miu-8B-pPz">
+                                <rect key="frame" x="304" y="27" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="8cU-8h-ZSw"/>
+                                    <constraint firstAttribute="width" constant="30" id="bL0-mJ-dET"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="0.80850833649999998" blue="0.48923581840000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="applewatch_error">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17"/>
+                                </state>
+                                <connections>
+                                    <action selector="watchRefreshButton:" destination="fpw-Wl-p7n" eventType="touchUpInside" id="P4e-51-ayy"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldZ-GE-gzT" userLabel="Center">
                                 <rect key="frame" x="344" y="20" width="50" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="0.74507705479452058" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -309,12 +323,14 @@
                         <constraints>
                             <constraint firstItem="deh-zn-pSH" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="4si-oW-E8c"/>
                             <constraint firstItem="2oi-Em-MKy" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="7IC-hC-pYy"/>
+                            <constraint firstItem="Miu-8B-pPz" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="27" id="7Jx-FZ-xFS"/>
                             <constraint firstItem="xa3-au-3KY" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="AW7-GY-hpY"/>
                             <constraint firstItem="oUJ-nG-Njh" firstAttribute="bottom" secondItem="Zsl-v5-xCU" secondAttribute="bottom" id="Aw6-3L-Is9"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="bottom" secondItem="eal-gx-so3" secondAttribute="bottom" constant="202" id="BBd-4F-SLF"/>
                             <constraint firstItem="eal-gx-so3" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" constant="25" id="Ehg-FU-GfE"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="leading" secondItem="f5O-xC-hCQ" secondAttribute="leadingMargin" constant="3.3333333333333428" id="FL1-d0-fMJ"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="trailing" secondItem="eal-gx-so3" secondAttribute="trailing" constant="25" id="GM3-fP-Adf"/>
+                            <constraint firstItem="ldZ-GE-gzT" firstAttribute="leading" secondItem="Miu-8B-pPz" secondAttribute="trailing" constant="10" id="Gab-yb-MgF"/>
                             <constraint firstItem="ldZ-GE-gzT" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="NMd-Zx-TXt"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerY" secondItem="Zsl-v5-xCU" secondAttribute="centerY" id="O9Z-pa-K08"/>
                             <constraint firstItem="oUJ-nG-Njh" firstAttribute="trailing" secondItem="Zsl-v5-xCU" secondAttribute="trailing" id="OoX-HT-mrj"/>
@@ -323,7 +339,7 @@
                             <constraint firstItem="ldZ-GE-gzT" firstAttribute="trailing" secondItem="z3U-gV-IkQ" secondAttribute="trailing" constant="-20" id="RBr-9k-SV9"/>
                             <constraint firstItem="Zsl-v5-xCU" firstAttribute="top" secondItem="UfD-CY-Zmq" secondAttribute="top" constant="5" id="SWO-L3-zMj"/>
                             <constraint firstItem="xa3-au-3KY" firstAttribute="centerY" secondItem="3xg-9K-b0L" secondAttribute="centerY" id="W6z-zF-Qf3"/>
-                            <constraint firstItem="RiZ-YI-uO9" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="20" id="W8A-KP-obG"/>
+                            <constraint firstItem="RiZ-YI-uO9" firstAttribute="top" secondItem="Zsl-v5-xCU" secondAttribute="top" constant="17" id="W8A-KP-obG"/>
                             <constraint firstItem="Wfj-fa-akl" firstAttribute="centerX" secondItem="f5O-xC-hCQ" secondAttribute="centerX" id="Yfx-4G-fXA"/>
                             <constraint firstItem="oUJ-nG-Njh" firstAttribute="leading" secondItem="Zsl-v5-xCU" secondAttribute="leading" id="apm-FH-LAI"/>
                             <constraint firstItem="f5O-xC-hCQ" firstAttribute="centerX" secondItem="Zsl-v5-xCU" secondAttribute="centerX" id="cVa-ZU-Sbl"/>
@@ -336,6 +352,11 @@
                             <constraint firstItem="UfD-CY-Zmq" firstAttribute="bottom" secondItem="Zsl-v5-xCU" secondAttribute="bottom" id="yCR-LB-o0m"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Zsl-v5-xCU"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="RiZ-YI-uO9"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="GzP-kB-2yW"/>
                     <connections>
@@ -367,6 +388,7 @@
                         <outlet property="thirdCardLabel" destination="00T-cp-aCH" id="bVk-ZM-MrY"/>
                         <outlet property="thirdCardUnitLabel" destination="bxo-VE-NGP" id="NOt-he-l9N"/>
                         <outlet property="thirdCardView" destination="Ajh-ZB-iN3" id="cER-7p-ubY"/>
+                        <outlet property="watchLabel" destination="Miu-8B-pPz" id="ifh-Aw-OTE"/>
                         <outlet property="workoutTypeLabel" destination="mfP-Qa-jYo" id="7z1-A3-kdm"/>
                         <segue destination="MhB-Pv-Eh9" kind="show" identifier="summaryView" id="Jge-Jg-By2"/>
                     </connections>

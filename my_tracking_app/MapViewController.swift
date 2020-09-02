@@ -47,7 +47,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var workoutTypeLabel: UIImageView!
+    @IBOutlet weak var watchLabel: UIButton!
     @IBOutlet weak var iwatchIcon: UIImageView!
+    
     
     
     @IBOutlet weak var bannerView: UIView!
@@ -135,15 +137,28 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         }
     }
     
+    
+    @IBAction func watchRefreshButton(_ sender: Any) {
+        isWatchPaired()
+    }
+    
+    
     func isWatchPaired () {
        // Check if the iPhone is paired with the Apple Watch
            DispatchQueue.main.async {
                if self.session.isPaired {
-                   self.iwatchIcon.image = UIImage(named: "applewatch")
-                   self.iwatchIcon.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                   self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                ToastView.shared.blueToast(self.view,
+                txt_msg: "Your Apple Watch is paired successfully",
+                duration: 2)
+                
                  } else {
-                   self.iwatchIcon.image = UIImage(named: "applewatch_error")
-                   self.iwatchIcon.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                   self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                   self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                ToastView.shared.redToast(self.view,
+                txt_msg: "Your Apple Watch is not paired. Please, check phone's settings.",
+                duration: 2)
                  }
            }
        }
@@ -962,19 +977,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
            switch activationState{
            case .activated:
                print("Phone WCSEssion Activated")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = false
-               }
            case .notActivated:
                print("Phone WCSEssion NOT Activated")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = true
-               }
            case .inactive:
                print("Phone WCSEssion Inactive")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = true
-               }
            @unknown default:
                print("ERROR")
         }
