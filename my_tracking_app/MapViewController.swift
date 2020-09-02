@@ -138,9 +138,23 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     
     @IBAction func watchRefreshButton(_ sender: Any) {
-        isWatchPaired()
+        DispatchQueue.main.async {
+            if self.session.isPaired {
+             self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+             ToastView.shared.blueToast(self.view,
+             txt_msg: "Your Apple Watch is paired successfully",
+             duration: 2)
+             
+              } else {
+                self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+             ToastView.shared.redToast(self.view,
+             txt_msg: "Your Apple Watch is not paired. Please, check phone's settings.",
+             duration: 2)
+              }
+        }
     }
-    
     
     func isWatchPaired () {
        // Check if the iPhone is paired with the Apple Watch
@@ -148,16 +162,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
                if self.session.isPaired {
                 self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
                    self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-                ToastView.shared.blueToast(self.view,
-                txt_msg: "Your Apple Watch is paired successfully",
-                duration: 2)
-                
                  } else {
                    self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
                    self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
-                ToastView.shared.redToast(self.view,
-                txt_msg: "Your Apple Watch is not paired. Please, check phone's settings.",
-                duration: 2)
                  }
            }
        }

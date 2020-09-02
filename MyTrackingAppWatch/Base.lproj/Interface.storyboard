@@ -74,11 +74,11 @@
         <!--Summary Interface Controller-->
         <scene sceneID="68n-69-lbK">
             <objects>
-                <controller identifier="summary" id="yaB-gc-oh7" userLabel="Summary Interface Controller">
+                <controller identifier="summary" id="yaB-gc-oh7" userLabel="Summary Interface Controller" customClass="SummaryInterface" customModule="MyTrackingAppWatch_Extension">
                     <items>
                         <group width="1" alignment="left" layout="vertical" id="Y9u-8j-r7b">
                             <items>
-                                <group width="1" alignment="left" layout="vertical" id="45o-D9-7rz">
+                                <group width="1" alignment="left" layout="vertical" id="45o-D9-7rz" userLabel="Timer Group">
                                     <items>
                                         <label height="20" alignment="left" text="Time:" id="O2b-bG-vI7" userLabel="Time">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -86,7 +86,7 @@
                                         <label alignment="left" text="00:00:00" id="Xb4-9y-uTv"/>
                                     </items>
                                 </group>
-                                <group width="1" alignment="left" layout="vertical" id="XYy-eW-hXD">
+                                <group width="1" alignment="left" layout="vertical" id="XYy-eW-hXD" userLabel="Distance Group">
                                     <items>
                                         <label width="136" height="21" alignment="left" text="Distance:" id="lq3-SW-bse">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -99,7 +99,7 @@
                                         </group>
                                     </items>
                                 </group>
-                                <group width="1" alignment="left" layout="vertical" id="Gxl-pS-qBz">
+                                <group width="1" alignment="left" layout="vertical" id="Gxl-pS-qBz" userLabel="Speed Group">
                                     <items>
                                         <label width="136" height="26" alignment="left" text="Speed / Avg speed:" id="7Xy-xa-hfG">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -115,7 +115,7 @@
                                         </group>
                                     </items>
                                 </group>
-                                <group width="1" alignment="left" layout="vertical" id="EG5-g7-6Hz">
+                                <group width="1" alignment="left" layout="vertical" id="EG5-g7-6Hz" userLabel="Steps Group">
                                     <items>
                                         <label height="20" alignment="left" text="Steps" id="ZNM-Ke-y36">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -128,7 +128,7 @@
                                         </group>
                                     </items>
                                 </group>
-                                <group width="1" alignment="left" layout="vertical" id="K88-Ao-MDw">
+                                <group width="1" alignment="left" layout="vertical" id="K88-Ao-MDw" userLabel="Paddles Group">
                                     <items>
                                         <label height="20" alignment="left" text="Paddles" id="KAF-yB-ght" userLabel="Paddles">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -141,7 +141,7 @@
                                         </group>
                                     </items>
                                 </group>
-                                <group width="1" alignment="left" layout="vertical" id="P3h-L6-7Wu">
+                                <group width="1" alignment="left" layout="vertical" id="P3h-L6-7Wu" userLabel="Calories Group">
                                     <items>
                                         <label height="20" alignment="left" text="Calories" id="HQw-Uf-CMZ" userLabel="Heart rate">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -154,7 +154,7 @@
                                         </group>
                                     </items>
                                 </group>
-                                <group width="1" alignment="left" layout="vertical" id="6ih-SS-XCQ">
+                                <group width="1" alignment="left" layout="vertical" id="6ih-SS-XCQ" userLabel="Heart Rate Group">
                                     <items>
                                         <label height="20" alignment="left" text="Heart rate" id="Sg6-qo-sLE" userLabel="Calories">
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
