@@ -149,7 +149,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                 print("Messaging Error: \(error.localizedDescription)")
             }
         }
-//          isWorkoutStarted = false
+        self.isWorkoutStarted = false
 //        presentController(withName: "summary", context: nil)
 //        self.startButtonLabel.setEnabled(true)
     }
