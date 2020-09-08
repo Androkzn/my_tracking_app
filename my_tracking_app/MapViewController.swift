@@ -49,8 +49,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBOutlet weak var workoutTypeLabel: UIImageView!
     @IBOutlet weak var watchLabel: UIButton!
     
-    
-    
     @IBOutlet weak var bannerView: UIView!
     @IBOutlet weak var bannerTitleLabel: UILabel!
     @IBOutlet weak var bannerBodyLabel: UILabel!
@@ -87,7 +85,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var paddles = "0"
     var heartRate = "0"
     var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate  ]}
-    let session = WCSession.default
+    var session = WCSession.default
     static var isStartButtonPressedRemoutely = false
  
     override func viewDidLoad() {
@@ -107,7 +105,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         showBanner ()
         setUpWatchConectivity()
         interactiveMessage()
-        isWatchPaired ()
+        isWatchPaired (isPaired: session.isPaired)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,7 +119,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         updatesWorkoutTypeIcon ()
         setCardsSettings()
         interactiveMessage()
-        isWatchPaired ()
+        isWatchPaired (isPaired: session.isPaired)
     }
     
     func setUpGestureRecognizerForStartButton() {
@@ -140,7 +138,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     func setUpWatchConectivity() {
         if WCSession.isSupported() {
-            let session = WCSession.default
+            session = WCSession.default
             session.delegate = self
             session.activate()
         }
@@ -150,32 +148,50 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBAction func watchRefreshButton(_ sender: Any) {
         DispatchQueue.main.async {
             if self.session.isPaired {
-             self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
-                self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-             ToastView.shared.blueToast(self.view,
-             txt_msg: "Your Apple Watch is paired successfully",
-             duration: 2)
+//            print("isPaired: \(self.session.isPaired)")
+//            print("var isWatchAppInstalled: \(self.session.isWatchAppInstalled)")
+//            print("var isComplicationEnabled: \(self.session.isComplicationEnabled)")
+                if self.session.isWatchAppInstalled {
+                    self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                    self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                              ToastView.shared.blueToast(self.view,
+                       txt_msg: "Your Apple Watch is paired successfully",
+                       duration: 2)
+                } else {
+                    self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                    self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                    ToastView.shared.redToast(self.view,
+                                       txt_msg: "The extension is not instaled on you watch. Please, check Watch app on your phone.",
+                                       duration: 4)
+                }
              
               } else {
                 self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
                 self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
              ToastView.shared.redToast(self.view,
              txt_msg: "Your Apple Watch is not paired. Please, check phone's settings.",
-             duration: 2)
+             duration: 4)
               }
         }
     }
     
-    func isWatchPaired () {
+    func isWatchPaired (isPaired: Bool) {
        // Check if the iPhone is paired with the Apple Watch
            DispatchQueue.main.async {
-               if self.session.isPaired {
-                self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
-                   self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-                 } else {
+               if isPaired {
+                    if self.session.isWatchAppInstalled {
+                        self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                        self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                        
+                        } else {
+                            self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                            self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                    
+                                   }
+                } else {
                    self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
                    self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
-                 }
+                }
            }
        }
     
@@ -1028,12 +1044,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 
     func sessionDidBecomeInactive(_ session: WCSession) {
         print("Session went inactive")
-        isWatchPaired ()
+        isWatchPaired (isPaired: session.isPaired)
     }
 
     func sessionDidDeactivate(_ session: WCSession) {
        print("Session deactivated")
-        isWatchPaired ()
+        isWatchPaired (isPaired: session.isPaired)
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
@@ -1063,7 +1079,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 extension MapViewController: CLLocationManagerDelegate {
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        isWatchPaired ()
+        isWatchPaired (isPaired: session.isPaired)
         mapLabel.centerToLocation(locations.last!, regionRadius: 300)
 
         if isTrackingStarted {

@@ -27,6 +27,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var paddles = 0
     var heartRate = 0
     var isWorkoutStarted = false
+    var isPared = false
    
     
     
@@ -41,6 +42,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         let session = WCSession.default
         session.delegate = self
         session.activate()
+
     }
     
     override func willActivate() {
@@ -134,6 +136,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if isWorkoutStarted {
             startButtonLabel.setEnabled(false)
         }
+        
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in
                 if let didPress = reply["PressStart"] as? Bool {
