@@ -1,5 +1,4 @@
-# project-team-1
-project-team-1 created by GitHub Classroom
+
 
 # The following steps should be done before running the app: 
 
