@@ -22,7 +22,7 @@ class DeviceMotion {
         if CMPedometer.isStepCountingAvailable() {
         let startDate = Calendar.current.date(byAdding: .second, value: -Int(seconds), to: Date())
         pedometer.queryPedometerData(from: startDate!, to: Date()) { (data, error) in
-                print("Pedometer data: \(data!)")
+                //print("Pedometer data: \(data!)")
                 self.distance = Double(truncating: (data?.distance)!)
                 self.steps =  Int16(truncating: (data?.numberOfSteps)!)
                 

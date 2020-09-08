@@ -228,7 +228,6 @@ class WorkoutDataHelper {
     
     static func getWorkoutType() -> Int16 {
         var workoutType = retrieveWorkoutTypeSetting()
-        print("workoutType: \(workoutType)")
         if workoutType > WorkoutType.paddle.rawValue {
             workoutType = WorkoutType.walk.rawValue
             UserDefaults.standard.set(workoutType,
@@ -521,7 +520,6 @@ extension WorkoutDataHelper {
         var caloriesPerStep = 0.0
         var caloriesPerSecond = 0.0
         var caloriesPerPaddle = 0.0
-        print("Workout type: \(WorkoutDataHelper.getWorkoutType(workout: workout))")
         if HealthData.shared.totalCaloriesBurned == 0 {
             if WorkoutDataHelper.getWorkoutType(workout: workout) == 0 {
                 caloriesPerStep = 28 * selectCaloriesCoefficient()/1000
@@ -545,9 +543,6 @@ extension WorkoutDataHelper {
             caloriesPerPaddle = 0.0
             calories = "\(HealthData.shared.totalCaloriesBurned)"
         }
-        
-        print("BPM: \(calculateBMRPerSecond())")
-        print("calories: \(caloriesDouble)")
         caloriesDouble = round(caloriesDouble)
         let caloriesInt = Int(caloriesDouble)
         calories = "\(caloriesInt)"
