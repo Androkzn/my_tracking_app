@@ -66,14 +66,12 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func ageTextFieldBeginEditing(_ sender: UITextField) {
-        print("ageStartEditing")
         let ageRows:[Int] = Array(1...100)
         textFieldPicker(sender, rows: ageRows,  title: "Select your age",field: "AGE")
         view.endEditing(true)
     }
 
     @IBAction func genderTextFieldBeginEditing(_ sender: UITextField) {
-        print("genderStartEditing")
         let genderRows:[String] = ["Male", "Female", "Other"]
         textFieldPicker(sender, rows: genderRows,  title: "Select your gender",field: "GENDER")
         view.endEditing(true)
@@ -81,7 +79,6 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func weightTextFieldBeginEditing(_ sender: UITextField) {
-        print("weightStartEditing")
         let ageRows:[Int] = Array(1...200)
         textFieldPicker(sender, rows: ageRows,  title: "Select your weight", field: "WEIGHT")
         view.endEditing(true)
@@ -89,7 +86,6 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func heightTextFieldBeginEditing(_ sender: UITextField) {
-        print("heightStartEditing")
         let ageRows:[Int] = Array(1...250)
         textFieldPicker(sender, rows: ageRows,  title: "Select your height", field: "HEIGHT")
         view.endEditing(true)
@@ -101,7 +97,6 @@ class ProfileViewController: UIViewController {
     func textFieldPicker(_ sender: UITextField, rows: [Any], title: String, field: String) {
         var selector = 0
         //set initiall selector based on existing value
-        print(sender.text!)
         if sender.text! != "" {
             if sender == genderTextField {
                 if sender.text! == "Male" {
@@ -121,7 +116,6 @@ class ProfileViewController: UIViewController {
                 selector = rows.count/3
             }
         }
-        print(selector)
         let picker = ActionSheetStringPicker(title: title,
                                      rows: rows,
                                      initialSelection: selector,

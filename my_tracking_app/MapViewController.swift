@@ -621,7 +621,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             self.resetLabels()
             if self.isTrackingStarted == false {
                 self.updateLabels()
-                print("Labels was updated")
+                //print("Labels was updated")
             }
         }
         
@@ -745,7 +745,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             self.interactiveMessage()
             if self.isTrackingStarted == false {
                 self.updateLabels()
-                print("Labels was updated")
+                //print("Labels was updated")
             }
             guard self.currentWorkout?.type != nil else {
                        return
@@ -1053,7 +1053,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             }
         }
         replyHandler(message)
-        print("pressStart: \(MapViewController.isStartButtonPressedRemoutely)")
+        //print("pressStart: \(MapViewController.isStartButtonPressedRemoutely)")
     }
     
 }
@@ -1142,7 +1142,7 @@ extension MapViewController {
         }
         var distance: Double = 0.0
         for location in locations {
-            print("location.horizontalAccuracy: \(location.horizontalAccuracy)")
+            //print("location.horizontalAccuracy: \(location.horizontalAccuracy)")
             if location.horizontalAccuracy < 30 {
                 if currentLocations.isEmpty {
                     distance = 0
