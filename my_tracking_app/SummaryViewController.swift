@@ -57,6 +57,7 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         delegate?.showToast(_vc:self)
     }
     
+    
     func setupTextFieldTapGesture() {
         let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(self.textFieldTapped(_:)))
         self.commentsTextView.isUserInteractionEnabled = true
@@ -160,6 +161,17 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         // only save snapshot when initially saving workout
         if savingSnapshot {
             makeSnapshot()
+        }
+        
+        //close summary view if stop button was pressed on Watch
+        if MapViewController.isStartButtonPressedRemoutely {
+            //provide 1 sec delay for taking screenshot for History view
+            let seconds = 1.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            // Put your code which should be executed with a delay here
+                self.dismiss(animated: true, completion: nil)
+                MapViewController.isStartButtonPressedRemoutely = false
+            }
         }
     }
     

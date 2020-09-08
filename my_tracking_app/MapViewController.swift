@@ -47,7 +47,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBOutlet weak var iconAltitudeLabel: UIImageView!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var workoutTypeLabel: UIImageView!
-    @IBOutlet weak var iwatchIcon: UIImageView!
+    @IBOutlet weak var watchLabel: UIButton!
+    
     
     
     @IBOutlet weak var bannerView: UIView!
@@ -76,9 +77,18 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var bannerBodyIndex = 0
     var workoutType = 0
     var timeCurrent = "00:00:00"
-    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted]}
+    var distance = "0.0"
+    var distanceUnit = ", km"
+    var speed = "0.0"
+    var avgSpeed = "0.0"
+    var speedUnit = ", km/h"
+    var steps = "0"
+    var calories = "0"
+    var paddles = "0"
+    var heartRate = "0"
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate  ]}
     let session = WCSession.default
-    var isStartButtonPressedRemoutely = false
+    static var isStartButtonPressedRemoutely = false
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,6 +106,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpBannerScrollView()
         showBanner ()
         setUpWatchConectivity()
+        interactiveMessage()
         isWatchPaired ()
     }
     
@@ -135,15 +146,35 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         }
     }
     
+    
+    @IBAction func watchRefreshButton(_ sender: Any) {
+        DispatchQueue.main.async {
+            if self.session.isPaired {
+             self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+             ToastView.shared.blueToast(self.view,
+             txt_msg: "Your Apple Watch is paired successfully",
+             duration: 2)
+             
+              } else {
+                self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+             ToastView.shared.redToast(self.view,
+             txt_msg: "Your Apple Watch is not paired. Please, check phone's settings.",
+             duration: 2)
+              }
+        }
+    }
+    
     func isWatchPaired () {
        // Check if the iPhone is paired with the Apple Watch
            DispatchQueue.main.async {
                if self.session.isPaired {
-                   self.iwatchIcon.image = UIImage(named: "applewatch")
-                   self.iwatchIcon.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                   self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
                  } else {
-                   self.iwatchIcon.image = UIImage(named: "applewatch_error")
-                   self.iwatchIcon.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                   self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                   self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
                  }
            }
        }
@@ -452,7 +483,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setupWorkoutButton(started: self.isTrackingStarted)
         stopWorkout()
         performSegue(withIdentifier: "summaryView", sender: nil)
-        isStartButtonPressedRemoutely = false
     }
     
     //controls popup behaviour when stop button is long pressed
@@ -514,6 +544,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         //send message to iWatch
         workoutType = Int(WorkoutDataHelper.getWorkoutType())
         timeCurrent = GlobalTimer.shared.getTime()
+        if WorkoutDataHelper.getWorkoutType() == 2 {
+          distance = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+        } else {
+          distance = WorkoutDataHelper.getDisplayedDistance(from: DeviceMotion.shared.distance)
+        }
+        distanceUnit = ", \(WorkoutDataHelper.getDistanceUnit())"
+        speed = "\(WorkoutDataHelper.getDisplayedSpeed(from: speedMPS))"
+        avgSpeed = "\(WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed()))"
+        speedUnit = ", \(WorkoutDataHelper.getSpeedUnit())"
+        steps = "\(DeviceMotion.shared.steps)"
+        calories = "\(WorkoutDataHelper.getCallories(workout: currentWorkout!, seconds: GlobalTimer.shared.seconds))"
+        paddles = "0"
+        heartRate = "\(HealthData.shared.heartRate)"
         interactiveMessage()
     }
 
@@ -758,6 +801,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     }
 
     func startWorkout() {
+        //reset variables for workout
+        resetVariables ()
+        
         locationManager.allowsBackgroundLocationUpdates = true
         centerToCurrentLocation()
         locationManager.distanceFilter = 5
@@ -827,15 +873,26 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         //clean route
         deleteRoute(mapLabel)
         locationManager.allowsBackgroundLocationUpdates = false
-        //Reset data
+    }
+    
+    //reset variables for workout
+    func resetVariables () {
         HealthData.shared.totalSteps = 0
         HealthData.shared.totalCaloriesBurned = 0
         HealthData.shared.heartRate = 0
         DeviceMotion.shared.steps = 0
         DeviceMotion.shared.distance = 0
         timeCurrent = "00:00:00"
+        distance = "0.0"
+        distanceUnit = ""
+        speed = "0.0"
+        avgSpeed = "0.0"
+        speedUnit = ""
+        steps = "0"
+        calories = "0"
+        paddles = "0"
+        heartRate = "0"
         interactiveMessage()
-        
     }
     
     func setMilestones() {
@@ -960,19 +1017,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
            switch activationState{
            case .activated:
                print("Phone WCSEssion Activated")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = false
-               }
            case .notActivated:
                print("Phone WCSEssion NOT Activated")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = true
-               }
            case .inactive:
                print("Phone WCSEssion Inactive")
-               DispatchQueue.main.async {
-                self.iwatchIcon.isHidden = true
-               }
            @unknown default:
                print("ERROR")
         }
@@ -991,21 +1039,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         if let pressStart = message["PressStart"] as? Bool {
             if pressStart {
-                self.isStartButtonPressedRemoutely = pressStart
                 if !isTrackingStarted {
                     DispatchQueue.main.async {
+                         MapViewController.isStartButtonPressedRemoutely = pressStart
                         self.startButtonPressed()
-                        self.isStartButtonPressedRemoutely = false
                     }
                 } else {
                     DispatchQueue.main.async {
+                        MapViewController.isStartButtonPressedRemoutely = pressStart
                         self.stopButtonPressed()
-                        self.isStartButtonPressedRemoutely = false
                     }
                 }
             }
         }
         replyHandler(message)
+        print("pressStart: \(MapViewController.isStartButtonPressedRemoutely)")
     }
     
 }
