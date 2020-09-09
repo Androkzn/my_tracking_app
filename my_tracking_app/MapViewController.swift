@@ -148,23 +148,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     @IBAction func watchRefreshButton(_ sender: Any) {
         DispatchQueue.main.async {
             if self.session.isPaired {
-//            print("isPaired: \(self.session.isPaired)")
-//            print("var isWatchAppInstalled: \(self.session.isWatchAppInstalled)")
-//            print("var isComplicationEnabled: \(self.session.isComplicationEnabled)")
-                if self.session.isWatchAppInstalled {
-                    self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
-                    self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-                              ToastView.shared.blueToast(self.view,
-                       txt_msg: "Your Apple Watch is paired successfully",
-                       duration: 2)
-                } else {
-                    self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
-                    self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
-                    ToastView.shared.redToast(self.view,
-                                       txt_msg: "The extension is not instaled on you watch. Please, check Watch app on your phone.",
-                                       duration: 4)
-                }
-             
+                    if self.session.isWatchAppInstalled {
+                        self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                        self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                                  ToastView.shared.blueToast(self.view,
+                           txt_msg: "Your Apple Watch is paired successfully",
+                           duration: 2)
+                    } else {
+                        self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                        self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                        ToastView.shared.redToast(self.view,
+                                           txt_msg: "The extension is not instaled on you watch. Please, check Watch app on your phone.",
+                                           duration: 4)
+                    }
               } else {
                 self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
                 self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
@@ -182,12 +178,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
                     if self.session.isWatchAppInstalled {
                         self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
                         self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-                        
-                        } else {
-                            self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
-                            self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
-                    
-                                   }
+            
+                    } else {
+                        self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                        self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                    }
                 } else {
                    self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
                    self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
