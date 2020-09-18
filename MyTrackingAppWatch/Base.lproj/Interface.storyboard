@@ -14,6 +14,13 @@
                         <group width="136" height="150" alignment="center" layout="vertical" spacing="0.0" id="4vJ-aJ-wBX">
                             <items>
                                 <imageView width="32" height="31" alignment="center" image="walk" id="Jor-li-qqB">
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer id="i7N-1R-xgp">
+                                            <connections>
+                                                <action selector="tapWorkoutIcon:" destination="AgC-eL-Hgc" id="ck1-Jf-H5T"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
                                     <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </imageView>
                                 <label alignment="center" text="00:00:00" textAlignment="center" id="IYq-bf-iHy">
@@ -46,6 +53,99 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="257" y="168"/>
+        </scene>
+        <!--workoutType-->
+        <scene sceneID="wyM-Ou-5vt">
+            <objects>
+                <controller identifier="workoutType" id="Hpu-X2-2TR" customClass="WorkoutType" customModule="MyTrackingAppWatch_Extension">
+                    <items>
+                        <group width="136" height="145" alignment="left" layout="vertical" id="BXC-m5-i1j">
+                            <items>
+                                <group width="1" height="29" alignment="left" spacing="15" id="T5S-UZ-ILt">
+                                    <items>
+                                        <imageView width="29" height="27" alignment="left" image="checkmark.square.fill" catalog="system" id="LJ4-4f-PBe">
+                                            <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <label width="64" height="31" alignment="left" text="WALK" textAlignment="center" id="LCh-e5-mh2">
+                                            <fontDescription key="font" style="UICTFontTextStyleTitle3"/>
+                                        </label>
+                                    </items>
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer id="aNP-uF-ueC">
+                                            <connections>
+                                                <action selector="walkTap:" destination="Hpu-X2-2TR" id="uaY-U9-RiO"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
+                                </group>
+                                <group width="1" height="29" alignment="left" spacing="15" id="RbS-Hr-dLn">
+                                    <items>
+                                        <imageView width="29" height="27" alignment="left" image="square" catalog="system" id="q0Y-Kb-ukA">
+                                            <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <label width="57" height="31" alignment="left" text="RUN" textAlignment="center" id="Ljd-cU-Uq5">
+                                            <fontDescription key="font" style="UICTFontTextStyleTitle3"/>
+                                        </label>
+                                    </items>
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer id="38m-lC-Ytb">
+                                            <connections>
+                                                <action selector="runTap:" destination="Hpu-X2-2TR" id="pR4-wC-Tvd"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
+                                </group>
+                                <group width="1" height="29" alignment="left" spacing="15" id="4dz-eK-CoB">
+                                    <items>
+                                        <imageView width="29" height="27" alignment="left" image="square" catalog="system" id="dLL-Z8-kje">
+                                            <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <label width="57" height="31" alignment="left" text="BIKE" textAlignment="center" id="r4i-FQ-Bq2">
+                                            <fontDescription key="font" style="UICTFontTextStyleTitle3"/>
+                                        </label>
+                                    </items>
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer id="7ao-cH-T7e">
+                                            <connections>
+                                                <action selector="bikeTap:" destination="Hpu-X2-2TR" id="vAH-fZ-spn"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
+                                </group>
+                                <group width="1" height="29" alignment="left" spacing="15" id="8nE-Fy-XjX">
+                                    <items>
+                                        <imageView width="29" height="27" alignment="left" image="square" catalog="system" id="2gO-SX-VRy">
+                                            <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <label width="87" height="31" alignment="left" text="PADDLE" textAlignment="center" id="hNB-4d-KIH">
+                                            <fontDescription key="font" style="UICTFontTextStyleTitle3"/>
+                                        </label>
+                                    </items>
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer id="gie-av-BxM">
+                                            <connections>
+                                                <action selector="paddleTap:" destination="Hpu-X2-2TR" id="KdL-MU-aq2"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
+                                </group>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="17" bottom="0.0"/>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="bikeCheckbox" destination="dLL-Z8-kje" id="hZ1-xi-MpC"/>
+                        <outlet property="bikeGroup" destination="4dz-eK-CoB" id="3BA-2k-eMk"/>
+                        <outlet property="paddleCheckbox" destination="2gO-SX-VRy" id="Hsf-Pd-rgg"/>
+                        <outlet property="paddleGroup" destination="8nE-Fy-XjX" id="NVI-Fa-bLb"/>
+                        <outlet property="runCheckbox" destination="q0Y-Kb-ukA" id="uSX-oj-wHH"/>
+                        <outlet property="runGroup" destination="RbS-Hr-dLn" id="UPh-5H-Qcq"/>
+                        <outlet property="walkCheckbox" destination="LJ4-4f-PBe" id="bb0-c4-UsU"/>
+                        <outlet property="walkGroup" destination="BXC-m5-i1j" id="vTz-oX-Ou3"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="489" y="340"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -218,6 +318,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="checkmark.square.fill" catalog="system" width="128" height="114"/>
+        <image name="square" catalog="system" width="128" height="114"/>
         <image name="walk" width="512" height="512"/>
     </resources>
 </document>

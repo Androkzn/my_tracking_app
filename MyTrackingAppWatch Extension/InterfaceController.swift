@@ -102,7 +102,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func updatesWorkoutTypeIcon (workoutType: Int) {
-        print("workoutType: \(workoutType)")
+        //print("workoutType: \(workoutType)")
         if  workoutType == 0 {
             workoutTypeIcon.setImageNamed("walk")
         }
@@ -173,5 +173,10 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         updateLabels(message: message)
     }
+    
+    @IBAction func tapWorkoutIcon(_ sender: Any) {
+        self.presentController(withName: "workoutType", context: nil)
+    }
+    
     
 }

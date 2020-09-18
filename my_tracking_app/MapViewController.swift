@@ -1064,6 +1064,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
                 }
             }
         }
+        if let workoutTypeFromWatch = message["WorkoutType"] as? Int {
+            DispatchQueue.main.async {
+                print(workoutTypeFromWatch)
+                UserDefaults.standard.set(workoutTypeFromWatch, forKey: "WORKOUT")
+                self.updatesWorkoutTypeIcon ()
+                self.interactiveMessage()
+            }
+        }
+        
         replyHandler(message)
         //print("pressStart: \(MapViewController.isStartButtonPressedRemoutely)")
     }
