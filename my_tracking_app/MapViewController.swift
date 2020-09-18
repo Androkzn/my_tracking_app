@@ -756,7 +756,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             self.interactiveMessage()
             if self.isTrackingStarted == false {
                 self.updateLabels()
-                //print("Labels was updated")
+                self.resetVariables()
+        
             }
             guard self.currentWorkout?.type != nil else {
                        return
