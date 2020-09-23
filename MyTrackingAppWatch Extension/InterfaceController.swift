@@ -14,8 +14,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     static let shared  = InterfaceController()
     
-    var workoutType = 0
+    var workoutType = WorkoutShared.shared.workoutType
     var isTrackingStarted = false
+    var isIOSAppOpened = false
     var timeCurrent = "00:00:00"
     var distance = 0.0
     var distanceUnit = ""
@@ -28,9 +29,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var heartRate = 0
     var isWorkoutStarted = false
     var isPared = false
-   
-    
-    
+    let session = WCSession.default
     
     @IBOutlet weak var workoutTypeIcon: WKInterfaceImage!
     @IBOutlet weak var timerLabel: WKInterfaceLabel!
@@ -39,10 +38,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        let session = WCSession.default
+        //session = WCSession.default
         session.delegate = self
         session.activate()
-
     }
     
     override func willActivate() {
@@ -65,14 +63,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
        presentController(withName: "summary", context: nil)
     }
     
-    
-    
     func updateLabels (message: [String: Any]) {
         
         if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
             workoutType = workoutTypeMessage
-            
+            print(isIOSAppOpened)
+            WorkoutShared.shared.workoutType = workoutTypeMessage
         }
+
         if let timeCurrentMessage = message ["Time"] as? String {
             timeCurrent = timeCurrentMessage
         }
@@ -171,7 +169,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        updateLabels(message: message)
+        DispatchQueue.main.async {
+            self.updateLabels(message: message)
+        }
     }
     
     @IBAction func tapWorkoutIcon(_ sender: Any) {

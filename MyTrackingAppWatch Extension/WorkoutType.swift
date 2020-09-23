@@ -13,9 +13,11 @@ import WatchConnectivity
 
 class WorkoutType: WKInterfaceController, WCSessionDelegate {
     
+    
+    
     let checkedCheckbox = UIImage(systemName: "checkmark.square.fill")
     let uncheckedCheckbox = UIImage(systemName: "square")
-    var workoutTypeInt = InterfaceController.shared.workoutType
+    var workoutTypeFromMainInterface = InterfaceController.shared.workoutType
     
     @IBOutlet weak var walkGroup: WKInterfaceGroup!
     @IBOutlet weak var runGroup: WKInterfaceGroup!
@@ -31,12 +33,11 @@ class WorkoutType: WKInterfaceController, WCSessionDelegate {
         super.awake(withContext: context)
         let session = WCSession.default
         session.delegate = self
-        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
     }
 
     override func willActivate() {
         super.willActivate()
-        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
+        sectionWorkout(atIndex: WorkoutShared.shared.workoutType)
     }
 
     override func didDeactivate() {
@@ -45,31 +46,31 @@ class WorkoutType: WKInterfaceController, WCSessionDelegate {
     
     
     @IBAction func walkTap(_ sender: Any) {
-        workoutTypeInt = 0
-        sectionWorkout(atIndex: workoutTypeInt)
+        InterfaceController.shared.workoutType = 0
+        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
         sendWorkoutType ()
+        dismiss()
     }
 
-
-    
     @IBAction func runTap(_ sender: Any) {
-        workoutTypeInt = 1
-        sectionWorkout(atIndex: workoutTypeInt)
+        InterfaceController.shared.workoutType = 1
+        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
         sendWorkoutType ()
+        dismiss()
     }
-    
     
     @IBAction func bikeTap(_ sender: Any) {
-        workoutTypeInt = 2
-        sectionWorkout(atIndex: workoutTypeInt)
+        InterfaceController.shared.workoutType = 2
+        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
         sendWorkoutType ()
+        dismiss()
     }
     
-    
     @IBAction func paddleTap(_ sender: Any) {
-        workoutTypeInt = 3
-        sectionWorkout(atIndex: workoutTypeInt)
+        InterfaceController.shared.workoutType = 3
+        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
         sendWorkoutType ()
+        dismiss()
     }
     
     func sectionWorkout(atIndex: Int) {
@@ -104,8 +105,8 @@ class WorkoutType: WKInterfaceController, WCSessionDelegate {
     func updatesWorkoutTypeIcon (message: [String: Any]) {
          
         if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
-                  workoutTypeInt = workoutTypeMessage
-        sectionWorkout(atIndex: workoutTypeInt)
+                  InterfaceController.shared.workoutType = workoutTypeMessage
+        sectionWorkout(atIndex: InterfaceController.shared.workoutType)
         }
     }
     
@@ -124,7 +125,7 @@ class WorkoutType: WKInterfaceController, WCSessionDelegate {
     
     func sendWorkoutType () {
         if WCSession.default.isReachable {
-                   WCSession.default.sendMessage(["WorkoutType": workoutTypeInt], replyHandler: { (reply) in
+                   WCSession.default.sendMessage(["WorkoutType": InterfaceController.shared.workoutType], replyHandler: { (reply) in
                        if let didPress = reply["WorkoutType"] as? Bool {
                            if didPress {}
                            }

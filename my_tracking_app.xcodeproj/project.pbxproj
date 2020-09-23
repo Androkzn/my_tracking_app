@@ -10,6 +10,7 @@
 		1D146956C9DD1BA13CE7EBB8 /* Pods_my_tracking_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31826294EDC40B85F972BCC7 /* Pods_my_tracking_app.framework */; };
 		9F9D759821DDB6602AD01794 /* Pods_my_tracking_appTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E325A54E15F9434533163B /* Pods_my_tracking_appTests.framework */; };
 		DE024A10251467C00093A28D /* WorkoutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE024A0F251467C00093A28D /* WorkoutType.swift */; };
+		DE024A12251B05650093A28D /* WorkoutShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE024A11251B05650093A28D /* WorkoutShared.swift */; };
 		DE0801C624A45AFD00E9F873 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */; };
 		DE0801C824A45B0E00E9F873 /* Summary.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE0801C724A45B0E00E9F873 /* Summary.storyboard */; };
 		DE12BC6E24FDEFA9000A1097 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE12BC6C24FDEFA9000A1097 /* Interface.storyboard */; };
@@ -117,6 +118,7 @@
 		683FC8D79AFBFF15D38889D4 /* Pods-my_tracking_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_appTests.debug.xcconfig"; path = "Target Support Files/Pods-my_tracking_appTests/Pods-my_tracking_appTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6A7ECC5C46E31B3FF050AD11 /* Pods-my_tracking_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-my_tracking_app.release.xcconfig"; path = "Target Support Files/Pods-my_tracking_app/Pods-my_tracking_app.release.xcconfig"; sourceTree = "<group>"; };
 		DE024A0F251467C00093A28D /* WorkoutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutType.swift; sourceTree = "<group>"; };
+		DE024A11251B05650093A28D /* WorkoutShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutShared.swift; sourceTree = "<group>"; };
 		DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		DE0801C724A45B0E00E9F873 /* Summary.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Summary.storyboard; sourceTree = "<group>"; };
 		DE12BC6A24FDEFA8000A1097 /* MyTrackingAppWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTrackingAppWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +245,7 @@
 				DE12BC9224FF46D7000A1097 /* SummaryInterfaceController.swift */,
 				DE12BC7D24FDEFAB000A1097 /* ExtensionDelegate.swift */,
 				DE12BC7F24FDEFAB000A1097 /* NotificationController.swift */,
+				DE024A11251B05650093A28D /* WorkoutShared.swift */,
 				DE024A0F251467C00093A28D /* WorkoutType.swift */,
 				DE12BC8124FDEFAC000A1097 /* Assets.xcassets */,
 				DE12BC8324FDEFAC000A1097 /* Info.plist */,
@@ -586,6 +589,7 @@
 				DE12BC8024FDEFAB000A1097 /* NotificationController.swift in Sources */,
 				DE12BC7E24FDEFAB000A1097 /* ExtensionDelegate.swift in Sources */,
 				DE024A10251467C00093A28D /* WorkoutType.swift in Sources */,
+				DE024A12251B05650093A28D /* WorkoutShared.swift in Sources */,
 				DE12BC7C24FDEFAB000A1097 /* InterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -686,11 +690,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				IBSC_MODULE = MyTrackingAppWatch_Extension;
 				INFOPLIST_FILE = MyTrackingAppWatch/Info.plist;
-				MARKETING_VERSION = 1.22;
+				MARKETING_VERSION = 1.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -707,11 +711,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				IBSC_MODULE = MyTrackingAppWatch_Extension;
 				INFOPLIST_FILE = MyTrackingAppWatch/Info.plist;
-				MARKETING_VERSION = 1.22;
+				MARKETING_VERSION = 1.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -727,7 +731,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				INFOPLIST_FILE = "MyTrackingAppWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -735,7 +739,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.22;
+				MARKETING_VERSION = 1.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -751,7 +755,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				INFOPLIST_FILE = "MyTrackingAppWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -759,7 +763,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.22;
+				MARKETING_VERSION = 1.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -891,14 +895,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = my_tracking_app/my_tracking_app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				INFOPLIST_FILE = my_tracking_app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.22;
+				MARKETING_VERSION = 1.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -913,14 +917,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = my_tracking_app/my_tracking_app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = B2ZY5M2YW2;
 				INFOPLIST_FILE = my_tracking_app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.22;
+				MARKETING_VERSION = 1.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.HomeFoxDev.MyTrackingApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

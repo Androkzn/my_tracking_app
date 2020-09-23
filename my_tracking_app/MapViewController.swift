@@ -59,6 +59,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     //Variables
     var isTrackingStarted = false
+    var isiOSAppOpened = false
     var currentLocations: [Location] = [] // Current workout locations
     var currentWorkout: Workout? // Reset only when we're back from SummaryViewController
     var currentWorkoutDistance = 0.0 // Raw distance in meters
@@ -84,7 +85,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var calories = "0"
     var paddles = "0"
     var heartRate = "0"
-    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate  ]}
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate, "iOSOpened": isiOSAppOpened]}
     var session = WCSession.default
     static var isStartButtonPressedRemoutely = false
  
@@ -118,8 +119,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
         setCardsSettings()
-        interactiveMessage()
         isWatchPaired (isPaired: session.isPaired)
+        isiOSAppOpened = true
+        interactiveMessage()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        isiOSAppOpened = false
+        interactiveMessage()
     }
     
     func setUpGestureRecognizerForStartButton() {
@@ -751,7 +759,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         menu.onDismiss = { [self] selectedItems in
             self.selectedName = selectedItems
             UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
-            
             self.updatesWorkoutTypeIcon ()
             self.interactiveMessage()
             if self.isTrackingStarted == false {
@@ -1086,6 +1093,9 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         isWatchPaired (isPaired: session.isPaired)
         mapLabel.centerToLocation(locations.last!, regionRadius: 300)
+        //sends message to the Watch Extencion when location is changed
+        interactiveMessage()
+        print("LOCATION CHANGRD")
 
         if isTrackingStarted {
             addWorkoutLocations(locations: locations)
