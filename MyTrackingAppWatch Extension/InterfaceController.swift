@@ -14,8 +14,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     static let shared  = InterfaceController()
     
-    var workoutType = 0
+    var workoutType = WorkoutShared.shared.workoutType
     var isTrackingStarted = false
+    var isIOSAppOpened = WorkoutShared.shared.isIOSAppOpened
     var timeCurrent = "00:00:00"
     var distance = 0.0
     var distanceUnit = ""
@@ -28,9 +29,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var heartRate = 0
     var isWorkoutStarted = false
     var isPared = false
-   
-    
-    
+    let session = WCSession.default
     
     @IBOutlet weak var workoutTypeIcon: WKInterfaceImage!
     @IBOutlet weak var timerLabel: WKInterfaceLabel!
@@ -39,10 +38,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        let session = WCSession.default
+        //session = WCSession.default
         session.delegate = self
         session.activate()
-
     }
     
     override func willActivate() {
@@ -54,6 +52,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if !isWorkoutStarted {
             updateLabelsAfterStop ()
         }
+        print(WorkoutShared.shared.isIOSAppOpened)
+        setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
     }
     
     override func didDeactivate() {
@@ -65,14 +65,20 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
        presentController(withName: "summary", context: nil)
     }
     
-    
-    
     func updateLabels (message: [String: Any]) {
+        print(WorkoutShared.shared.isIOSAppOpened)
         
         if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
             workoutType = workoutTypeMessage
-            
+            WorkoutShared.shared.workoutType = workoutTypeMessage
         }
+        
+        if  let isIOSAppOpenedMessage = message ["iOSOpened"] as? Bool {
+            WorkoutShared.shared.isIOSAppOpened = isIOSAppOpenedMessage
+            setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
+            print(WorkoutShared.shared.isIOSAppOpened)
+        }
+
         if let timeCurrentMessage = message ["Time"] as? String {
             timeCurrent = timeCurrentMessage
         }
@@ -94,6 +100,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
          }
     }
     
+    func setUpInitialButtonState(isOpened: Bool) {
+        if isOpened {
+            startButtonLabel.setEnabled(true)
+            startButtonLabel.setTitle(sectionWorkout(atIndex: WorkoutShared.shared.workoutType))
+        } else {
+            startButtonLabel.setTitle("Open iOS App MAP")
+            startButtonLabel.setEnabled(false)
+        }
+    }
+    
     func updateLabelsAfterStop () {
         updatesWorkoutTypeIcon(workoutType: workoutType)
         timerLabel.setText("00:00:00")
@@ -102,7 +118,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func updatesWorkoutTypeIcon (workoutType: Int) {
-        print("workoutType: \(workoutType)")
+        //print("workoutType: \(workoutType)")
         if  workoutType == 0 {
             workoutTypeIcon.setImageNamed("walk")
         }
@@ -171,7 +187,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        updateLabels(message: message)
+        DispatchQueue.main.async {
+            self.updateLabels(message: message)
+        }
     }
+    
+    @IBAction func tapWorkoutIcon(_ sender: Any) {
+        self.presentController(withName: "workoutType", context: nil)
+    }
+    
     
 }
