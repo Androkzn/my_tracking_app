@@ -166,7 +166,7 @@ class SummaryViewController: UIViewController, UIGestureRecognizerDelegate {
         //close summary view if stop button was pressed on Watch
         if MapViewController.isStartButtonPressedRemoutely {
             //provide 1 sec delay for taking screenshot for History view
-            let seconds = 1.0
+            let seconds = 1.5
             DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             // Put your code which should be executed with a delay here
                 self.dismiss(animated: true, completion: nil)
