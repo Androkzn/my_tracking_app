@@ -48,6 +48,7 @@
                     <connections>
                         <outlet property="startButtonLabel" destination="2Pk-nh-aLp" id="O38-XU-avP"/>
                         <outlet property="timerLabel" destination="IYq-bf-iHy" id="lqL-0o-KA7"/>
+                        <outlet property="workoutTabGestureRecognizer" destination="i7N-1R-xgp" id="YiT-A6-lrx"/>
                         <outlet property="workoutTypeIcon" destination="Jor-li-qqB" id="Y16-4q-Kyw"/>
                     </connections>
                 </controller>
