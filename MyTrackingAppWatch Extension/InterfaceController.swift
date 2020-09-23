@@ -34,7 +34,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet weak var workoutTypeIcon: WKInterfaceImage!
     @IBOutlet weak var timerLabel: WKInterfaceLabel!
     @IBOutlet weak var startButtonLabel: WKInterfaceButton!
-    
+    @IBOutlet weak var workoutTabGestureRecognizer: WKTapGestureRecognizer!
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -54,6 +54,15 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
         print(WorkoutShared.shared.isIOSAppOpened)
         setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
+    }
+    
+    override func  didAppear() {
+        super.didAppear()
+        let seconds = 0.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            print(WorkoutShared.shared.isIOSAppOpened)
+            self.setUpInitialRecognizerState (isOpened: WorkoutShared.shared.isIOSAppOpened)
+        }
     }
     
     override func didDeactivate() {
@@ -76,6 +85,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if  let isIOSAppOpenedMessage = message ["iOSOpened"] as? Bool {
             WorkoutShared.shared.isIOSAppOpened = isIOSAppOpenedMessage
             setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
+            setUpInitialRecognizerState (isOpened: WorkoutShared.shared.isIOSAppOpened)
             print(WorkoutShared.shared.isIOSAppOpened)
         }
 
@@ -104,11 +114,22 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if isOpened {
             startButtonLabel.setEnabled(true)
             startButtonLabel.setTitle(sectionWorkout(atIndex: WorkoutShared.shared.workoutType))
+            //workoutTabGestureRecognizer.isEnabled = true
         } else {
+            //workoutTabGestureRecognizer.isEnabled = false
             startButtonLabel.setTitle("Open iOS App MAP")
             startButtonLabel.setEnabled(false)
         }
     }
+    
+    func setUpInitialRecognizerState(isOpened: Bool) {
+         if isOpened {
+             workoutTabGestureRecognizer.isEnabled = true
+         } else {
+             workoutTabGestureRecognizer.isEnabled = false
+         }
+     }
+    
     
     func updateLabelsAfterStop () {
         updatesWorkoutTypeIcon(workoutType: workoutType)
