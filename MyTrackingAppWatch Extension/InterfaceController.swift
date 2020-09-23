@@ -16,7 +16,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     var workoutType = WorkoutShared.shared.workoutType
     var isTrackingStarted = false
-    var isIOSAppOpened = false
+    var isIOSAppOpened = WorkoutShared.shared.isIOSAppOpened
     var timeCurrent = "00:00:00"
     var distance = 0.0
     var distanceUnit = ""
@@ -52,6 +52,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if !isWorkoutStarted {
             updateLabelsAfterStop ()
         }
+        print(WorkoutShared.shared.isIOSAppOpened)
+        setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
     }
     
     override func didDeactivate() {
@@ -64,11 +66,17 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func updateLabels (message: [String: Any]) {
+        print(WorkoutShared.shared.isIOSAppOpened)
         
         if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
             workoutType = workoutTypeMessage
-            print(isIOSAppOpened)
             WorkoutShared.shared.workoutType = workoutTypeMessage
+        }
+        
+        if  let isIOSAppOpenedMessage = message ["iOSOpened"] as? Bool {
+            WorkoutShared.shared.isIOSAppOpened = isIOSAppOpenedMessage
+            setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
+            print(WorkoutShared.shared.isIOSAppOpened)
         }
 
         if let timeCurrentMessage = message ["Time"] as? String {
@@ -90,6 +98,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             startButtonLabel.setTitle(sectionWorkout(atIndex: workoutType))
             startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1))
          }
+    }
+    
+    func setUpInitialButtonState(isOpened: Bool) {
+        if isOpened {
+            startButtonLabel.setEnabled(true)
+            startButtonLabel.setTitle(sectionWorkout(atIndex: WorkoutShared.shared.workoutType))
+        } else {
+            startButtonLabel.setTitle("Open iOS App MAP")
+            startButtonLabel.setEnabled(false)
+        }
     }
     
     func updateLabelsAfterStop () {

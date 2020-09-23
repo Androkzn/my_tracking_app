@@ -13,4 +13,5 @@ class WorkoutShared {
     static let shared  = WorkoutShared()
     
     var workoutType = 0
+    var isIOSAppOpened = false
 }
