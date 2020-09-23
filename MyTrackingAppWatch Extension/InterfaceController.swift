@@ -117,7 +117,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             //workoutTabGestureRecognizer.isEnabled = true
         } else {
             //workoutTabGestureRecognizer.isEnabled = false
-            startButtonLabel.setTitle("Open iOS App MAP")
+            startButtonLabel.setTitle("Open iOS App first")
             startButtonLabel.setEnabled(false)
         }
     }
