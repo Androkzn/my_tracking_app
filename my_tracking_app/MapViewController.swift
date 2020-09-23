@@ -16,9 +16,6 @@ import WatchConnectivity
 
 class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessionDelegate {
 
-    
-
-    
     //Outlets
     @IBOutlet weak var recenterButton: UIButton!
     @IBOutlet weak var settingButton: UIButton!
@@ -60,6 +57,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     //Variables
     var isTrackingStarted = false
     var isiOSAppOpened = false
+    static var isStartButtonPressedRemoutely = false
     var currentLocations: [Location] = [] // Current workout locations
     var currentWorkout: Workout? // Reset only when we're back from SummaryViewController
     var currentWorkoutDistance = 0.0 // Raw distance in meters
@@ -87,7 +85,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var heartRate = "0"
     var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate, "iOSOpened": isiOSAppOpened]}
     var session = WCSession.default
-    static var isStartButtonPressedRemoutely = false
+    let notificationCenter = NotificationCenter.default
+
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,8 +106,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpWatchConectivity()
         interactiveMessage()
         isWatchPaired (isPaired: session.isPaired)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
     }
-    
+
+    @objc func appMovedToBackground() {
+        isiOSAppOpened = false
+        interactiveMessage()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         setMilestones()
@@ -120,6 +125,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         updatesWorkoutTypeIcon ()
         setCardsSettings()
         isWatchPaired (isPaired: session.isPaired)
+        isiOSAppOpened = true
+        interactiveMessage()
+        notificationCenter.addObserver(self, selector: #selector(appMovedBackFromBackground), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
+    @objc func appMovedBackFromBackground() {
         isiOSAppOpened = true
         interactiveMessage()
     }
