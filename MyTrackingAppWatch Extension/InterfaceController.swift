@@ -50,7 +50,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         let session = WCSession.default
         session.delegate = self
         session.activate()
-        if !isWorkoutStarted {
+        if !isTrackingStarted {
             updateLabelsAfterStop ()
         }
         setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened, isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
@@ -91,21 +91,26 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             WorkoutShared.shared.isProfileFilledOut = isProfileFilledOutMessage
         }
         
-        if let timeCurrentMessage = message ["Time"] as? String {
-            timeCurrent = timeCurrentMessage
-        }
         if let isTrackingStartedMessage = message ["isTrackingStarted"] as? Bool {
             isTrackingStarted = isTrackingStartedMessage
             isWorkoutStarted = isTrackingStartedMessage
         }
         
+        if let timeCurrentMessage = message ["Time"] as? String {
+            print("isTrackingStarted: \(isTrackingStarted)")
+            if isTrackingStarted {
+                timeCurrent = timeCurrentMessage
+            } else {
+                timeCurrent = "00:00:00"
+            }
+        }
+ 
         updatesWorkoutTypeIcon(workoutType: workoutType)
         timerLabel.setText(timeCurrent)
+        
         if isTrackingStarted {
             startButtonLabel.setTitle("STOP")
             startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.9545200467, green: 0.3107312024, blue: 0.1102497205, alpha: 1))
-             
-            
          } else {
             startButtonLabel.setTitle(sectionWorkout(atIndex: workoutType))
             startButtonLabel.setBackgroundColor(#colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1))
