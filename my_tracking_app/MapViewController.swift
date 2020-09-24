@@ -133,6 +133,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         updatesWorkoutTypeIcon ()
         setCardsSettings()
         isWatchPaired (isPaired: session.isPaired)
+        _ = checkProfile ()
         interactiveMessage()
         //Notify the watch when the app is moved back from background
         //notificationCenter.addObserver(self, selector: #selector(appMovedBackFromBackground), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -174,6 +175,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     
     @IBAction func watchRefreshButton(_ sender: Any) {
+        interactiveMessage()
         DispatchQueue.main.async {
             if self.session.isPaired {
                     if self.session.isWatchAppInstalled {
@@ -224,6 +226,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     }
     
     @IBAction func closeBannerButton(_ sender: Any) {
+         interactiveMessage()
         let dialogMessage = UIAlertController(title: "Do you want to know about our new features?",
                                               message: " ",
                                               preferredStyle: .alert)
@@ -339,29 +342,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         var  profileFilledOut = false
         
         if UserDefaults.standard.object(forKey: "AGE") == nil || UserDefaults.standard.object(forKey: "GENDER") == nil || UserDefaults.standard.object(forKey: "WEIGHT") == nil || UserDefaults.standard.object(forKey: "HEIGHT") == nil || UserDefaults.standard.string(forKey: "AGE") == "" || UserDefaults.standard.string(forKey: "GENDER") == "" || UserDefaults.standard.string(forKey: "WEIGHT") == "" || UserDefaults.standard.string(forKey: "HEIGHT") == ""{
-                let dialogMessage = UIAlertController(title: "Please fill out Profile information to be able to get an accurate callories, steps and paddles",
-                                                          message: " ",
-                                                          preferredStyle: .alert)
-                //set up background color and button color
-                dialogMessage.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 1, green: 0.8076083209, blue: 0.4960746166, alpha: 0.8323255565)
-                dialogMessage.view.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-            
-                // Create OK button with action handler
-                let ok = UIAlertAction(title: "Cancel", style: .default, handler: { (action) -> Void in
- 
-                })
-
-                // Create Cancel button with action handlder
-                let cancel = UIAlertAction(title: "Go to Profile", style: .cancel) { (action) -> Void in
-                    self.tabBarController!.selectedIndex = 2
-                }
-
-                //Add OK and Cancel button to dialog message
-                dialogMessage.addAction(ok)
-                dialogMessage.addAction(cancel)
-
-                // Present dialog message to user
-                self.present(dialogMessage, animated: true, completion: nil)
         } else {
             profileFilledOut = true
             isProfileFilledOut = true
@@ -369,6 +349,34 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         }
         return profileFilledOut
     }
+    
+    
+    func showGoToProfileAlertPopup (isFilledOut: Bool) {
+           if isFilledOut {
+               let dialogMessage = UIAlertController(title: "Please fill out Profile information to be able to get an accurate callories, steps and paddles",
+                                                                        message: " ",
+                                                                        preferredStyle: .alert)
+               //set up background color and button color
+               dialogMessage.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 1, green: 0.8076083209, blue: 0.4960746166, alpha: 0.8323255565)
+               dialogMessage.view.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+                          
+               // Create OK button with action handler
+               let ok = UIAlertAction(title: "Cancel", style: .default, handler: { (action) -> Void in})
+
+               // Create Cancel button with action handlder
+               let cancel = UIAlertAction(title: "Go to Profile", style: .cancel) { (action) -> Void in
+                       self.tabBarController!.selectedIndex = 2
+               }
+
+               //Add OK and Cancel button to dialog message
+               dialogMessage.addAction(ok)
+               dialogMessage.addAction(cancel)
+
+               // Present dialog message to user
+               self.present(dialogMessage, animated: true, completion: nil)
+           }
+       }
+
     
     //shows toast if workout just saved
     func showSavedWorkoutToast () {
@@ -465,6 +473,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     //center map button
     @IBAction func centerMap(_ sender: UIButton) {
+        interactiveMessage()
         centerToCurrentLocation()
     }
     
@@ -477,16 +486,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     func startButtonPressed () {
         if lastLocation != nil {
             if !isTrackingStarted {
+                print("checkProfile: \(checkProfile ())")
                 if checkProfile () {
                     isTrackingStarted = !isTrackingStarted
                     setupWorkoutButton(started: isTrackingStarted)
                     startWorkout()
-                    }
                 } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
+                    showGoToProfileAlertPopup(isFilledOut: true)
                 }
             } else {
-                ToastView.shared.redToast(view,
+                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
+            }
+        } else {
+            ToastView.shared.redToast(view,
                    txt_msg: "Your location service is not available, please enable Location on your device",
                    duration: 2)
             }
