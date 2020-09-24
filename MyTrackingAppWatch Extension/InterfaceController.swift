@@ -17,6 +17,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     var workoutType = WorkoutShared.shared.workoutType
     var isTrackingStarted = false
     var isIOSAppOpened = WorkoutShared.shared.isIOSAppOpened
+    var isProfileFilledOut = WorkoutShared.shared.isProfileFilledOut
     var timeCurrent = "00:00:00"
     var distance = 0.0
     var distanceUnit = ""
@@ -52,8 +53,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if !isWorkoutStarted {
             updateLabelsAfterStop ()
         }
-        print(WorkoutShared.shared.isIOSAppOpened)
-        setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
+        setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened, isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
     }
     
     override func  didAppear() {
@@ -75,8 +75,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func updateLabels (message: [String: Any]) {
-        print(WorkoutShared.shared.isIOSAppOpened)
-        
         if  let workoutTypeMessage = message ["WorkoutType"] as? Int {
             workoutType = workoutTypeMessage
             WorkoutShared.shared.workoutType = workoutTypeMessage
@@ -84,11 +82,15 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         
         if  let isIOSAppOpenedMessage = message ["iOSOpened"] as? Bool {
             WorkoutShared.shared.isIOSAppOpened = isIOSAppOpenedMessage
-            setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened)
+            setUpInitialButtonState(isOpened: WorkoutShared.shared.isIOSAppOpened, isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
             setUpInitialRecognizerState (isOpened: WorkoutShared.shared.isIOSAppOpened)
-            print(WorkoutShared.shared.isIOSAppOpened)
-        }
 
+        }
+        
+        if  let isProfileFilledOutMessage = message ["isProfileFilledOut"] as? Bool {
+            WorkoutShared.shared.isProfileFilledOut = isProfileFilledOutMessage
+        }
+        
         if let timeCurrentMessage = message ["Time"] as? String {
             timeCurrent = timeCurrentMessage
         }
@@ -110,16 +112,37 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
          }
     }
     
-    func setUpInitialButtonState(isOpened: Bool) {
+    func setUpInitialButtonState(isOpened: Bool, isProfileFilledOut: Bool) {
         if isOpened {
             startButtonLabel.setEnabled(true)
             startButtonLabel.setTitle(sectionWorkout(atIndex: WorkoutShared.shared.workoutType))
-            //workoutTabGestureRecognizer.isEnabled = true
         } else {
-            //workoutTabGestureRecognizer.isEnabled = false
             startButtonLabel.setTitle("Open iOS App first")
             startButtonLabel.setEnabled(false)
         }
+    }
+    
+    func checkProfileSetUp (isProfileFilledOut: Bool) -> Bool {
+        var setUp = false
+        if isProfileFilledOut {
+            startButtonLabel.setTitle(sectionWorkout(atIndex: WorkoutShared.shared.workoutType))
+            setUp = true
+        } else {
+            startButtonLabel.setTitle("Fill out Profile")
+        }
+        return setUp
+    }
+    
+    
+    func checkHealthPermission (isGranted: Bool) -> Bool {
+        var granted = false
+        if isGranted{
+            startButtonLabel.setTitle(sectionWorkout(atIndex: WorkoutShared.shared.workoutType))
+            granted = true
+        } else {
+            startButtonLabel.setTitle("Get permissions first")
+        }
+        return granted
     }
     
     func setUpInitialRecognizerState(isOpened: Bool) {
@@ -173,6 +196,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if isWorkoutStarted {
             startButtonLabel.setEnabled(false)
         }
+        checkProfileSetUp(isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
         
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in

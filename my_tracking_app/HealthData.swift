@@ -12,12 +12,14 @@ import HealthKit
 class HealthData {
 
     static let shared  = HealthData()
+    
     var healthStore = HKHealthStore()
     var steps: Int16 = 0
     var totalSteps: Int16 = 0
     var heartRate: Int16 = 0
     var caloriesBurned: Int16 = 0
     var totalCaloriesBurned: Int16 = 0
+    var isHealthPermissionGranted = false
 
     func requestAutorization () {
         let stepType = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
@@ -27,6 +29,7 @@ class HealthData {
         healthStore.requestAuthorization(toShare: [], read: [stepType, heartType, energyType]) { (success, error) in
             if (success) {
                 print("Permission granted")
+                self.isHealthPermissionGranted = true
             }
         }
     }

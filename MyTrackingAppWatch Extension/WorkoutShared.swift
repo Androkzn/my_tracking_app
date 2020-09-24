@@ -14,4 +14,5 @@ class WorkoutShared {
     
     var workoutType = 0
     var isIOSAppOpened = false
+    var isProfileFilledOut = false
 }
