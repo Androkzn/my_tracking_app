@@ -57,6 +57,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     //Variables
     var isTrackingStarted = false
     var isiOSAppOpened = false
+    var isProfileFilledOut = false
+    var isHealthPermissionGranted = HealthData.shared.isHealthPermissionGranted
     static var isStartButtonPressedRemoutely = false
     var currentLocations: [Location] = [] // Current workout locations
     var currentWorkout: Workout? // Reset only when we're back from SummaryViewController
@@ -83,7 +85,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var calories = "0"
     var paddles = "0"
     var heartRate = "0"
-    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate, "iOSOpened": isiOSAppOpened]}
+    
+    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate, "iOSOpened": isiOSAppOpened, "isProfileFilledOut": isProfileFilledOut]}
+    
     var session = WCSession.default
     let notificationCenter = NotificationCenter.default
 
@@ -106,7 +110,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpWatchConectivity()
         interactiveMessage()
         isWatchPaired (isPaired: session.isPaired)
-        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        isiOSAppOpened = true
+        //request autorization
+        HealthData.shared.requestAutorization()
+        //Notify the watch when the app is moved to background
+        //notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
     }
 
     @objc func appMovedToBackground() {
@@ -125,9 +133,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         updatesWorkoutTypeIcon ()
         setCardsSettings()
         isWatchPaired (isPaired: session.isPaired)
-        isiOSAppOpened = true
         interactiveMessage()
-        notificationCenter.addObserver(self, selector: #selector(appMovedBackFromBackground), name: UIApplication.didBecomeActiveNotification, object: nil)
+        //Notify the watch when the app is moved back from background
+        //notificationCenter.addObserver(self, selector: #selector(appMovedBackFromBackground), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @objc func appMovedBackFromBackground() {
@@ -137,7 +145,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        isiOSAppOpened = false
+        //Disables Watch  "Start" button when the Map screen is not displayed
+        //isiOSAppOpened = false
         interactiveMessage()
     }
     
@@ -355,6 +364,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
                 self.present(dialogMessage, animated: true, completion: nil)
         } else {
             profileFilledOut = true
+            isProfileFilledOut = true
+            interactiveMessage()
         }
         return profileFilledOut
     }
@@ -772,6 +783,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
             self.updatesWorkoutTypeIcon ()
             self.interactiveMessage()
+            self.isWatchPaired (isPaired: self.session.isPaired)
             if self.isTrackingStarted == false {
                 self.updateLabels()
                 self.resetVariables()
@@ -839,9 +851,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         locationManager.distanceFilter = 5
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
 
-        //request autorization
-        HealthData.shared.requestAutorization()
-        
         //set up milestone
         nextMilestone = milestone
         
@@ -1106,6 +1115,7 @@ extension MapViewController: CLLocationManagerDelegate {
         mapLabel.centerToLocation(locations.last!, regionRadius: 300)
         //sends message to the Watch Extencion when location is changed
         interactiveMessage()
+        isWatchPaired (isPaired: session.isPaired)
         print("LOCATION CHANGRD")
 
         if isTrackingStarted {
