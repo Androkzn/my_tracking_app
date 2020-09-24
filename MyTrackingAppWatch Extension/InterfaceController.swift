@@ -195,18 +195,22 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBAction func startButton() {
         if isWorkoutStarted {
             startButtonLabel.setEnabled(false)
-        }
-        checkProfileSetUp(isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
+        } 
+        _ = checkProfileSetUp(isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
         
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in
                 if let didPress = reply["PressStart"] as? Bool {
                     if didPress {
+                        print("isWorkoutStarted: \(self.isWorkoutStarted)")
                         if self.isWorkoutStarted {
-                            self.presentController(withName: "summary", context: nil)
+                            //self.presentController(withName: "summary", context: nil)
                             self.startButtonLabel.setEnabled(true)
                             self.isWorkoutStarted = false
+                        } else {
+                            //self.presentController(withName: "summary", context: nil)
                         }
+                        
                     }
                 }
             }) { (error) in
