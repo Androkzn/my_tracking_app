@@ -193,9 +193,13 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     @IBAction func startButton() {
-        if isWorkoutStarted {
+
+        if isTrackingStarted {
             startButtonLabel.setEnabled(false)
-        } 
+            self.presentController(withName: "summary", context: nil)
+            isTrackingStarted = false
+        }
+        
         _ = checkProfileSetUp(isProfileFilledOut: WorkoutShared.shared.isProfileFilledOut)
         
         if WCSession.default.isReachable {
@@ -204,13 +208,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                     if didPress {
                         print("isWorkoutStarted: \(self.isWorkoutStarted)")
                         if self.isWorkoutStarted {
-                            //self.presentController(withName: "summary", context: nil)
                             self.startButtonLabel.setEnabled(true)
                             self.isWorkoutStarted = false
-                        } else {
-                            //self.presentController(withName: "summary", context: nil)
                         }
-                        
                     }
                 }
             }) { (error) in
