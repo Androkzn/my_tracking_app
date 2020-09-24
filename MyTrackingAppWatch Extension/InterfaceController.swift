@@ -60,7 +60,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.didAppear()
         let seconds = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            print(WorkoutShared.shared.isIOSAppOpened)
             self.setUpInitialRecognizerState (isOpened: WorkoutShared.shared.isIOSAppOpened)
         }
     }
@@ -97,7 +96,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
         
         if let timeCurrentMessage = message ["Time"] as? String {
-            print("isTrackingStarted: \(isTrackingStarted)")
             if isTrackingStarted {
                 timeCurrent = timeCurrentMessage
             } else {
@@ -167,7 +165,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     func updatesWorkoutTypeIcon (workoutType: Int) {
-        //print("workoutType: \(workoutType)")
         if  workoutType == 0 {
             workoutTypeIcon.setImageNamed("walk")
         }
@@ -211,7 +208,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             WCSession.default.sendMessage(["PressStart" : true], replyHandler: { (reply) in
                 if let didPress = reply["PressStart"] as? Bool {
                     if didPress {
-                        print("isWorkoutStarted: \(self.isWorkoutStarted)")
                         if self.isWorkoutStarted {
                             self.startButtonLabel.setEnabled(true)
                             self.isWorkoutStarted = false

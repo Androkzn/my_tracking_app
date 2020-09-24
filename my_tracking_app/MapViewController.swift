@@ -113,6 +113,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         isiOSAppOpened = true
         //request autorization
         HealthData.shared.requestAutorization()
+        DeviceMotion.shared.getSteps(seconds: 1)
         //Notify the watch when the app is moved to background
         //notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
     }
