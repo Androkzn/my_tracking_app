@@ -519,7 +519,7 @@ extension WorkoutDataHelper {
         var caloriesDouble = 0.0
         var caloriesPerStep = 0.0
         var caloriesPerSecond = 0.0
-        var caloriesPerPaddle = 0.0
+        //var caloriesPerPaddle = 0.0
         if HealthData.shared.totalCaloriesBurned == 0 {
             if WorkoutDataHelper.getWorkoutType(workout: workout) == 0 {
                 caloriesPerStep = 28 * selectCaloriesCoefficient()/1000
@@ -540,7 +540,7 @@ extension WorkoutDataHelper {
             caloriesDouble = 0.0
             caloriesPerStep = 0.0
             caloriesPerSecond = 0.0
-            caloriesPerPaddle = 0.0
+            //caloriesPerPaddle = 0.0
             calories = "\(HealthData.shared.totalCaloriesBurned)"
         }
         caloriesDouble = round(caloriesDouble)
