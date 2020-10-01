@@ -19,8 +19,6 @@ class CheckTableViewCell: UITableViewCell {
 
     var cellDelegate: CheckTableViewDelegate?
 
-
-
     func set(title: String, checked: Bool) {
         titleLabel.text = title
         check.isChecked = checked

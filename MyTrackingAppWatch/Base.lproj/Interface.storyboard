@@ -26,7 +26,7 @@
                                 <label alignment="center" text="00:00:00" textAlignment="center" id="IYq-bf-iHy">
                                     <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
                                 </label>
-                                <button width="136" height="75" alignment="center" title="WALK" id="2Pk-nh-aLp">
+                                <button width="136" height="69" alignment="center" title="WALK" id="2Pk-nh-aLp">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="backgroundColor" red="0.13911497589999999" green="0.3948251009" blue="0.56501853469999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="font" type="boldSystem" pointSize="25"/>

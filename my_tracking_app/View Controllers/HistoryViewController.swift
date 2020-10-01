@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class HistoryViewController: UIViewController {
     var locations: [Location] = []
     var workouts: [Workout] = []
