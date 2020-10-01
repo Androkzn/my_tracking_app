@@ -14,7 +14,7 @@ import CoreData
 import RSSelectionMenu
 import WatchConnectivity
 
-class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessionDelegate {
+class MapViewController: UIViewController, UIGestureRecognizerDelegate{
 
     //Outlets
     @IBOutlet weak var recenterButton: UIButton!
@@ -56,8 +56,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     
     //Variables
     var isTrackingStarted = false
-    var isiOSAppOpened = false
-    var isProfileFilledOut = false
     var isHealthPermissionGranted = HealthData.shared.isHealthPermissionGranted
     static var isStartButtonPressedRemoutely = false
     var currentLocations: [Location] = [] // Current workout locations
@@ -75,23 +73,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     var bannerBodyes: [String] = [] //stores banner's bodyes
     var bannerBodyIndex = 0
     var workoutType = 0
-    var timeCurrent = "00:00:00"
-    var distance = "0.0"
-    var distanceUnit = ", km"
-    var speed = "0.0"
-    var avgSpeed = "0.0"
-    var speedUnit = ", km/h"
-    var steps = "0"
-    var calories = "0"
-    var paddles = "0"
-    var heartRate = "0"
-    
-    var message: [String: Any] { return["WorkoutType": workoutType, "Time": timeCurrent, "isTrackingStarted": isTrackingStarted, "Distance": distance, "DistanceUnit": distanceUnit, "Speed": speed, "AvgSpeed": avgSpeed, "SpeedUnit": speedUnit, "Steps": steps, "Calories": calories, "Paddles": paddles, "HeartRate": heartRate, "iOSOpened": isiOSAppOpened, "isProfileFilledOut": isProfileFilledOut]}
-    
-    var session = WCSession.default
     let notificationCenter = NotificationCenter.default
 
- 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpGestureRecognizerForStartButton()
@@ -101,28 +84,23 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setupLocationManager()
         setupWorkoutButton(started: isTrackingStarted)
         setupMapView()
-        resetLabels()
+        updateLabels()
         setupContainersTap()
         setupWorkoutTypeTap()
-        setWorkoutType ()
+        MapViewHellper.setWorkoutType ()
         setUpBannerScrollView()
         showBanner ()
-        setUpWatchConectivity()
-        interactiveMessage()
-        isWatchPaired (isPaired: session.isPaired)
-        isiOSAppOpened = true
+        WatchConnectivity.shared.setUpWatchConectivity()
+        WatchConnectivity.shared.interactiveMessage()
+        isWatchPaired (isPaired: WatchConnectivity.shared.session.isPaired)
+        WatchConnectivity.shared.isiOSAppOpened = true
         //request autorization
         HealthData.shared.requestAutorization()
         DeviceMotion.shared.getSteps(seconds: 1)
-        //Notify the watch when the app is moved to background
-        //notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        setUpNitifications()
     }
 
-    @objc func appMovedToBackground() {
-        isiOSAppOpened = false
-        interactiveMessage()
-    }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         setMilestones()
@@ -133,53 +111,40 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         setUpAltitudeLaberl ()
         updatesWorkoutTypeIcon ()
         setCardsSettings()
-        isWatchPaired (isPaired: session.isPaired)
-        _ = checkProfile ()
-        interactiveMessage()
-        //Notify the watch when the app is moved back from background
-        //notificationCenter.addObserver(self, selector: #selector(appMovedBackFromBackground), name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-    
-    @objc func appMovedBackFromBackground() {
-        isiOSAppOpened = true
-        interactiveMessage()
+        isWatchPaired (isPaired: WatchConnectivity.shared.session.isPaired)
+        _ = MapViewHellper.checkProfile ()
+        WatchConnectivity.shared.interactiveMessage()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         //Disables Watch  "Start" button when the Map screen is not displayed
         //isiOSAppOpened = false
-        interactiveMessage()
+        WatchConnectivity.shared.interactiveMessage()
     }
     
-    func setUpGestureRecognizerForStartButton() {
-        setCardsSettings()
-        //Tap function will call when user tap on button
-        let tapGesture = UITapGestureRecognizer(target: self,
-                                                action: #selector (startButton))
-        //Long press function will call when user long presses on button.
-        let longGesture = UILongPressGestureRecognizer(target: self,
-                                                       action: #selector(stopButton))
-        tapGesture.numberOfTapsRequired = 1
-        button.addGestureRecognizer(tapGesture)
-        button.addGestureRecognizer(longGesture)
-        longGesture.minimumPressDuration = 0.5
-    }
-    
-    func setUpWatchConectivity() {
-        if WCSession.isSupported() {
-            session = WCSession.default
-            session.delegate = self
-            session.activate()
+    // Set the destination view controller's workout property before showing
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? SummaryViewController {
+            if let currentWorkout = currentWorkout {
+                destination.currentWorkout = currentWorkout
+                destination.savingSnapshot = true
+            }
+        } else if let destination = segue.destination as? SettingsViewController {
+           destination.modalPresentationStyle = .fullScreen
         }
     }
     
+    //
+    // Buttons
+    //
     
     @IBAction func watchRefreshButton(_ sender: Any) {
-        interactiveMessage()
+        WatchConnectivity.shared.interactiveMessage()
         DispatchQueue.main.async {
-            if self.session.isPaired {
-                    if self.session.isWatchAppInstalled {
+            if WatchConnectivity.shared.session.isPaired {
+                    if WatchConnectivity.shared.session.isWatchAppInstalled {
                         self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
                         self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
                                   ToastView.shared.blueToast(self.view,
@@ -202,32 +167,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         }
     }
     
-    func isWatchPaired (isPaired: Bool) {
-       // Check if the iPhone is paired with the Apple Watch
-           DispatchQueue.main.async {
-               if isPaired {
-                    if self.session.isWatchAppInstalled {
-                        self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
-                        self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-            
-                    } else {
-                        self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
-                        self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
-                    }
-                } else {
-                   self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
-                   self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
-                }
-           }
-       }
-    
-    func interactiveMessage() {
-        workoutType = Int(WorkoutDataHelper.getWorkoutType())
-        session.sendMessage(message, replyHandler: nil, errorHandler: nil)
-    }
-    
     @IBAction func closeBannerButton(_ sender: Any) {
-         interactiveMessage()
+        WatchConnectivity.shared.interactiveMessage()
         let dialogMessage = UIAlertController(title: "Do you want to know about our new features?",
                                               message: " ",
                                               preferredStyle: .alert)
@@ -259,6 +200,140 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         
     }
     
+    //center map button
+    @IBAction func centerMap(_ sender: UIButton) {
+        WatchConnectivity.shared.interactiveMessage()
+        centerToCurrentLocation()
+    }
+    
+    //start button state
+    @objc func startButton(_ sender: UITapGestureRecognizer) {
+        // Start new workout button pressed
+        startButtonPressed()
+    }
+    
+    //stop button state
+    @objc func stopButton(_ sender: UILongPressGestureRecognizer) {
+        if isTrackingStarted {
+            if sender.state == .began {
+                _ = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+                    if self.counter >= 0 {
+                        if sender.state == .possible {
+                            timer.invalidate()
+                            self.setupCounterLabel(started: false)
+                            return
+                        } else {
+                            self.setupCounterLabel(started: true)
+                        }
+                    } else {
+                        timer.invalidate()
+                        self.setupCounterLabel(started: false)
+                        if self.isTrackingStarted {
+                            self.stopButtonPressed()
+                        }
+                    }
+                    self.counter = (self.counter - 0.01)
+                }
+            }
+        }
+    }
+    
+    @objc func containerTapped(_ sender: UITapGestureRecognizer) {
+        var data: [String] = []
+         if  WorkoutDataHelper.getWorkoutType() == 2 {
+             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
+         } else if WorkoutDataHelper.getWorkoutType() == 3 {
+             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "PADDLES", "HEART RATE", "CALLORIES"]
+         } else {
+             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
+         }
+        
+        // Prepare UserDefauld instance
+        let defaults = UserDefaults.standard
+        selectedName = ["\(defaults.string(forKey: MapViewHellper.cards(atIndex: editedCard!))!)"]
+         
+        // create menu with data source -> here [String]
+        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
+            cell.textLabel?.text = name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        }
+        
+        // provide selected items
+        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
+            self.selectedName = selectedItems
+        }
+        
+        // show dropdown alertpopover
+        let label = [firstCardUnitLabel, secondCardUnitLabel, thirdCardUnitLabel, fourthCardUnitLabel]
+        if  WorkoutDataHelper.getWorkoutType() == 2 {
+            menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
+        } else {
+            menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 265)), from: self)
+        }
+        menu.onDismiss = { [self] selectedItems in
+            self.selectedName = selectedItems
+            UserDefaults.standard.set(self.selectedName[0], forKey: MapViewHellper.cards(atIndex: self.editedCard!))
+            self.updateLabels()
+            if self.isTrackingStarted == false {
+                self.updateLabels()
+                //print("Labels was updated")
+            }
+        }
+        
+    }
+    
+    @objc func workoutTypeTapped(_ sender: UITapGestureRecognizer) {
+        let data: [String] = ["WALK", "RUN", "BIKE", "PADDLE"]
+        var selectedIndex = 0
+        
+        let defaults = UserDefaults.standard
+        let workoutType = Int(defaults.string(forKey: "WORKOUT")!)!
+        selectedName = ["\(MapViewHellper.sectionWorkout(atIndex: workoutType))"]
+         
+        // create menu with data source -> here [String]
+        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
+            cell.textLabel?.text = name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
+            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+        }
+        
+        // provide selected items
+        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
+            self.selectedName = selectedItems
+            selectedIndex = index
+        }
+    
+        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 130)), from: self)
+
+        
+        menu.onDismiss = { [self] selectedItems in
+            self.selectedName = selectedItems
+            UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
+            self.updatesWorkoutTypeIcon ()
+            WatchConnectivity.shared.interactiveMessage()
+            self.isWatchPaired (isPaired: WatchConnectivity.shared.session.isPaired)
+            if self.isTrackingStarted == false {
+                self.updateLabels()
+                MapViewHellper.resetVariables()
+        
+            }
+            guard self.currentWorkout?.type != nil else {
+                       return
+                   }
+            self.currentWorkout!.type = WorkoutDataHelper.getWorkoutType()
+        }
+        
+    }
+    
+    //
+    //Banner
+    //
+    
     func setUpBannerScrollView() {
         //set up banner var in defaults
         if UserDefaults.standard.object(forKey: "FirstSeenBanner") == nil {
@@ -276,7 +351,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         bannerTitleLabel.layer.borderColor = #colorLiteral(red: 1, green: 0.580126236, blue: 0.01286631583, alpha: 0.5366010274)
        
         //set up title's depends on current version
-        bannerTitleLabel.text = "What is new in version \(WorkoutDataHelper.getVersion())?"
+        bannerTitleLabel.text = "What is new in version \(MapViewHellper.getVersion())?"
         
         //set up ScrollView constraints
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -339,18 +414,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         }
     }
     
-    func checkProfile () -> Bool {
-        var  profileFilledOut = false
-        
-        if UserDefaults.standard.object(forKey: "AGE") == nil || UserDefaults.standard.object(forKey: "GENDER") == nil || UserDefaults.standard.object(forKey: "WEIGHT") == nil || UserDefaults.standard.object(forKey: "HEIGHT") == nil || UserDefaults.standard.string(forKey: "AGE") == "" || UserDefaults.standard.string(forKey: "GENDER") == "" || UserDefaults.standard.string(forKey: "WEIGHT") == "" || UserDefaults.standard.string(forKey: "HEIGHT") == ""{
-        } else {
-            profileFilledOut = true
-            isProfileFilledOut = true
-            interactiveMessage()
-        }
-        return profileFilledOut
-    }
     
+    //
+    //Alerts and popups
+    //
     
     func showGoToProfileAlertPopup (isFilledOut: Bool) {
            if isFilledOut {
@@ -405,7 +472,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     //set up labels from Core Data
     func conectLabelandCoreData (label: String, speed: CLLocationSpeed)  -> [String] {
         var data: [String] = ["",""]
-        let labelUpdated = updatesLabelDependsOnWorkoutType(label: label)
+        let labelUpdated = MapViewHellper.updatesLabelDependsOnWorkoutType(label: label)
 
         
         if labelUpdated == "TIME" {
@@ -456,89 +523,38 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         return data
     }
     
+    //Set up notifications for WatchConnectivity
+       func setUpNitifications () {
+           notificationCenter.addObserver(self, selector: #selector(startButtonPressedNoti), name: NSNotification.Name("pressStartButton"), object: nil)
+           notificationCenter.addObserver(self, selector: #selector(stopButtonPressedNoti), name: NSNotification.Name("pressStopButton"), object: nil)
+           notificationCenter.addObserver(self, selector: #selector(isWatchPairedNoti), name: NSNotification.Name("isWatchPaired"), object: nil)
+           notificationCenter.addObserver(self, selector: #selector(updateWorkoutTypeIconNoti), name: NSNotification.Name("updateWorkoutTypeIcon"), object: nil)
+       }
 
-    // Set the destination view controller's workout property before showing
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? SummaryViewController {
-            if let currentWorkout = currentWorkout {
-                destination.currentWorkout = currentWorkout
-                destination.savingSnapshot = true
-            }
-        } else if let destination = segue.destination as? SettingsViewController {
-           destination.modalPresentationStyle = .fullScreen
-        }
-        
-    }
+       @objc func startButtonPressedNoti () {startButtonPressed()}
+       
+       @objc func stopButtonPressedNoti () {stopButtonPressed()}
+       
+       @objc func isWatchPairedNoti () {isWatchPaired(isPaired: WatchConnectivity.shared.session.isPaired)}
+       
+       @objc func updateWorkoutTypeIconNoti () {updatesWorkoutTypeIcon()}
+       
+       
+       func setUpGestureRecognizerForStartButton() {
+           setCardsSettings()
+           //Tap function will call when user tap on button
+           let tapGesture = UITapGestureRecognizer(target: self,
+                                                   action: #selector (startButton))
+           //Long press function will call when user long presses on button.
+           let longGesture = UILongPressGestureRecognizer(target: self,
+                                                          action: #selector(stopButton))
+           tapGesture.numberOfTapsRequired = 1
+           button.addGestureRecognizer(tapGesture)
+           button.addGestureRecognizer(longGesture)
+           longGesture.minimumPressDuration = 0.5
+       }
+    
 
-    
-    
-    //center map button
-    @IBAction func centerMap(_ sender: UIButton) {
-        interactiveMessage()
-        centerToCurrentLocation()
-    }
-    
-    //start button state
-    @objc func startButton(_ sender: UITapGestureRecognizer) {
-        // Start new workout button pressed
-        startButtonPressed()
-    }
-    
-    func startButtonPressed () {
-        if lastLocation != nil {
-            if !isTrackingStarted {
-                print("checkProfile: \(checkProfile ())")
-                if checkProfile () {
-                    isTrackingStarted = !isTrackingStarted
-                    setupWorkoutButton(started: isTrackingStarted)
-                    startWorkout()
-                } else {
-                    showGoToProfileAlertPopup(isFilledOut: true)
-                }
-            } else {
-                ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
-            }
-        } else {
-            ToastView.shared.redToast(view,
-                   txt_msg: "Your location service is not available, please enable Location on your device",
-                   duration: 2)
-            }
-    }
-    
-    
-    //stop button state
-    @objc func stopButton(_ sender: UILongPressGestureRecognizer) {
-        if isTrackingStarted {
-            if sender.state == .began {
-                _ = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
-                    if self.counter >= 0 {
-                        if sender.state == .possible {
-                            timer.invalidate()
-                            self.setupCounterLabel(started: false)
-                            return
-                        } else {
-                            self.setupCounterLabel(started: true)
-                        }
-                    } else {
-                        timer.invalidate()
-                        self.setupCounterLabel(started: false)
-                        if self.isTrackingStarted {
-                            self.stopButtonPressed()
-                        }
-                    }
-                    self.counter = (self.counter - 0.01)
-                }
-            }
-        }
-    }
-    
-    func stopButtonPressed() {
-        isTrackingStarted = !self.isTrackingStarted
-        setupWorkoutButton(started: self.isTrackingStarted)
-        stopWorkout()
-        performSegue(withIdentifier: "summaryView", sender: nil)
-    }
-    
     //controls popup behaviour when stop button is long pressed
     func setupCounterLabel (started: Bool) {
         counterTextLabel.layer.backgroundColor = #colorLiteral(red: 0.3249011148, green: 0.7254286438, blue: 0.9069467254, alpha: 0.8043396832)
@@ -581,37 +597,37 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
             let defaults = UserDefaults.standard
             // Update speed labels
             speedMPS = lastLocation.speed >= 0.0 ? lastLocation.speed : 0.0
-            thirdCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[0]
-            thirdCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 2))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 2))!, speed: speedMPS)[1]
-            fourthCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[0]
-            fourthCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 3))!) +  conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 3))!, speed: speedMPS)[1]
+            thirdCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 2))!, speed: speedMPS)[0]
+            thirdCardUnitLabel.text = MapViewHellper.updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 2))!) + conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 2))!, speed: speedMPS)[1]
+            fourthCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 3))!, speed: speedMPS)[0]
+            fourthCardUnitLabel.text = MapViewHellper.updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 3))!) +  conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 3))!, speed: speedMPS)[1]
             //Update altitude label
             altitudeLabel.text = WorkoutDataHelper.getCompleteDisplayedAltitude(from: lastLocation.altitude)
             // Update timer label
-            firstCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[0]
-            firstCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 0))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 0))!, speed: speedMPS)[1]
+            firstCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 0))!, speed: speedMPS)[0]
+            firstCardUnitLabel.text = MapViewHellper.updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 0))!) + conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 0))!, speed: speedMPS)[1]
             // Update distance label
-            secondCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[0]
-            secondCardUnitLabel.text = updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: cards(atIndex: 1))!) + conectLabelandCoreData(label: defaults.string(forKey: cards(atIndex: 1))!, speed: speedMPS)[1]
+            secondCardLabel.text = conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 1))!, speed: speedMPS)[0]
+            secondCardUnitLabel.text = MapViewHellper.updatesLabelDependsOnWorkoutType(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 1))!) + conectLabelandCoreData(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 1))!, speed: speedMPS)[1]
         }
         
         //send message to iWatch
         workoutType = Int(WorkoutDataHelper.getWorkoutType())
-        timeCurrent = GlobalTimer.shared.getTime()
+        WatchConnectivity.shared.timeCurrent = GlobalTimer.shared.getTime()
         if WorkoutDataHelper.getWorkoutType() == 2 {
-          distance = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
+          WatchConnectivity.shared.distance = WorkoutDataHelper.getDisplayedDistance(from: currentWorkoutDistance)
         } else {
-          distance = WorkoutDataHelper.getDisplayedDistance(from: DeviceMotion.shared.distance)
+          WatchConnectivity.shared.distance = WorkoutDataHelper.getDisplayedDistance(from: DeviceMotion.shared.distance)
         }
-        distanceUnit = ", \(WorkoutDataHelper.getDistanceUnit())"
-        speed = "\(WorkoutDataHelper.getDisplayedSpeed(from: speedMPS))"
-        avgSpeed = "\(WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed()))"
-        speedUnit = ", \(WorkoutDataHelper.getSpeedUnit())"
-        steps = "\(DeviceMotion.shared.steps)"
-        calories = "\(WorkoutDataHelper.getCallories(workout: currentWorkout!, seconds: GlobalTimer.shared.seconds))"
-        paddles = "0"
-        heartRate = "\(HealthData.shared.heartRate)"
-        interactiveMessage()
+        WatchConnectivity.shared.distanceUnit = ", \(WorkoutDataHelper.getDistanceUnit())"
+        WatchConnectivity.shared.speed = "\(WorkoutDataHelper.getDisplayedSpeed(from: speedMPS))"
+        WatchConnectivity.shared.avgSpeed = "\(WorkoutDataHelper.getDisplayedSpeed(from: averageSpeed()))"
+        WatchConnectivity.shared.speedUnit = ", \(WorkoutDataHelper.getSpeedUnit())"
+        WatchConnectivity.shared.steps = "\(DeviceMotion.shared.steps)"
+        WatchConnectivity.shared.calories = "\(WorkoutDataHelper.getCallories(workout: currentWorkout!, seconds: GlobalTimer.shared.seconds))"
+        WatchConnectivity.shared.paddles = "0"
+        WatchConnectivity.shared.heartRate = "\(HealthData.shared.heartRate)"
+        WatchConnectivity.shared.interactiveMessage()
     }
 
     //activate text to speach when a milestone is reached
@@ -633,76 +649,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 
     }
     
-    //
-    @objc func containerTapped(_ sender: UITapGestureRecognizer) {
-        var data: [String] = []
-         if  WorkoutDataHelper.getWorkoutType() == 2 {
-             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "HEART RATE", "CALLORIES"]
-         } else if WorkoutDataHelper.getWorkoutType() == 3 {
-             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "PADDLES", "HEART RATE", "CALLORIES"]
-         } else {
-             data = ["TIME", "DISTANCE", "SPEED", "AVG SPEED", "STEPS", "HEART RATE", "CALLORIES"]
-         }
-        
-        // Prepare UserDefauld instance
-        let defaults = UserDefaults.standard
-        selectedName = ["\(defaults.string(forKey: cards(atIndex: editedCard!))!)"]
-         
-        // create menu with data source -> here [String]
-        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
-            cell.textLabel?.text = name
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
-            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
-            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-        }
-        
-        // provide selected items
-        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
-            self.selectedName = selectedItems
-        }
-        
-        // show dropdown alertpopover
-        let label = [firstCardUnitLabel, secondCardUnitLabel, thirdCardUnitLabel, fourthCardUnitLabel]
-        if  WorkoutDataHelper.getWorkoutType() == 2 {
-            menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 220)), from: self)
-        } else {
-            menu.show(style: .popover(sourceView: label[editedCard!]!, size: CGSize(width: 200, height: 265)), from: self)
-        }
-        menu.onDismiss = { [self] selectedItems in
-            self.selectedName = selectedItems
-            UserDefaults.standard.set(self.selectedName[0], forKey: self.cards(atIndex: self.editedCard!))
-            self.resetLabels()
-            if self.isTrackingStarted == false {
-                self.updateLabels()
-                //print("Labels was updated")
-            }
-        }
-        
-    }
-    
-    
-    func cards(atIndex: Int) -> String {
-        switch atIndex {
-        case 0:
-            return firstCard
-        case 1:
-            return secondCard
-        case 2:
-            return thirdCard
-        case 3:
-            return fourthCard
-        default:
-             return firstCard
-        }
-    }
-    
     func setCardsSettings() {
         if UserDefaults.standard.object(forKey: "FirstCard") == nil {
-            UserDefaults.standard.set("TIME", forKey: cards(atIndex: 0))
-            UserDefaults.standard.set("DISTANCE", forKey: cards(atIndex: 1))
-            UserDefaults.standard.set("SPEED", forKey: cards(atIndex: 2))
-            UserDefaults.standard.set("AVG SPEED", forKey: cards(atIndex: 3))
+            UserDefaults.standard.set("TIME", forKey: MapViewHellper.cards(atIndex: 0))
+            UserDefaults.standard.set("DISTANCE", forKey: MapViewHellper.cards(atIndex: 1))
+            UserDefaults.standard.set("SPEED", forKey: MapViewHellper.cards(atIndex: 2))
+            UserDefaults.standard.set("AVG SPEED", forKey: MapViewHellper.cards(atIndex: 3))
         } else {
             updateLabels()
         }
@@ -741,76 +693,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         
     }
     
-    
-    func sectionWorkout(atIndex: Int) -> String {
-        switch atIndex {
-        case 0:
-            return "WALK"
-        case 1:
-            return "RUN"
-        case 2:
-            return "BIKE"
-        case 3:
-            return "PADDLE"
-        default:
-            return "WALK"
-        }
-    }
-    
-    func setWorkoutType () {
-        let defaults = UserDefaults.standard
-        if UserDefaults.standard.object(forKey: "WORKOUT") == nil  {
-            defaults.set("0", forKey: "WORKOUT")
-        }
-    }
-    
-    
-    @objc func workoutTypeTapped(_ sender: UITapGestureRecognizer) {
-        let data: [String] = ["WALK", "RUN", "BIKE", "PADDLE"]
-        var selectedIndex = 0
-        
-        let defaults = UserDefaults.standard
-        let workoutType = Int(defaults.string(forKey: "WORKOUT")!)!
-        selectedName = ["\(sectionWorkout(atIndex: workoutType))"]
-         
-        // create menu with data source -> here [String]
-        let menu = RSSelectionMenu(dataSource: data) { (cell, name, indexPath) in
-            cell.textLabel?.text = name
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
-            cell.textLabel?.textColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-            cell.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0.6811322774)
-            cell.tintColor = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
-        }
-        
-        // provide selected items
-        menu.setSelectedItems(items: selectedName) { (name, index, selected, selectedItems) in
-            self.selectedName = selectedItems
-            selectedIndex = index
-        }
-    
-        menu.show(style: .popover(sourceView: workoutTypeLabel!, size: CGSize(width: 200, height: 130)), from: self)
-
-        
-        menu.onDismiss = { [self] selectedItems in
-            self.selectedName = selectedItems
-            UserDefaults.standard.set(selectedIndex, forKey: "WORKOUT")
-            self.updatesWorkoutTypeIcon ()
-            self.interactiveMessage()
-            self.isWatchPaired (isPaired: self.session.isPaired)
-            if self.isTrackingStarted == false {
-                self.updateLabels()
-                self.resetVariables()
-        
-            }
-            guard self.currentWorkout?.type != nil else {
-                       return
-                   }
-            self.currentWorkout!.type = WorkoutDataHelper.getWorkoutType()
-        }
-        
-    }
-    
-    
     func setupWorkoutTypeTap() {
        let workoutTypeTap = UILongPressGestureRecognizer(target: self, action: #selector(self.workoutTypeTapped(_:)))
        workoutTypeTap.delegate = self
@@ -823,21 +705,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
     internal func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         editedCard = gestureRecognizer.view?.tag
         return true
-    }
-    
-    func updatesWorkoutTypeIcon () {
-        if  WorkoutDataHelper.getWorkoutType() == 0 {
-            workoutTypeLabel.image = UIImage(named: "walk")
-        }
-        if  WorkoutDataHelper.getWorkoutType() == 1 {
-            workoutTypeLabel.image = UIImage(named: "run")
-        }
-        if  WorkoutDataHelper.getWorkoutType() == 2 {
-            workoutTypeLabel.image = UIImage(named: "cycling")
-        }
-        if  WorkoutDataHelper.getWorkoutType() == 3 {
-            workoutTypeLabel.image = UIImage(named: "paddling")
-        }
     }
     
     func setupWorkoutButton(started: Bool) {
@@ -857,7 +724,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 
     func startWorkout() {
         //reset variables for workout
-        resetVariables ()
+        MapViewHellper.resetVariables ()
         
         locationManager.allowsBackgroundLocationUpdates = true
         centerToCurrentLocation()
@@ -921,31 +788,78 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
 
         currentLocations.removeAll(keepingCapacity: false)
         //set up initial labels
-        resetLabels()
+        updateLabels()
         //clean route
         deleteRoute(mapLabel)
         locationManager.allowsBackgroundLocationUpdates = false
     }
     
-    //reset variables for workout
-    func resetVariables () {
-        HealthData.shared.totalSteps = 0
-        HealthData.shared.totalCaloriesBurned = 0
-        HealthData.shared.heartRate = 0
-        DeviceMotion.shared.steps = 0
-        DeviceMotion.shared.distance = 0
-        timeCurrent = "00:00:00"
-        distance = "0.0"
-        distanceUnit = ""
-        speed = "0.0"
-        avgSpeed = "0.0"
-        speedUnit = ""
-        steps = "0"
-        calories = "0"
-        paddles = "0"
-        heartRate = "0"
-        interactiveMessage()
-    }
+    func updatesWorkoutTypeIcon () {
+           if  WorkoutDataHelper.getWorkoutType() == 0 {
+               workoutTypeLabel.image = UIImage(named: "walk")
+           }
+           if  WorkoutDataHelper.getWorkoutType() == 1 {
+               workoutTypeLabel.image = UIImage(named: "run")
+           }
+           if  WorkoutDataHelper.getWorkoutType() == 2 {
+               workoutTypeLabel.image = UIImage(named: "cycling")
+           }
+           if  WorkoutDataHelper.getWorkoutType() == 3 {
+               workoutTypeLabel.image = UIImage(named: "paddling")
+           }
+       }
+       
+       
+       func isWatchPaired (isPaired: Bool) {
+          // Check if the iPhone is paired with the Apple Watch
+              DispatchQueue.main.async {
+                  if isPaired {
+                       if WatchConnectivity.shared.session.isWatchAppInstalled {
+                           self.watchLabel.setImage(UIImage(named: "applewatch"), for: .normal)
+                           self.watchLabel.tintColor  = #colorLiteral(red: 0.1391149759, green: 0.3948251009, blue: 0.5650185347, alpha: 1)
+               
+                       } else {
+                           self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                           self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                       }
+                   } else {
+                      self.watchLabel.setImage(UIImage(named: "applewatch_error"), for: .normal)
+                      self.watchLabel.tintColor  = #colorLiteral(red: 1, green: 0.2737112641, blue: 0.2477457523, alpha: 1)
+                   }
+              }
+          }
+
+       func startButtonPressed () {
+           if lastLocation != nil {
+               if !isTrackingStarted {
+                
+                if MapViewHellper.checkProfile () {
+                       isTrackingStarted = !isTrackingStarted
+                       WatchConnectivity.shared.isTrackingStarted = isTrackingStarted
+                       setupWorkoutButton(started: isTrackingStarted)
+                       startWorkout()
+                   } else {
+                       showGoToProfileAlertPopup(isFilledOut: true)
+                   }
+               } else {
+                   ToastView.shared.redToast(view, txt_msg: "Long Press STOP button for 1 seconds to stop workout", duration: 3)
+               }
+           } else {
+               ToastView.shared.redToast(view,
+                      txt_msg: "Your location service is not available, please enable Location on your device",
+                      duration: 2)
+               }
+       }
+       
+       func stopButtonPressed() {
+           isTrackingStarted = !self.isTrackingStarted
+           WatchConnectivity.shared.isTrackingStarted = isTrackingStarted
+           setupWorkoutButton(started: self.isTrackingStarted)
+           stopWorkout()
+           performSegue(withIdentifier: "summaryView", sender: nil)
+       }
+       
+
     
     func setMilestones() {
            let milestoneKey = UserDefaults.standard.integer(forKey: "VOICE MILESTONES")
@@ -973,83 +887,24 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
            }
        }
     
-    func resetLabels() {
-        // Reset distance and averageSpeed
-        //currentWorkoutDistance = 0.0
-        //currentWorkoutSpeedSum = 0.0
-        updateLabels()
-
-    }
-    
     func updateLabels() {
         // Prepare UserDefauld instance
         let defaults = UserDefaults.standard
         // Update timer label
-        firstCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[0]
-        firstCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 0))!)[1]
+        firstCardLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 0))!)[0]
+        firstCardUnitLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 0))!)[1]
         // Update distance label
-        secondCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[0]
-        secondCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 1))!)[1]
+        secondCardLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 1))!)[0]
+        secondCardUnitLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 1))!)[1]
         // Update speed label
-        thirdCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[0]
-        thirdCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 2))!)[1]
+        thirdCardLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 2))!)[0]
+        thirdCardUnitLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 2))!)[1]
         // Update avg speed label
-        fourthCardLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[0]
-        fourthCardUnitLabel.text = updateAllLabels(label: defaults.string(forKey: cards(atIndex: 3))!)[1]
+        fourthCardLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 3))!)[0]
+        fourthCardUnitLabel.text = MapViewHellper.updateAllLabels(label: defaults.string(forKey: MapViewHellper.cards(atIndex: 3))!)[1]
     }
     
   
-    func updatesLabelDependsOnWorkoutType (label: String) -> String {
-        var label = label
-        if WorkoutDataHelper.getWorkoutType() == 3 && label == "STEPS" {
-            label = "PADDLES"
-        } else if (WorkoutDataHelper.getWorkoutType() == 0 && label == "PADDLES") || (WorkoutDataHelper.getWorkoutType() == 1 && label == "PADDLES") {
-            label = "STEPS"
-        } else if (WorkoutDataHelper.getWorkoutType() == 2 && label == "PADDLES") || (WorkoutDataHelper.getWorkoutType() == 2 && label == "STEPS") {
-            label = "HEART RATE"
-        }
-        return label
-    }
-    
-    func updateAllLabels (label: String)  -> [String] {
-        let label = updatesLabelDependsOnWorkoutType(label: label)
-        var data: [String] = ["",""]
-        if label == "TIME" {
-            data[0] = "00:00:00"
-            data[1] = "TIME"
-        }
-        if label == "DISTANCE" {
-            data[0] = "0.0"
-            data[1] = "DISTANCE, \(WorkoutDataHelper.getDistanceUnit())"
-        }
-        if label == "SPEED" {
-            data[0] = "0.0"
-            data[1] = "SPEED, \(WorkoutDataHelper.getSpeedUnit())"
-        }
-        if label == "AVG SPEED" {
-            data[0] = "0.0"
-            data[1] = "AVG SPEED, \(WorkoutDataHelper.getSpeedUnit())"
-        }
-        if label == "PADDLES" {
-            data[0] = "0"
-            data[1] = "PADDLES"
-        }
-        if label == "STEPS" {
-            data[0] = "0"
-            data[1] = "STEPS"
-        }
-        if label == "HEART RATE" {
-            data[0] = "0"
-            data[1] = "HEART RATE, bpm"
-        }
-        if label == "CALLORIES" {
-            data[0] = "0"
-            data[1] = "CALLORIES, kcal"
-        }
-        return data
-    }
-    
-
     func setupCenterButton() {
         recenterButton.layer.cornerRadius = 25.0
         recenterButton.layer.borderWidth = 1.0
@@ -1064,73 +919,20 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, WCSessio
         settingButton.alpha = 0.8
     }
 
-    //MARK: - Delegate Watch Conectivity
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-           switch activationState{
-           case .activated:
-               print("Phone WCSEssion Activated")
-           case .notActivated:
-               print("Phone WCSEssion NOT Activated")
-           case .inactive:
-               print("Phone WCSEssion Inactive")
-           @unknown default:
-               print("ERROR")
-        }
-    }
-
-    func sessionDidBecomeInactive(_ session: WCSession) {
-        print("Session went inactive")
-        isWatchPaired (isPaired: session.isPaired)
-    }
-
-    func sessionDidDeactivate(_ session: WCSession) {
-       print("Session deactivated")
-        isWatchPaired (isPaired: session.isPaired)
-    }
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        if let pressStart = message["PressStart"] as? Bool {
-            if pressStart {
-                if !isTrackingStarted {
-                    DispatchQueue.main.async {
-                         MapViewController.isStartButtonPressedRemoutely = pressStart
-                        self.startButtonPressed()
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        MapViewController.isStartButtonPressedRemoutely = pressStart
-                        self.stopButtonPressed()
-                    }
-                }
-            }
-        }
-        if let workoutTypeFromWatch = message["WorkoutType"] as? Int {
-            DispatchQueue.main.async {
-                print(workoutTypeFromWatch)
-                UserDefaults.standard.set(workoutTypeFromWatch, forKey: "WORKOUT")
-                self.updatesWorkoutTypeIcon ()
-                self.interactiveMessage()
-            }
-        }
-        
-        replyHandler(message)
-        //print("pressStart: \(MapViewController.isStartButtonPressedRemoutely)")
-    }
-    
 }
 
 
 // MARK: Delegate for CLLocationManager
 extension MapViewController: CLLocationManagerDelegate {
+    
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        isWatchPaired (isPaired: session.isPaired)
+        isWatchPaired (isPaired: WatchConnectivity.shared.session.isPaired)
         mapLabel.centerToLocation(locations.last!, regionRadius: 300)
         //sends message to the Watch Extencion when location is changed
-        interactiveMessage()
-        isWatchPaired (isPaired: session.isPaired)
-        print("LOCATION CHANGRD")
-
+        WatchConnectivity.shared.interactiveMessage()
+        isWatchPaired (isPaired: WatchConnectivity.shared.session.isPaired)
+    
         if isTrackingStarted {
             addWorkoutLocations(locations: locations)
 

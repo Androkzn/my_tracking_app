@@ -34,7 +34,7 @@ class SettingSelectionViewController: UIViewController, CheckTableViewDelegate {
         if let settingTitle = settingTitle {
             self.settingTitleLabel.text = settingTitle
         }
-        versionLabel.text = "v. \(WorkoutDataHelper.getVersion())"
+        versionLabel.text = "v. \(MapViewHellper.getVersion())"
     }
 
     func checkboxSelected(checkbox: CheckTableViewCell, settingValue: String) {

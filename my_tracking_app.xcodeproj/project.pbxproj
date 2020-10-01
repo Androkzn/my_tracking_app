@@ -45,6 +45,8 @@
 		DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F724BE441500364F15 /* CubicChart.swift */; };
 		DEB238FB24BE441500364F15 /* ChartFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F824BE441500364F15 /* ChartFormatter.swift */; };
 		DEB238FC24BE441500364F15 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB238F924BE441500364F15 /* ChartViewController.swift */; };
+		DED7A87D25242797006A0517 /* WatchConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED7A87C25242797006A0517 /* WatchConnectivity.swift */; };
+		DED7A8E525254060006A0517 /* MapViewHellper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED7A8E425254060006A0517 /* MapViewHellper.swift */; };
 		DEFCD747249B364D007D7E75 /* History.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEFCD746249B364D007D7E75 /* History.storyboard */; };
 		DEFCD749249B36A0007D7E75 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEFCD748249B36A0007D7E75 /* Map.storyboard */; };
 		E82D14F124A287AA002A0773 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82D14F024A287AA002A0773 /* LocationAnnotation.swift */; };
@@ -161,6 +163,8 @@
 		DEB238F724BE441500364F15 /* CubicChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicChart.swift; sourceTree = "<group>"; };
 		DEB238F824BE441500364F15 /* ChartFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartFormatter.swift; sourceTree = "<group>"; };
 		DEB238F924BE441500364F15 /* ChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		DED7A87C25242797006A0517 /* WatchConnectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivity.swift; sourceTree = "<group>"; };
+		DED7A8E425254060006A0517 /* MapViewHellper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewHellper.swift; sourceTree = "<group>"; };
 		DEFCD746249B364D007D7E75 /* History.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = History.storyboard; sourceTree = "<group>"; };
 		DEFCD748249B36A0007D7E75 /* Map.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		E82D14F024A287AA002A0773 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
@@ -282,28 +286,8 @@
 			isa = PBXGroup;
 			children = (
 				DE1B12A424E644A10028FFFD /* my_tracking_app.entitlements */,
-				DEB238F824BE441500364F15 /* ChartFormatter.swift */,
-				DEB238F924BE441500364F15 /* ChartViewController.swift */,
-				DEB238F724BE441500364F15 /* CubicChart.swift */,
-				F2B350DB24B90D6E0029B093 /* Checkbox.swift */,
-				F2B350DA24B90D6E0029B093 /* CheckTableViewCell.swift */,
-				DE1B12A224E636CA0028FFFD /* HealthData.swift */,
-				DE67A33D24988B6B000FFEA5 /* HistoryViewController.swift */,
-				DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */,
-				F21F730124BCFC0C00F13590 /* LocalizationKeyEnum.swift */,
-				E82D14F024A287AA002A0773 /* LocationAnnotation.swift */,
-				DE67A34124988B9B000FFEA5 /* MapViewController.swift */,
-				F2ACEB8D24A1789500ED9079 /* MapViewDelegate.swift */,
-				DE1B12A924E7B8FA0028FFFD /* DeviceMotion.swift */,
-				DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */,
-				F2B350D624B909670029B093 /* SettingSelectionViewController.swift */,
-				F2AA4B9C24AAB6E500BB00DA /* SettingsViewController.swift */,
-				DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */,
-				DE67A34424988DED000FFEA5 /* TabViewController.swift */,
-				DE7FCB1F24A04915009EC89B /* Timer.swift */,
-				DE4F3D6B24A488ED00966B60 /* ToastView.swift */,
-				E8F3BEC024BFDBFD0037AFD8 /* TextToSpeech.swift */,
-				F2702F0524A5227B002AE16F /* WorkoutDataHelper.swift */,
+				DED7A8E625255819006A0517 /* View Controllers */,
+				DED7A8E72525583A006A0517 /* Helpers */,
 				DEFCD74A249B4183007D7E75 /* Storyboards */,
 				DEFCD74C249B4202007D7E75 /* Core Data  */,
 				DE67A318249889BD000FFEA5 /* AppDelegate.swift */,
@@ -322,6 +306,44 @@
 				F291B55324C0D31700AD2EBF /* WorkoutDataHelperTests.swift */,
 			);
 			path = my_tracking_appTests;
+			sourceTree = "<group>";
+		};
+		DED7A8E625255819006A0517 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F2B350DA24B90D6E0029B093 /* CheckTableViewCell.swift */,
+				DE67A33D24988B6B000FFEA5 /* HistoryViewController.swift */,
+				DE67A34A2498A34D000FFEA5 /* HistoryTableViewCell.swift */,
+				DE67A34124988B9B000FFEA5 /* MapViewController.swift */,
+				DE4FF00924D0F0F900F980D8 /* ProfileViewController.swift */,
+				F2B350D624B909670029B093 /* SettingSelectionViewController.swift */,
+				F2AA4B9C24AAB6E500BB00DA /* SettingsViewController.swift */,
+				DE0801C524A45AFD00E9F873 /* SummaryViewController.swift */,
+				DE67A34424988DED000FFEA5 /* TabViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		DED7A8E72525583A006A0517 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DEB238F824BE441500364F15 /* ChartFormatter.swift */,
+				DEB238F924BE441500364F15 /* ChartViewController.swift */,
+				DEB238F724BE441500364F15 /* CubicChart.swift */,
+				F2B350DB24B90D6E0029B093 /* Checkbox.swift */,
+				DE1B12A224E636CA0028FFFD /* HealthData.swift */,
+				F21F730124BCFC0C00F13590 /* LocalizationKeyEnum.swift */,
+				E82D14F024A287AA002A0773 /* LocationAnnotation.swift */,
+				DED7A8E425254060006A0517 /* MapViewHellper.swift */,
+				F2ACEB8D24A1789500ED9079 /* MapViewDelegate.swift */,
+				DE1B12A924E7B8FA0028FFFD /* DeviceMotion.swift */,
+				DE7FCB1F24A04915009EC89B /* Timer.swift */,
+				DE4F3D6B24A488ED00966B60 /* ToastView.swift */,
+				E8F3BEC024BFDBFD0037AFD8 /* TextToSpeech.swift */,
+				DED7A87C25242797006A0517 /* WatchConnectivity.swift */,
+				F2702F0524A5227B002AE16F /* WorkoutDataHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		DEFCD74A249B4183007D7E75 /* Storyboards */ = {
@@ -610,6 +632,7 @@
 				F2ACEB8E24A1789500ED9079 /* MapViewDelegate.swift in Sources */,
 				F2702F0624A5227B002AE16F /* WorkoutDataHelper.swift in Sources */,
 				DEB238FB24BE441500364F15 /* ChartFormatter.swift in Sources */,
+				DED7A87D25242797006A0517 /* WatchConnectivity.swift in Sources */,
 				F2B350DD24B90D6E0029B093 /* Checkbox.swift in Sources */,
 				F2AA4B9D24AAB6E500BB00DA /* SettingsViewController.swift in Sources */,
 				DEB238FA24BE441500364F15 /* CubicChart.swift in Sources */,
@@ -621,6 +644,7 @@
 				F2B350D724B909670029B093 /* SettingSelectionViewController.swift in Sources */,
 				E8F3BEC124BFDBFD0037AFD8 /* TextToSpeech.swift in Sources */,
 				E82D14F124A287AA002A0773 /* LocationAnnotation.swift in Sources */,
+				DED7A8E525254060006A0517 /* MapViewHellper.swift in Sources */,
 				DE67A34224988B9B000FFEA5 /* MapViewController.swift in Sources */,
 				DE0801C624A45AFD00E9F873 /* SummaryViewController.swift in Sources */,
 				DEB238FC24BE441500364F15 /* ChartViewController.swift in Sources */,

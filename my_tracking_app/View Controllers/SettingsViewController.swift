@@ -42,7 +42,7 @@ class SettingsViewController: UIViewController {
         let library_path = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
         print("library path is \(library_path)")
         //set vesion
-        versionLabel.text = "v. \(WorkoutDataHelper.getVersion())"
+        versionLabel.text = "v. \(MapViewHellper.getVersion())"
     }
 
     override func viewWillAppear(_ animated: Bool) {

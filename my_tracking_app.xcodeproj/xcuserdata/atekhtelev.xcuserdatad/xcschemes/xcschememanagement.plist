@@ -12,12 +12,30 @@
 		<key>MyTrackingAppWatch.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>5</integer>
 		</dict>
 		<key>my_tracking_app.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>6</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>DE12BC6924FDEFA8000A1097</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE67A314249889BD000FFEA5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE67A32D249889BE000FFEA5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
